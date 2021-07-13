@@ -1,36 +1,14 @@
-{%- comment %} you can always turn off the speedupkernel{% endcomment -%}
-{%- assign speedupkernel = true -%}
-{%- assign is_admin_interface = true -%}
-{%- if speedupkernel -%}
-	{%- if request.host contains 'myshopify.com' -%}
-		{%- assign is_admin_interface = true -%}
-	{%- else -%}
-		{%- assign is_admin_interface = false -%}
-	{%- endif -%}
-	{%- if request.host contains 'shopifypreview.com' -%}
-		{%- assign is_admin_interface = true -%}
-	{%- endif -%}
-	{%- if request.host contains 'gempages.net' -%}
-		{%- assign is_admin_interface = true -%}
-	{%- endif -%}	
-	{%- if request.path == '/cart' -%}
-		{%- assign is_admin_interface = true -%}
-	{%- endif -%}
-	{%- if request.path == '/checkout' -%}
-		{%- assign is_admin_interface = true -%}
-	{%- endif -%}
-{%- endif -%}{%- capture html -%}<!doctype html>
+<!doctype html>
+
 {%- include "object-canonical-url" -%}
 {%- include "object-current-tag-handles" -%}
 {%- include "object-current-url" -%}
 {%- include "attribute-shop-social-links" -%}
 {%- include "attribute-template-noindex" -%}
 {%- include "attribute-cart-ajax-enabled" -%}
+
 <html>
   <head>
-    {% include '__opt-theme-preload' %}
-    {% include '__opt-js-theme-init' %}
-
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="theme-color" content="{{ settings.color_primary }}" />
@@ -44,10 +22,18 @@
     <link rel="canonical" href="{{ canonical_url }}" />
     <link rel="shortcut icon"  href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
 
+    <script src="https://www.googleoptimize.com/optimize.js?id=OPT-5HPBHQT" async defer></script>
+
+    <script src="//assets.findify.io/inked-playmats.myshopify.com.min.js" async defer></script>
+
     {% include "schema" %}
     {% include "title" %}
     {% include "vendor-facebook-og" %}
     {% include "vendor-twitter-cards" %}
+    {% include "vendor-google-tag-manager--head" %}
+
+    {% include 'css-liquid-vars' %}
+    {{ 'theme.min.css' | asset_url | stylesheet_tag }}
 
     {% comment %} Sadly cannot find an NPM module for this: {% endcomment %}
     {%- if template contains "customers" -%}
@@ -55,72 +41,61 @@
       {{ "customer_area.js"  | shopify_asset_url | script_tag }}
     {%- endif -%}
 
-    {% comment %} looks like it is not worked..... {% endcomment %}
-    {% comment %} {% render 'header-scripts.zipifypages', renderctx: 'thm' %} {% endcomment %}
+    {% assign content_for_header = content_for_header | replace: 'octaneai', '' %}
 
-    {% include 'ninjacoderz_rich_snippets' %}
-
-    {% include '__opt-system-header' %}
+    {% render 'header-scripts.zipifypages', renderctx: 'thm' %}
     {{ content_for_header }}
-    {% include '__opt-css-theme' %}
+    
+{% include 'ninjacoderz_rich_snippets' %}
+    <!-- Immerss START -->
+    <script src='https://immerss.live/vece/affiliate/v1/tracking/c8788ed1-9210-4fea-98db-716b875c3cc0/visit.js'></script>
+    <!-- Immerss finish -->
 </head>
-<body>
-  {% include 'smile-initializer' %}
-
-  {% include "vendor-google-tag-manager--body" %}
 
 
-  {% include "__opt-gorgias-chat-widget.liquid" %}
 
-  {% section 'header-top-bar' %}
-  {% section "header" %}
+  <body>
+    {% include 'smile-initializer' %}
 
-  <main role="main">
-    {% include '__opt-system-layout' %}
-    {{content_for_layout}}		
-  </main>
+    {% include "vendor-google-tag-manager--body" %}
+<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install">!function(_){_.GORGIAS_CHAT_APP_ID="3717",_.GORGIAS_CHAT_BASE_URL="us-east1-898b.production.gorgias.chat",_.GORGIAS_API_BASE_URL="config.gorgias.chat";var e=new XMLHttpRequest;e.open("GET","https://config.gorgias.chat/applications/3717",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - https://config.gorgias.chat/applications/3717");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById("gorgias-chat-container")){var o=document.createElement("div");o.id="gorgias-chat-container",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="https://storage.googleapis.com/gorgias-chat-production-client-builds/{bundleVersion}/static/js/main.js".replace("{bundleVersion}",n.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - https://config.gorgias.chat/applications/3717")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->
 
-  {% unless template contains 'customer' or template contains 'blog' or template contains 'member' or template contains 'article' or template contains 'supplies' or template contains 'sale' or template contains 'about' %}
-    {% section "testimonials" %}
-  {% endunless %}
+    {% section 'header-top-bar' %}
+    {% section "header" %}
 
-  {% unless template contains 'customer' or template contains 'about' or template contains 'member' %}
-    {% include "instagram" %}
-  {% endunless %}
+    <main role="main">
+      {{ content_for_layout }}
+    </main>
 
-  {% comment %} {% section "footer" %} {% endcomment %}
+    {% unless template contains 'customer' or template contains 'blog' or template contains 'member' or template contains 'article' or template contains 'supplies' or template contains 'sale' or template contains 'about' %}
+      {% section "testimonials" %}
+    {% endunless %}
 
-  {%- if is_admin_interface -%}
-    {% section 'footer' %}
-  {%- else -%}
-    {%- if template.name == 'index' or template.name == 'collection' or template.name == 'product' -%}
-      <div id="__load-section-footer"></div>
-    {%- else -%}
-      {% section 'footer' %}
-    {%- endif -%}
-  {%- endif -%}
+    {% unless template contains 'customer' or template contains 'about' or template contains 'member' %}
+      {% include "instagram" %}
+    {% endunless %}
 
-  {% if cart_ajax_enabled and template != 'cart' %}
-    {% include "ajax-cart" %}
-  {% endif %}
+    {% section "footer" %}
 
-  {% include 'currency-form' %}
+    {% if cart_ajax_enabled and template != 'cart' %}
+      {% include "ajax-cart" %}
+    {% endif %}
 
-  {% comment %} {% include "vendor-browser-update" %} {% endcomment %}
+    {% include 'currency-form' %}
 
-  {% if template contains "custom" %}
-    {% include 'uploadcare-settings' %}
-  {% endif %}
+    {%- include 'scripts-rosewood-support' -%}
+    {{ 'theme.min.js' | asset_url | script_tag }}
+    {% include "vendor-browser-update" %}
 
-  
-  {% include 'findify-tagging' %}
+    {% if template contains "custom" %}
+      {% include 'uploadcare-settings' %}
+    {% endif %}
 
-  {% comment %} looks like it is not worked..... {% endcomment %}
-  {% comment %} {% render 'page-footer.zipifypages', renderctx: 'thm', ocuapp: ocuapp %} {% endcomment %}
-  
-  {% include '__opt-js-theme-main' %}
-  {% include '__opt-css-theme-fonts' %}
-  {% include '__opt-css-theme-footer' %}
+    <script async type="text/javascript" data-api-key="pubkey-l17e63vhnY1yDLGBkRydkk3Mt83Ww4" id="stamped-script-widget" src="https://cdn-stamped-io.azureedge.net/files/widget.min.js"></script>
+    
+    {% include 'findify-tagging' %}
+
+    {% render 'page-footer.zipifypages', renderctx: 'thm', ocuapp: ocuapp %}
+     
   </body>
-</html>{%- endcapture -%}
-{%- include '__opt-theme-html' -%}
+</html>

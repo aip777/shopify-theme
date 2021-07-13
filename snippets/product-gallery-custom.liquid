@@ -6,20 +6,9 @@
     <div>
       <div class="relative aspect-ratio-4x3">
         <div class="absolute absolute-fill">
-          {% comment %} <img {% if forloop.first %}id="js-product-image"{% endif %} class="object-fit-contain object-position-center product-featured-img"
+          <img {% if forloop.first %}id="js-product-image"{% endif %} class="object-fit-contain object-position-center product-featured-img"
             {% if variant_image_count == 0 %}src{% else %}data-src{% endif %}="{{ image | img_url: '1024x' }}"
-            alt="{{ image.alt | escape }}" /> {% endcomment %}
-          {% if forloop.first %}
-          <img id="js-product-image" class="object-fit-contain object-position-center product-featured-img loaded"
-            loading="eager"
-            src="{{ image | img_url: '720x' }}"
             alt="{{ image.alt | escape }}" />
-            <!-- {{ template.name }}_image_lcp [{{ image | img_url: '720x' }}] -->
-          {% else %}
-          <img class="object-fit-contain object-position-center product-featured-img"
-            {% if variant_image_count == 0 %}src{% else %}data-src{% endif %}="{{ image | img_url: '720x' }}"
-            alt="{{ image.alt | escape }}" />
-          {% endif %}
 
           {% comment %}
             'hide' class is removed and 'flex' is added when non-image file is uploaded

@@ -1,5 +1,8 @@
 {% assign shop_logo = 'inked_logo.svg' | asset_url %}
+
 <a href="/" class="block font-size--none line-height--none">
-  <img loading="eager" class="logo" src="{{ shop_logo }}" alt="{{ shop.name }}" />
-  <!-- {{ template.name }}_image_lcp [{{ shop_logo }}] -->
+  <img
+    class="logo"
+    data-src="{{ shop_logo }}"
+    alt="{{ shop.name }}" />
 </a>

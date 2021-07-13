@@ -49,9 +49,9 @@
         {%- elsif object.metafields.yverge.rating_count != blank and shop.metafields.richsnippets_app.reviewapp == blank or shop.metafields.richsnippets_app.reviewapp == 20 -%}
             {%- assign reviewCount = object.metafields.yverge.rating_count | plus:0  -%}
             {%- assign reviewRating = object.metafields.yverge.rating -%}
-        {%- elsif object.metafields.okendo.summaryData.reviewCount != blank and shop.metafields.richsnippets_app.reviewapp == blank or shop.metafields.richsnippets_app.reviewapp == 21 -%}
-            {%- assign reviewCount = object.metafields.okendo.summaryData.reviewCount | plus:0  -%}
-            {%- assign reviewRating = object.metafields.okendo.summaryData.reviewAverageValue -%}
+        {%- elsif object.metafields.okendo.ReviewCount != blank and shop.metafields.richsnippets_app.reviewapp == blank or shop.metafields.richsnippets_app.reviewapp == 21 -%}
+            {%- assign reviewCount = object.metafields.okendo.ReviewCount | plus:0  -%}
+            {%- assign reviewRating = object.metafields.okendo.ReviewAverageValue -%}
         {%- endif -%}
 		{%- if shop.metafields.richsnippets_app.reviewapp == blank or shop.metafields.richsnippets_app.reviewapp == 12 -%}
 			{%- assign reviewEnabled = object.metafields.richsnippets_reviews.review_enabled | plus:0 -%}

@@ -76,14 +76,13 @@
                 {%- assign name        = about.name -%}
                 {%- assign job         = about.job -%}
                 {%- assign image       = about.image -%}
-                {%- assign image_url = image | img_url: "400x" -%}
+                {%- assign image_url = image | img_url: "600x" -%}
                 {%- assign member_url = about.member_url -%}
                 
                 <a href="{{ member_url }}" class="text-center link">
                     {%- if image != blank -%}
                       <img class="block width-100" 
                         {% if x <= 10 %}
-                          loading="eager"
                           src="{{ image_url }}" 
                         {% else %}
                           data-src="{{ image_url }}" 

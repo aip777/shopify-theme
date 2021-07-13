@@ -1,4 +1,4 @@
-{% comment %} <script src="//www.searchanise.com/widgets/shopify/init.js?a=3B0O5I4D9B"></script> {% endcomment %}
+<script src="//www.searchanise.com/widgets/shopify/init.js?a=3B0O5I4D9B"></script>
 
 <div class="snize" id="snize_results"></div>
 
@@ -357,10 +357,8 @@
 -->
 </style>
 <script type="text/javascript">
-__engine_other['searchanise'] = function() {
-    console.log('searchanise');
-    loadjs('//www.searchanise.com/widgets/shopify/init.js?a=3B0O5I4D9B');
-
+// <![CDATA[
+(function(window, undefined) {
     var snize_results = document.getElementById('snize_results');
     if (snize_results != null && snize_results != undefined && snize_results.innerHTML != '') {
         return;
@@ -397,5 +395,6 @@ __engine_other['searchanise'] = function() {
             elements[i].style.display = 'none';
         }
     }
-}
+})(window);
+// ]]>
 </script>
