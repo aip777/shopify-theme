@@ -1,0 +1,61 @@
+
+{% assign addons = product.metafields['addon'] %}
+
+{% if addons != blank %}
+
+{% assign addon_products = addons['product_handles'] | split: ", " %}
+
+  {% if addon_products.size > 0 %}
+    <div class="addon-items padding-bottom-6" >
+
+      {% if settings.product_bundles_enabled %}
+        <div class="flex text-left" >
+          <p class="flex-center background-black text-white text-uppercase
+            font-size-1 font-weight-6
+            padding-top-3 padding-bottom-2 padding-horizontal-4">
+            {{ settings.product_bundle_title }}
+          </p>
+          <p class="margin-left-4 flex-item-1 line-height-copy letter-spacing-1 font-size-1" >
+            {{ settings.product_bundle_text }}
+          </p>
+        </div>
+
+      {% else %}
+
+        <h2 class="font-size-1 font-weight-5 letter-spacing-2px text-uppercase padding-bottom-2"
+          style="line-height: 1.2;" >
+          Add an additional strap?
+        </h2>
+      {% endif %}
+
+      <ul class="addon-item grid grid-gap-5 columns-3 list-style-none margin-0 padding-0">
+        {% for addon_handle in addon_products %}
+          {% assign addon_product = all_products[addon_handle] %}
+
+          {% if addon_product.available == true %}
+            <li class="relative text-center js-product-addon"
+              data-behavior="ajax-cart-addon-button"
+              data-addon-id="{{addon_product.first_available_variant.id}}"
+              data-addon-price="{{addon_product.price}}">
+              <img data-src="{{ addon_product.featured_image | img_url: '300x', format: 'pjpg' }}"
+                class="width-100" />
+              <p class="addon-price margin-0 padding-top-4 font-size-1" >
+                + {{ addon_product.price | money_without_trailing_zeros }}
+              </p>
+              <p class="addon-success margin-0 padding-top-4 font-size-1 hide" >
+                Added!
+              </p>
+              <p class="margin-0 padding-0 font-size-1" >
+                {{ addon_product.title }}
+              </p>
+              <div class="check-circle transition-all line-height-0">
+                {% include 'svg-check' %}
+              </div>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+{% endif %}

@@ -1,0 +1,26 @@
+{%- assign dropdown_content_type = false -%}
+{%- assign has_dropdown_content_cta = false -%}
+
+{%- for block in section.blocks -%}
+  {%- assign dropdown_content = block.settings -%}
+  {%- if dropdown_content.parent_link == link_title -%}  
+    {% comment %}
+      We have a block assigned to this nav item
+      First, we get the CTA content
+    {% endcomment %}
+    {%- if dropdown_content.description_text != blank -%}
+      {%- assign dropdown_content_title = link_title -%}
+      {%- assign dropdown_content_description_text = dropdown_content.description_text -%}
+    {%- endif -%}
+
+    {% comment %}
+      Assign image if it exists
+    {% endcomment %}
+    {%- assign dropdown_single_image = dropdown_content.single_image -%}
+
+    {% comment %}
+      Extremely important: 
+    {% endcomment %}
+    {% break %}
+  {%- endif -%}
+{%- endfor -%}

@@ -1,0 +1,115 @@
+{%- assign linklist_width_class = "column-span-12" -%}
+{%- assign linklist_grid_class  = "columns-12" -%}
+
+<div class="main-menu-dropdown absolute left-0 right-0 background-white text-default text-left overflow-hidden z-index-3">
+  {% comment %}
+    Before we assign grid column widths and classes, we need to know what combination content we're dealing with - this means # of linklists and type of image content. 
+
+    Image grid content will always take up half of the container width
+
+    Single image width depends on # of linklists :)
+    Single image goes beyond container width though - extends to end of screen. May need to max out at 1680? (TODO: ask client)
+
+    1, 2, or 4 linklists = 7 columns (based on design)
+    3 or 5+ = 9 columns
+  {% endcomment %} 
+
+  {%- if dropdown_single_image -%}
+      {%- assign linklist_width_class = "column-span-7" -%}
+      {%- assign linklist_grid_class  = "columns-3" -%}
+      {%- assign image_width_class    = "column-span-3" -%}
+  {%- else -%}
+    {%- assign linklist_width_class = "column-span-9" -%}
+    {%- assign linklist_grid_class  = "columns-9" -%}
+    {%- assign image_width_class    = "column-span-5" -%}
+  {%- endif -%}
+
+  <div class="grid grid-gap-4 columns-12">  
+    {%- if dropdown_content_description_text -%}
+      <div class="column-span-2 background-light-grey padding-horizontal-10 flex flex-column justify-center">
+        <h3 class="margin-0 font-weight-7 text-uppercase letter-spacing-2 font-family-heading font-size-4">{{ dropdown_content_title }}</h3>
+        <span class="letter-spacing-2 text-default text-size-1 padding-top-2 font-weight-light">{{ dropdown_content_description_text }}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="{{ linklist_width_class }}">
+      <div class="grid grid-gap-4 {{ linklist_grid_class }} padding-10">
+        {%- for dropdown_link in second_level_links -%}
+          {%- assign has_third_level_links = false -%}
+
+          {%- if dropdown_link.links.size > 0 -%}
+            {%- assign has_third_level_links = true -%}
+            {%- assign third_level_links = dropdown_link.links -%}
+          {%- endif -%}
+
+          {% assign icon_name = dropdown_link.title | handleize | prepend: 'svg-' %}
+          {% capture icon %}{% include icon_name %}{% endcapture %}
+
+          <div class="column-span-1 flex items-center">
+            {%- if dropdown_link.url == '#' -%}
+              <span class="block font-family-heading font-size-4 font-weight-6 letter-spacing-2 text-uppercase text-medium-grey width-100  block-{{ dropdown_link.title | handleize }}"
+                title="{{ dropdown_link.title }}">
+
+                {% include 'attribute-menu-svg' %}
+                {% if number != false %}
+                  {% assign settings_prefix = "menu_icon_image_" %}
+                  {% assign settings_key = settings_prefix | append: number | handle %}
+                  {% assign link_image = settings[settings_key] %}
+                  <div class="icon-wrap margin-right-4 relative">
+                    <div class="absolute absolute-fill">
+                      <span class="object-fit-cover">
+                        {{ link_image }}
+                      </span>
+                    </div>
+                  </div>
+                {% endif %}
+                <span>{{ dropdown_link.title | strip  }}</span>
+              </span>
+            {%- else -%}
+              <a class="dropdown-link flex text-no-decoration transition-all text-primary font-family-heading font-size-4 font-weight-6 letter-spacing-2 padding-bottom-2 text-uppercase items-center width-100 block-{{ dropdown_link.title | handleize }}"
+                title="{{ dropdown_link.title }}"
+                href="{{ dropdown_link.url }}">
+                
+                {% include 'attribute-menu-svg' %}
+                {% if number != false %}
+                {% assign settings_prefix = "menu_icon_image_" %}
+                {% assign settings_key = settings_prefix | append: number | handle %}
+                {% assign link_image = settings[settings_key] %}
+                <div class="icon-wrap margin-right-4 relative">
+                  <div class="absolute absolute-fill">
+                    <span class="object-fit-cover">
+                      {{ link_image }}
+                    </span>
+                  </div>
+                </div>
+                {% endif %}
+                <span class="dropdown-link__text flex-item-2">{{ dropdown_link.title }}</span>
+              </a>
+            {%- endif -%}
+
+            {%- if has_third_level_links -%}
+              <ul class="list-reset">
+                {%- for sublink in third_level_links -%}
+                  <li>
+                    <a
+                      title="{{ sublink.title }}" 
+                      class="inline-block padding-vertical-1 link text-primary-hover font-size-2 font-weight-1"
+                      href="{{ sublink.url }}">
+                      {{ sublink.title }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if dropdown_single_image -%}
+      <div class="{{ image_width_class }} padding-vertical-8">
+        {% include "main-menu-dropdown-single-image" %}
+      </div>
+    {%- endif -%}
+  </div>
+</div>

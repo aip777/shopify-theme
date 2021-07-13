@@ -1,0 +1,61 @@
+<div class="relative large--padding-bottom-8">
+  <div class="relative z-index-2">
+    {%- if section.blocks.size > 0 -%}
+      <div class="grid grid-gap-4 large--grid-gap-6 columns-3 large--columns-5 padding-6 margin-vertical-12 max-width-8 center">
+        {%- for block in section.blocks -%}
+            {%- assign about       = block.settings -%}
+            {%- assign name        = about.name -%}
+            {%- assign job         = about.job -%}
+            {%- assign image       = about.image -%}
+            {%- assign image_url = image | img_url: "300x" -%}
+            
+            <div class="text-center">
+                {%- if image != blank -%}
+                  <img class="block width-100" 
+                    {% if forloop.index <= 5 %}
+                    loading="eager"
+                    src="{{ image_url }}" 
+                    {% else %}
+                    data-src="{{ image_url }}" 
+                    {% endif %}
+                    alt="{{ title }}" />
+                {%- endif -%}
+                <div class="font-size-1 large--font-size-2 text-uppercase letter-spacing-1 margin-top-4 font-family-heading">{{ name }}</div>
+                <span class="font-size-1 large--font-size-2 letter-spacing-1 text-uppercase">{{ job }}</span>
+            </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About - Team Members",
+  "blocks": [ 
+    {
+      "type": "team",
+      "name": "Team member",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Employee Image"
+        },
+        { 
+          "type": "text", 
+          "id": "name", 
+          "label": "Employee Name", 
+          "default": "Employee Name"
+        },
+        { 
+          "type": "text", 
+          "id": "job", 
+          "label": "Job Title", 
+          "default": "Job Title"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

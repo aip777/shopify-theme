@@ -1,0 +1,43 @@
+{% if product.images.size > 1 %}
+  {% include "attribute-product-gallery-images" %}
+  <div class="block product-thumbnails margin-0 relative">
+    <div class="js-prev-arrow left--6 large--left--14 width-2 large--width-3 height-2 large--height-3 cursor-pointer">
+      {% include 'svg-angle-left' %}
+    </div>
+    <ul class="list-style-none padding-0 js-product-thumbnails">
+      {%- for image_url in product_gallery_image_urls -%}
+        {% assign index = product_gallery_indexes[forloop.index0] | times: 1 %}
+        {% assign image = product.images[index] %}
+
+        {% assign is_selected = false %}
+        {% if forloop.first %}
+          {% assign is_selected = true %}
+        {% endif %}
+
+        {% assign image_variant_ids = false %}
+        {% if image.attached_to_variant? %}
+          {% assign image_variant_ids = image.variants | map: 'id' | json %}
+        {% endif %}
+
+        <li
+          class="js-product-thumbnail product-thumbnail-container aspect-ratio-5x6 image-container {% if is_selected %}selected{% endif %}"
+          data-thumbnail-index="{{ forloop.index0 }}"
+          {% if image_variant_ids %}data-variant-ids="{{ image_variant_ids }}{% endif %}"
+          >
+          <div class="aspect-ratio-1x1 relative">
+            <div class="absolute absolute-fill">
+              <img data-src="{{ image_url }}" alt="{{ image.alt }}" class="object-fit-contain object-position-center" />
+            </div>
+          </div>
+        </li>
+
+        {% if found_selected == false and is_selected_color %}
+          {% assign found_selected = true %}
+        {% endif %}
+      {%- endfor -%}
+    </ul>
+    <div class="js-next-arrow right--6 large--right--14 width-2 large--width-3 height-2 large--height-3 cursor-pointer">
+      {% include 'svg-angle-right' %}
+    </div>
+  </div>
+{% endif %}

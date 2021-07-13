@@ -1,0 +1,18 @@
+{% assign current_page = page %}
+{% assign current_page_content = current_page.content %}
+
+{% include "attribute-rte-member-content" %}
+
+<div class="padding-0">
+  <div class="text-center">
+    <div class="padding-horizontal-6 large--padding-horizontal-0 background-light-grey center width-100 flex flex-column justify-center items-center rte">
+      {% include "shortcodes" with current_page_content %}
+
+      <div class="clearfix"></div>   
+
+      <div class="text-left order-3">
+        {% include "shortcodes" with current_page_content2 %}
+      </div>
+    </div>
+  </div>
+</div>

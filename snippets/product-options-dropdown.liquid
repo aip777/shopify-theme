@@ -1,0 +1,26 @@
+<div class="input-group margin-bottom-3">
+  <div class="input-select">
+
+    <select name="{{ option_number }}"
+      class="js-product-option line-height-solid letter-spacing-1 text-left text-black text-uppercase"
+      aria-label="{{ option }}"
+      id="{% if template == "list-collections" %}{{ collection.handle }}-{% endif %}{{ option_title_handle }}-{{ product.id }}">
+      {% for option in options %}
+
+        {%- assign option_handle = option | handle -%}
+        {%- assign selected = false -%}
+        {%- if option == current_variant[option_number] -%}
+          {%- assign selected = true -%}
+        {%- endif -%}
+
+        <option class="js-{{ option_title_handle }}-option" value="{{ option | remove: '"' }}" {% if selected %}selected{% endif %}>
+          {{ option }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <div class="input-select-icon">
+      {% include "svg-angle-down" %}
+    </div>
+  </div>
+</div>

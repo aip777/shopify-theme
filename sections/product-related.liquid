@@ -1,0 +1,66 @@
+{% include 'object-param-load', section_name: "product-related" %}
+
+{% if param_load and param_load != "false" %}
+
+  {% if section.settings.show_related_products %}
+
+    {% include "attribute-product-related-handles" %}
+    {% assign title = section.settings.related_products_title | default: false %}
+    {% assign description = section.settings.related_products_description | default: false %}
+
+    {% if product_related_handles != empty %}
+      <div class="padding-vertical-5">
+        {% include 'section-heading', title: title, description: description %}
+
+        <div class="grid columns-2 large--columns-4 grid-gap-3">
+          {% for handle in product_related_handles limit: 4 %}
+            {% assign related_product = all_products[handle] | default: false %}
+
+            {% if related_product %}
+              {% include "product-thumbnail", product: related_product %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  {% endif %}
+
+{% endif %}
+
+{% assign product = current_product %}
+
+{% schema %}
+{
+  "name": "Page content",
+  "class": "section-product-related",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Related products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related_products",
+      "default": true,
+      "label": "Show Related Products"
+    },
+    {
+      "type": "text",
+      "id": "related_products_title",
+      "default": "Related products",
+      "label": "Header"
+    },
+    {
+      "type": "textarea",
+      "id": "related_products_description",
+      "default": "Here's some info about related products",
+      "label": "Description"
+    },
+    {
+      "type": "paragraph",
+      "content": "Set related products explicitly by tagging products in the format \"Related: PRODUCT-HANDLE\""
+    }
+  ]
+}
+{% endschema %}

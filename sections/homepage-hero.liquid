@@ -1,0 +1,339 @@
+{% assign number_of_buttons = 0 %}
+{% for block in section.blocks %}
+  {% if block.type == "button" %}
+    {% assign number_of_buttons = number_of_buttons | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+{% assign hero_settings = section.settings %}
+
+{% assign image_mobile = hero_settings.image_mobile | default: false | default: hero_settings.image_desktop %}
+{% assign image_desktop = hero_settings.image_desktop %}
+
+{% assign video_url = hero_settings.video_url | default: false %}
+
+{% include 'attribute-image-aspect-ratio-percentage', image: hero_settings.image_desktop %}
+{% assign image_desktop_ratio_percentage = image_aspect_ratio_percentage %}
+
+{% include 'attribute-image-aspect-ratio-percentage', image: image_mobile %}
+{% assign image_mobile_ratio_percentage = image_aspect_ratio_percentage %}
+
+<div class="hero center text-center relative overflow-hidden flex items-center" style="max-height: {{ hero_settings.max_height }};">
+
+  <div class="image-container large--block box-ratio-inline" style="padding-bottom: {{ image_desktop_ratio_percentage }}%">
+    {% comment %} <img 
+      class="hero" 
+      loading="eager"
+      src="{{ image_desktop | img_url: 'master' }}" 
+    /> {% endcomment %}
+    <picture class="lcp hero">
+      <source media="(min-width: 800px)" srcset="{{ image_desktop | img_url: 'master' }}">
+      <img class="lcp loaded lazyload" data-src="{{ image_mobile | img_url: '800x' }}" />
+    </picture>
+    <!-- {{ template.name }}_image_lcp [{{ image_mobile | img_url: '800x' }}] -->
+  </div>
+
+  {% comment %} <div class="image-container large--hide box-ratio-inline" style="padding-bottom: {{ image_mobile_ratio_percentage }}%">
+    <img 
+      class="hero" 
+      loading="lazy" 
+      src="{{ image_mobile | img_url: 'master' }}"
+    />
+  </div>
+
+  <div class="image-container hide large--block box-ratio-inline" style="padding-bottom: {{ image_desktop_ratio_percentage }}%">
+    <img 
+      class="hero" 
+      loading="eager" 
+      src="{{ image_desktop | img_url: 'master' }}" 
+    />
+  </div> {% endcomment %}
+
+  {% comment %} If video URL, then render the video tag {% endcomment %}
+  {% if video_url %}
+    <video class="hide large--block position-center height-auto width-auto" autoplay muted loop style="min-width: 100%; min-height: 100%;">
+      <source src="{{ video_url }}" type="video/mp4">
+    </video>
+  {% endif %}
+
+  {% if section.settings.link != blank %}
+    <a class="block absolute absolute-fill z-index-2" href="{{ section.settings.link }}"></a>
+  {% endif %}
+
+  {% comment %} If full-bleed overlay, show it here {% endcomment %}
+  {% if hero_settings.overlay_full and hero_settings.overlay_activate %}
+    <div class="absolute absolute-fill" style="background-color: {{ hero_settings.overlay_color }}; opacity: {{ hero_settings.overlay_opacity | divided_by: 100.00 }}"></div>
+  {% endif %}
+
+  <div class="width-100 max-width-8 center absolute top-0 bottom-0 position-center-horizontal flex justify-center {% if hero_settings.block_alignment == 'left' %}large--justify-end large--margin-right-8{% elsif hero_settings.block_alignment == 'center' %}large--justify-center{% elsif hero_settings.block_alignment == 'right' %}large--justify-start large--margin-left-8{% endif %}">
+
+    <div class="absolute text-{{ hero_settings.block_text_alignment }} position-center-vertical large--margin-top--5 large--margin-top-0 {% if hero_settings.block_alignment == 'left' %}large--margin-right-9{% elsif hero_settings.block_alignment == 'right' %}large--margin-left-9{% endif %}">
+
+      {% comment %} If overlay is just over the text, then show it here {% endcomment %}
+      {% if hero_settings.overlay_activate and hero_settings.overlay_full == false %}
+        <div class="absolute absolute-fill z-index-1" style="background-color: {{ hero_settings.overlay_color }}; opacity: {{ hero_settings.overlay_opacity | divided_by: 100.00 }}"></div>
+      {% endif %}
+
+      <div class="relative z-index-2 padding-horizontal-4 large--padding-horizontal-8 large--padding-vertical-9 fade-up">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when "title" %}
+              <h3 class="padding-vertical-2 margin-0 line-height-solid font-size-10 small--font-size-8" style="color: {{ hero_settings.text_color }};">
+                {{ block.settings.text }}
+              </h3>
+            {% when "subtitle" %}
+              <div style="color: {{ hero_settings.text_color }};">
+                {{ block.settings.text | replace: '<p','<h4 class="padding-vertical-2 margin-0 font-size-4 small--font-size-5 padding-top-0"' | replace: '</p','</h4' | replace: '<br', '<br class="large--hide"' }}
+              </div>
+            {% when "button" %}
+              <div class="inline-block">
+                {% if block.settings.button_style == 'outline' %}
+                  {% assign button_class = 'background-transparent border-white text-white transition-all padding-horizontal-4 padding-vertical-2 text-no-decoration text-uppercase font-family-heading letter-spacing-2' %}
+                {% elsif block.settings.button_style == 'secondary' %}
+                  {% assign button_class = 'background-white background-secondary-hover transition-all text-primary padding-horizontal-4 padding-vertical-2 text-no-decoration text-uppercase font-family-heading letter-spacing-2' %}
+                {% else %}
+                  {% assign button_class = 'button' %}
+                {% endif %}
+                <a href="{{ block.settings.link }}" class="inline-block {{ button_class }} margin-vertical-3 width-100 margin-bottom-0">
+                  {{ block.settings.text }}
+                </a>
+              </div>
+
+          {% endcase %}
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="hide padding-vertical-5 padding-horizontal-5 text-center">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when "button" %}
+        <a href="{{ block.settings.link }}" class="hide inline-block button margin-vertical-2">
+          {{ block.settings.text }}
+        </a>
+    {% endcase %}
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Homepage hero",
+  "settings": [
+    {
+      "type": "select",
+      "id": "max_height",
+      "label": "Max Height",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto (Natural)"
+        },
+        {
+          "value": "60vh",
+          "label": "60%"
+        },
+        {
+          "value": "70vh",
+          "label": "70%"
+        },
+        {
+          "value": "80vh",
+          "label": "80%"
+        },
+        {
+          "value": "90vh",
+          "label": "90%"
+        },
+        {
+          "value": "100vh",
+          "label": "100%"
+        }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "header",
+      "content": "Link"
+    },
+    {
+      "label": "Link",
+      "id": "link",
+      "type": "url"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_activate",
+      "label": "Enable?"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_full",
+      "label": "Full Bleed Overlay?",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacity",
+      "default": 0,
+      "max": 100,
+      "min": 0,
+      "unit": "%"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Block settings"
+    },
+    {
+      "type": "select",
+      "id": "block_alignment",
+      "label": "Block alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "block_text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Video URL",
+      "info": "path to the .mp4 video"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Title",
+      "type": "title",
+      "settings": [
+        {
+          "label": "Text",
+          "id": "text",
+          "type": "textarea"
+        }
+      ]
+    },
+    {
+      "name": "Subtitle",
+      "type": "subtitle",
+      "settings": [
+        {
+          "label": "Text",
+          "id": "text",
+          "type": "richtext"
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "type": "button",
+      "settings": [
+        {
+          "label": "Text",
+          "id": "text",
+          "type": "text"
+        },
+        {
+          "label": "Link",
+          "id": "link",
+          "type": "url"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button Style",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "outline",
+              "label": "Outline"
+            }
+          ],
+          "default": "secondary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+      {
+        "name": "Homepage hero",
+        "category": "Rosewood"
+      }
+    ]
+}
+{% endschema %}

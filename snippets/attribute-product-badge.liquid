@@ -1,0 +1,14 @@
+{%- comment %}
+	Typically used on a collection page to overlay the corner of a product image
+  Examples: "HOT", "NEW", "FEATURED", "STAFF PICKED", etc.
+{% endcomment -%}
+
+{%- assign product_badge = false -%}
+
+{%- assign TAG_PREFIX = settings.attribute_product_badge_tag_prefix -%}
+
+{%- for tag in product.tags -%}
+  {%- if tag contains TAG_PREFIX -%}
+    {%- assign product_badge = tag | split: TAG_PREFIX | last -%}
+  {%- endif -%}
+{%- endfor -%}

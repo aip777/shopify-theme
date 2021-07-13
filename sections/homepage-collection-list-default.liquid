@@ -1,0 +1,84 @@
+{% comment %} Assign section liquid vars {% endcomment %}
+{% assign collection_list = section.settings %} 
+{% assign collections_to_show = section.blocks %}
+{% assign title = collection_list.title %}
+{% assign description = collection_list.description | default: false %}
+
+<div class="padding-vertical-3 margin-bottom-6">
+  <div class="padding-horizontal-5 large--padding-horizontal-14">
+
+    {% comment %} Base the column count on desktop to be how many blocks there are {% endcomment %}
+    {% assign column_count_desktop = section.blocks.size %}
+    {% assign column_count_mobile = collection_list.column_limit_mobile %}
+
+    <div class="grid grid-gap-4 columns-{{ column_count_mobile }} medium--columns-{{ column_count_desktop }}">
+
+      {% for collection_item in collections_to_show %}
+        
+        {% assign collection_object = collections[collection_item.settings.collection] %}
+        {% assign collection_image_override = collection_item.settings.background_image %}
+
+        {% include "collection-thumbnail", collection: collection_object, image: collection_image_override, size: 'large_cropped', ratio: 'aspect-ratio-1x1', show_count: false, float_title: true %}
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Featured Collections List",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title", 
+        "info": "Optional Title",
+        "default": "Featured Collections"
+      },
+      { 
+        "type": "richtext", 
+        "id": "description", 
+        "label": "Description"
+      },
+      {
+        "type": "number",
+        "id": "column_limit_mobile",
+        "label": "Collections per row (mobile)",
+        "default": 1
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          },
+          {
+            "type": "header",
+            "content": "Optional Overrides"
+          },
+          {
+            "type": "image_picker",
+            "id": "background_image",
+            "label": "Image",
+            "info": "Optional, will fall back to the collection image. Recommended size: 800x600."
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collections list",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

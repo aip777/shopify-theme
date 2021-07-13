@@ -1,0 +1,60 @@
+{% comment %} Assign section liquid vars {% endcomment %}
+{% assign blog = blogs[block.settings.blog] | default: false %}
+{% assign posts = blog.articles %}
+{% assign show = block.settings.posts_to_show %}
+
+{% if blog %}
+<section class="margin-vertical-9 large--padding-top-3 large--padding-bottom-3 relative text-center">
+  <div class="text-center margin-bottom-4 large--margin-bottom-8 margin-top-8 large--margin-top-8 border-bottom inline-block padding-horizontal-4 border-grey">
+    <h1 class="font-size-3 margin-top-0 margin-bottom-3 text-uppercase letter-spacing-1">
+      {{ block.settings.title }}
+    </h1>
+  </div>
+
+  <div class="padding-vertical-3">
+    <div class="container">
+
+      {% assign column_count_desktop = block.settings.column_limit_desktop %}
+      {% assign column_count_mobile = block.settings.column_limit_mobile %}
+      <div class="grid large--grid-gap-4 columns-{{ column_count_mobile }} large--columns-{{ column_count_desktop }}">
+
+        {% for article in posts limit: show %}
+          {% assign image = article.image | img_url: '800x' | default: false %}
+          {% assign title = article.title | truncatewords: 7, '..' %}
+          {% assign date = article.published_at | date: "%B %d, %Y" %}
+          {% assign url = article.url %}
+          {% assign button_text = block.settings.read_more_text %}
+
+          <div class="card margin-top-2 padding-horizontal-3 padding-vertical-1 large--padding-vertical-2 large--padding-vertical-5 text-center">
+            {% unless image contains "no-image" %}
+              <div class="aspect-ratio-1x1 relative">
+                  <div class="absolute absolute-fill">
+                    <img src="{{ image }}" class="object-position-contain object-position-center">
+                  </div>
+              </div>
+            {% endunless %}
+
+            <div class="z-index-2 relative border border-width-2">
+  
+              <h4 class="font-size-1 large--font-size-2 text-default text-uppercase height-2 letter-spacing-1 margin-bottom-1 padding-horizontal-2">
+                {{ title }}
+              </h4>
+              
+              <span class="text-default block margin-bottom-4 margin-top-3 font-size-1 text-uppercase">{{ date }}</span>
+            </div>
+          </div>
+        {% endfor %}
+
+      </div>
+
+      {% comment %} Logic to see if there are more posts in the blog {% endcomment %}
+      {% if blog.articles_count > show and block.settings.all_posts_text != blank %}
+        <div class="margin-top-5 text-center">
+          <a href="{{ blog.url }}" class="button">{{ block.settings.all_posts_text }}</a>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+{% endif %}

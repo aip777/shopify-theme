@@ -1,0 +1,31 @@
+{% include "blog-hero" %}
+
+{% include "breadcrumb" %}
+
+<div class="container">
+  <div class="padding-vertical-4">
+    {% comment %}
+    {% include 'section-heading', title: blog.title, tags: current_tags.first, description: false, tag: 'h1' %}
+
+    {% unless current_tags %}
+      {% include "blog-hero" %}
+    {% endunless %}
+    {% endcomment %}
+
+    {% include "blog-menu" %}
+
+    {% paginate blog.articles by 12 %}
+      <div class="grid--up-1 padding-top--up-4 flex flex-wrap">
+        {% for article in blog.articles %}
+          {% include "article-thumbnail" %}
+        {% endfor %}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <div class="padding-top-10 padding-bottom-6 small--padding-bottom-4 large--padding-bottom-0 large--padding-top-12 flex items-center">
+          {% include "pagination-custom" with section.settings.article_thumbnail_load_more %}
+        </div>
+      {%- endif -%}
+    {% endpaginate %}
+  </div>
+</div>

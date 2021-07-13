@@ -1,0 +1,326 @@
+{%- for block in section.blocks -%}
+  {% if block.type == 'rich_content' %}
+    {% include 'rich-content' %}
+  {% elsif block.type == 'blog' %}
+    {% include 'blog-posts' %}
+  {% elsif block.type == 'text_columns' %}
+    {% include 'text-columns' %}
+  {% endif %}
+{%- endfor -%}
+
+{% schema %}
+
+  {
+    "name": "FAQ Page Content",
+    "blocks": [
+      {
+        "type": "rich_content",
+        "name": "Rich Content",
+        
+        "settings": [
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title",
+            "default": "Rich Content Title"
+          },
+          {
+            "id": "body",
+            "type": "richtext",
+            "label": "Text"
+          },
+          {
+            "id": "url",
+            "type": "url",
+            "label": "Button Url"
+          },
+          {
+            "id": "button_text",
+            "type": "text",
+            "label": "Button Text"
+          },
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background color"
+          },
+          {
+            "id": "layout",
+            "type": "select",
+            "label": "Layout",
+            "default": "col-text-right",
+            "options": [
+              {
+                "label": "Column: Text Right",
+                "value": "col-text-right"
+              },
+              {
+                "label": "Column: Text Left",
+                "value": "col-text-left"
+              },
+              {
+                "label": "Full: Text Center",
+                "value": "full-text-center"
+              }
+            ]
+          },
+          {
+            "id": "text_color",
+            "type": "select",
+            "label": "Text Color",
+            "default": "black",
+            "options": [
+              {
+                "label": "Black",
+                "value": "black"
+              },
+              {
+                "label": "White",
+                "value": "white"
+              },
+              {
+                "label": "Primary Color",
+                "value": "primary"
+              },
+              {
+                "label": "Secondary Color",
+                "value": "secondary"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Optional Image Overlay"
+          },
+          {
+            "type": "color",
+            "id": "overlay_color",
+            "label": "Background color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "range",
+            "id": "overlay_opacity",
+            "label": "Opacity",
+            "default": 0,
+            "max": 100,
+            "min": 0,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "type": "blog",
+        "name": "Blog posts",
+        "settings": [
+          { 
+            "type": "blog", 
+            "id": "blog", 
+            "label": "Blog"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title",
+            "default": "Featured Blogs"
+          },
+          {
+            "type": "number",
+            "id": "posts_to_show",
+            "label": "Blog Posts to show",
+            "default": 4
+          },
+          {
+            "type": "text",
+            "id": "read_more_text",
+            "label": "Button Text for grid item",
+            "default": "Read More"
+          },
+          {
+            "type": "text",
+            "id": "all_posts_text",
+            "label": "Button Text for More Posts",
+            "default": "All Posts"
+          },
+          {
+            "type": "number",
+            "id": "column_limit_desktop",
+            "label": "Products per row (desktop)",
+            "default": 2
+          },
+          {
+            "type": "number",
+            "id": "column_limit_mobile",
+            "label": "Products per row (mobile)",
+            "default": 1
+          }
+        ]
+      },
+      {
+        "type": "text_columns",
+        "name": "Text Columns",
+        "settings": [
+          {
+            "id": "section_title",
+            "type": "text",
+            "label": "Section Title",
+            "default": "Program Details"
+          },
+          {
+            "type": "header",
+            "content": "Text Column 1"
+          },
+          {
+            "id": "title1",
+            "type": "text",
+            "label": "Title",
+            "default": "Rich Content Title"
+          },
+          {
+            "id": "body1",
+            "type": "richtext",
+            "label": "Text"
+          },
+          {
+            "id": "image1",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "url1",
+            "type": "url",
+            "label": "Button Url"
+          },
+          {
+            "id": "text_color1",
+            "type": "select",
+            "label": "Text Color",
+            "default": "black",
+            "options": [
+              {
+                "label": "Black",
+                "value": "black"
+              },
+              {
+                "label": "White",
+                "value": "white"
+              },
+              {
+                "label": "Primary Color",
+                "value": "primary"
+              },
+              {
+                "label": "Secondary Color",
+                "value": "secondary"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Text Column 2"
+          },
+          {
+            "id": "title2",
+            "type": "text",
+            "label": "Title",
+            "default": "Rich Content Title"
+          },
+          {
+            "id": "body2",
+            "type": "richtext",
+            "label": "Text"
+          },
+          {
+            "id": "image2",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "url2",
+            "type": "url",
+            "label": "Button Url"
+          },
+          {
+            "id": "text_color2",
+            "type": "select",
+            "label": "Text Color",
+            "default": "black",
+            "options": [
+              {
+                "label": "Black",
+                "value": "black"
+              },
+              {
+                "label": "White",
+                "value": "white"
+              },
+              {
+                "label": "Primary Color",
+                "value": "primary"
+              },
+              {
+                "label": "Secondary Color",
+                "value": "secondary"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Text Column 3"
+          },
+          {
+            "id": "title3",
+            "type": "text",
+            "label": "Title",
+            "default": "Rich Content Title"
+          },
+          {
+            "id": "body3",
+            "type": "richtext",
+            "label": "Text"
+          },
+          {
+            "id": "image3",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "url3",
+            "type": "url",
+            "label": "Button Url"
+          },
+          {
+            "id": "text_color3",
+            "type": "select",
+            "label": "Text Color",
+            "default": "black",
+            "options": [
+              {
+                "label": "Black",
+                "value": "black"
+              },
+              {
+                "label": "White",
+                "value": "white"
+              },
+              {
+                "label": "Primary Color",
+                "value": "primary"
+              },
+              {
+                "label": "Secondary Color",
+                "value": "secondary"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+
+{% endschema %}

@@ -1,0 +1,118 @@
+{% assign video = section.settings %}
+{% assign title = video.title | default: false %}
+{% assign description = video.description | default: false %}
+{% assign video_url = video.video_url | default: false %}
+{% assign poster = video.poster | default: false %}
+{% assign full_width = video.full_width %}
+{% assign controls = video.controls %}
+{% assign autoplay = video.autoplay %}
+{% assign muted = video.muted %}
+
+
+{% assign title = section.settings.title %}
+
+<section class="margin-vertical-9">
+
+    {% include 'section-heading', title: title, description: description %}
+
+    {% if video_url %}
+      <video class="
+              {% if full_width %}
+                width-100
+                height-auto
+              {% else %}
+                block
+                max-width-8 
+                margin-left-auto 
+                margin-right-auto 
+              {% endif %}"
+        {% if controls %} controls {% endif %}
+        {% if autoplay %} autoplay {% endif %}
+        {% if muted %} muted {% endif %}
+        {% if poster %} poster="{{ poster | img_url: '1000x' }}" {% endif %}>
+
+        <source src="{{ video_url }}" type="video/mp4">
+
+      </video>
+    {% endif %}
+
+</section>
+
+
+{% schema %}
+  {
+    "name": "Video",
+    "settings": [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Video Section"
+      },
+      {
+        "id": "description",
+        "type": "textarea",
+        "label": "Description"
+      },
+      {
+        "type": "select",
+        "id": "video_type",
+        "label": "Video Type",
+        "options": [
+          {
+            "value": "mp4",
+            "label": "MP4 Video"
+          }
+        ],
+        "default": "mp4"
+      },
+      {
+        "type": "header",
+        "content": "MP4 Video Settings"
+      },
+      {
+        "id": "video_url",
+        "type": "url",
+        "label": "Video URL",
+        "info": "path to .mp4"
+      },
+      {
+        "id": "poster",
+        "type": "image_picker",
+        "label": "Video Poster Image",
+        "info": "This should match the aspect ratio of the video, usually 16:9"
+      },
+      {
+        "id": "full_width",
+        "type": "checkbox",
+        "label": "Full Width",
+        "default": false
+      },
+      {
+        "id": "controls",
+        "type": "checkbox",
+        "label": "Show Controls",
+        "default": true
+      },
+      {
+        "id": "autoplay",
+        "type": "checkbox",
+        "label": "Autoplay",
+        "default": false
+      },
+      {
+        "id": "muted",
+        "type": "checkbox",
+        "label": "Sound Muted",
+        "default": false
+      }
+      
+    ],
+    "presets": [
+      {
+        "name": "Video",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

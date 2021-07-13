@@ -1,0 +1,175 @@
+{% comment %} 
+queue.pushTask(() => {
+	
+});
+
+loadJS('{{ 'app.js' | asset_url }}', function() {}, 'app_callback');
+
+loadjs.ready('app_callback', function() {
+	queue.pushTask(() => {
+		some_app_function();			
+	});
+});
+
+//if you want to assing image for lcp preload - add this to any snippet(section) where image inserting
+<!-- {{ template.name }}_image_lcp [{{ image | img_url: 'original' }}] -->
+
+//if you need something from js queue (installed apps)
+__engine_scripts_queue['loaded'] = function()
+{
+	__opt_async_clear('loader.min.js');
+}
+
+{% endcomment %}
+
+{%- if template.name == 'account' -%}
+<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ '__opt-jquery.js' | asset_url }}"></script><!--<![endif]-->
+<!--[if lte IE 9]><script src="{{ '__opt-jquery' | asset_url }}"></script><![endif]-->	
+{%- endif -%}
+	
+
+<!--[if (gt IE 9)|!(IE)]><!--><script data-preload="{{ '__opt-jquery.js' | asset_url }}" src="{{ '__opt-obus.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+<!--[if lte IE 9]><script src="{{ '__opt-jquery.js' | asset_url }}"></script><![endif]-->
+<!--[if lte IE 9]><script src="{{ '__opt-obus.js' | asset_url }}"></script><![endif]-->
+
+{% comment %} 
+<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'theme.min.js' | asset_url }}"></script><!--<![endif]-->
+<!--[if lte IE 9]><script src="{{ 'theme.min.js' | asset_url }}"></script><![endif]-->	 
+{% endcomment %}
+
+
+<script>
+console.log('__opt-js-theme-other-1.012');
+
+__engine_scripts_queue['loaded'] = function()
+{
+	if(view_mode=='desktop')
+	{
+		//findify
+		console.log('findify desktop');
+		loadjs('//assets.findify.io/inked-playmats.myshopify.com.min.js');
+	}
+}
+
+__engine_scripts_queue['scriptsloading'] = function()
+{
+	 document.dispatchEvent(new CustomEvent('ThemeLoaded'));
+}
+
+__engine_scripts_queue['scriptsloaded'] = function()
+{
+	loadjs('{{ 'theme.min.js' | asset_url }}',function(){
+		document.dispatchEvent(new CustomEvent('ThemeLoaded'));
+	});
+}
+
+__engine_scripts_queue['other'] = function()
+{
+	{% comment %} //findify
+	queue.pushTask(() => {
+		console.log('findify');
+		//loadjs('//assets.findify.io/inked-playmats.myshopify.com.min.js');
+	}); {% endcomment %}
+	
+	if(view_mode != 'desktop')
+	{
+		//findify
+		queue.pushTask(() => {
+			console.log('findify mobile');
+			loadjs('//assets.findify.io/inked-playmats.myshopify.com.min.js');
+		});
+	}
+
+
+	//Immerss 
+	queue.pushTask(() => {
+		loadjs('https://immerss.live/vece/affiliate/v1/tracking/c8788ed1-9210-4fea-98db-716b875c3cc0/visit.js');
+	});
+	
+	//$('.js-slick-slides').slick("refresh");
+
+	//Stamped Reviews
+	(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+	d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+	_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+	$.setAttribute("id","stamped-script-widget");
+	$.setAttribute("data-api-key","pubkey-j2k0D6GZ5MQ4171uT3rmv2zH6c32hb");
+	$.src="https://cdn-stamped-io.azureedge.net/files/widget.min.js";z.t=+new Date;$.
+	type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+
+
+	loadjs('https://www.googleoptimize.com/optimize.js?id=OPT-5HPBHQT');
+
+	(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-MJM4J3P');
+}
+
+__engine_scripts_queue['event'] = function()
+{
+
+}
+
+__engine_scripts_queue['video'] = function()
+{
+	$( "iframe[data-video]" ).each(function() {
+		$(this).attr('src', $(this).data('video'));
+		//$(this).wrap('<div class="video-wrapper"></div>');
+	});
+}
+
+__engine_scripts_queue['footer'] = function()
+{
+  if($("#__load-section-footer").length) { $.ajax({url: "{{ shop.url }}?section_id=footer",cache: true})
+	.done(function(html) { $("#__load-section-footer").append(html); });
+  }
+}
+
+__engine_scripts_queue['index-slider'] = function()
+{
+	var i = 5, u = 0, l = true, a = false, s = 1, r = 1;
+
+	loadJS('{{ 'slick.min.js' | asset_url }}', function()
+	{
+			$(".js-slick-slides-index").slick({
+							slidesToShow: i,
+							slidesToScroll: i,
+							dots: !1,
+							arrows: !0,
+							infinite: !0,
+							centerPadding: "60px",
+							initialSlide: u,
+							centerMode: l,
+							autoplay: !1,
+							pauseOnFocus: !1,
+							pauseOnHover: !1,
+							responsive: [{
+											breakpoint: 1260,
+											settings: {
+															slidesToShow: a,
+															slidesToScroll: a
+											}
+							}, {
+											breakpoint: 960,
+											settings: {
+															slidesToShow: s,
+															slidesToScroll: s
+											}
+							}, {
+											breakpoint: 768,
+											settings: {
+															slidesToShow: r,
+															slidesToScroll: r,
+															infinite: !0,
+															dots: !1
+											}
+							}]
+			})
+	})
+}
+
+</script>
+
+{{ content_for_header_footer }}

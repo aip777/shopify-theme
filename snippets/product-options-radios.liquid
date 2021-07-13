@@ -1,0 +1,29 @@
+<fieldset class="block product-option-row padding-0 border-none margin-0 margin-bottom-2" data-option-name="{{ option_title_handle }}">
+  <legend class="text-uppercase margin-bottom-2 font-family-heading letter-spacing-1 font-size-2">
+    {{ option_title }}
+  </legend>
+  {%- for option in options -%}
+    {%- assign option_handle = option | handle -%}
+    {%- assign selected = false -%}
+    {%- if option == current_variant[option_number] -%}
+      {%- assign selected = true -%}
+    {%- endif -%}
+
+    <input type="radio"
+      name="{{ option_number }}"
+      value="{{ option | remove: '"' }}"
+      class="invisible js-product-option js-product-option-swatch js-{{ option_title_handle }}-option"
+      aria-label="{{ option }}"
+      id="{% if template == "list-collections" %}{{ collection.handle }}-{% endif %}{{ option_handle }}-{{ product.id }}"
+    />
+
+    <label for="{% if template == "list-collections" %}{{ collection.handle }}-{% endif %}{{ option_handle }}-{{ product.id }}"
+      data-option="{{ option }}"
+      class="inline-block width-100 line-height-0 margin-bottom-3 link cursor-pointer border">
+      <span class="{{ swatch_prefix }}swatch {{ swatch_prefix }}swatch-{{ option | handle }} 
+        block line-height-solid letter-spacing-1 text-left text-black text-uppercase padding-2">
+        <span>{{ option }}</span>
+      </span>
+    </label>
+  {%- endfor -%}
+</fieldset>

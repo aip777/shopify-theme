@@ -1,0 +1,16 @@
+<div id="{{ comment.id }}" class="padding-vertical-10">
+  <ul class="flex items-center justify-start list-style-none margin-0 padding-0">
+    <li class="font-family-heading">
+      {{ comment.author }}
+    </li>
+    <li class="padding-left-2">
+      <time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">
+        {{ comment.created_at | date: '%b %d, %Y' }}
+      </time>
+    </li>
+  </ul>
+
+  <div class="rte">
+    {{ comment.content }}
+  </div>
+</div>

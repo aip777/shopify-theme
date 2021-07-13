@@ -1,0 +1,15 @@
+<nav class="grid-bar--up-1 font-size--up-1 text-right">
+  {% if shop.customer_accounts_enabled %}
+    <a href="/account" class="grid-item auto medium-down--hide!">
+      {% include "svg-user" %}
+    </a>
+  {% endif %}
+
+  <a href="/search" class="grid-item auto medium-down--hide!">
+    {% include "svg-search" %}
+  </a>
+
+  <a href="/cart" class="grid-item auto">
+    {% include "svg-cart" %}
+  </a>
+</nav>

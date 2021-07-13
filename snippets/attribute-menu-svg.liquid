@@ -1,0 +1,13 @@
+
+{% assign settings_prefix = "menu_icon_title_" %}
+{% assign number = false %}
+
+{% for i in (1..60) %} 
+  {% assign settings_key = settings_prefix | append: i | handle %}
+  {% assign link_title = settings[settings_key] %}
+  {% assign link_current_title = dropdown_link.title %}
+  {% if link_title == link_current_title %}
+    {% assign number = i %}
+    {% break %}
+  {% endif %}
+{% endfor %}

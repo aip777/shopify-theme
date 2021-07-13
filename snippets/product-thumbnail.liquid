@@ -1,0 +1,40 @@
+{% include "attribute-product-on-sale" %}
+{% include "attribute-product-title" %}
+{% include "attribute-product-featured-image" %}
+{% include "attribute-product-badge" %}
+{% include "attribute-product-subtitle" %}
+
+<div class="product-thumbnail padding-horizontal-5">
+
+  <div class="relative padding-horizontal-7">
+    <div class="relative aspect-ratio-3x2">
+      <a href="{{ product.url | within: collection }}" class="absolute absolute-fill flex items-center justify-center">
+        <img class="inline-block width-auto height-auto max-width-100 max-height-100" data-product-thumbnail-featured-image data-src="{{ product_featured_image | img_url: '450x' }}" />
+      </a>
+    </div>
+
+    <div class="flex flex-column absolute right-0 top-0 bottom-0 items-center justify-center">
+      {% include 'product-thumbnail-swatches' %}
+    </div>
+  </div>
+
+  <div class="margin-top-2 padding-horizontal-3 text-center">
+    <a
+      href="{{ product.url | within: collection }}"
+      class="font-size-2 font-weight-bold text-uppercase letter-spacing-2 line-height-double text-no-decoration text-default">
+
+      <span class="block font-weight-light">{{ product.vendor }}</span>
+
+      {{ product.title }} 
+
+      {% if product.compare_at_price and product.compare_at_price > 0 %}
+        <div class="flex font-size-4 letter-spacing-1 items-center justify-center">
+          <span class="text-strikethrough">{{ product.compare_at_price | money_without_trailing_zeros }}</span> 
+          <span class="text-primary padding-left-2">{{ product.price | money_without_trailing_zeros }}</span>
+        </div>
+      {% else %}
+        <span class="block letter-spacing-1 font-size-4">{{ product.price | money_without_trailing_zeros }}</span>
+      {% endif %}
+    </a>
+  </div>
+</div>

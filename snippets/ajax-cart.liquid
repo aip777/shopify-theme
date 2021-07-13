@@ -1,0 +1,72 @@
+
+<div class="js-ajax-cart-backdrop ajax-cart-backdrop fixed top-0 right-0 bottom-0 left-0 z-index-8 is-closed" data-behavior="toggle-cart"></div>
+
+
+<div class="js-ajax-cart ajax-cart fixed top-0 right-0 bottom-0 z-index-max width-100 background-white flex flex-column flex overflow-hidden is-closed">
+
+  {% comment %}
+  Ajax cart header
+  {% endcomment %}
+  <div class="ajax-cart-header relative width-100 flex-center border-bottom border-light-grey background-light-grey flex-column">
+    <p class="width-100 text-center font-size-5 margin-bottom-1 font-weight-7 font-size-4 text-uppercase letter-spacing-2 font-family-heading">
+      Your cart <span class="js-ajax-cart-count ajax-cart-count">({{ cart.item_count }})</span>
+    </p>
+    
+    {%- if settings.cart_shipping_bar_enable -%}
+      {% include "ajax-cart-shipping-bar" %}
+    {%- endif -%}  
+
+    <button class="button-reset height-50 padding-horizontal-5 absolute top-0 right-0
+      line-height-0 font-size-2" data-behavior="toggle-cart">
+      {% include 'svg-close' %}
+    </button>
+  </div>
+
+  {% comment %}
+  Ajax cart items list
+  {% endcomment %}
+  <div class="flex-item-1 border-bottom border-light-grey overflow-y-scroll ">
+    {% comment %} populated with JS {% endcomment %}
+    <div class="js-ajax-cart-items"></div>
+  </div>
+
+  {% comment %}
+  Ajax cart bottom
+  {% endcomment %}
+
+  <div class="js-ajax-cart-full ajax-cart-full">
+
+    {% section "ajax-cart-products" %}
+
+    <div class="padding-horizontal-4 padding-vertical-4"> 
+
+      <form action="/checkout" method="post" class="js-checkout-form" novalidate>
+        <div class="flex items-center margin-bottom-3">
+          <input type="checkbox" id="agree" />
+          <label class="margin-left-2 font-size-1 font-weight-bold" for="agree">
+            I agree with the <a class="link text-underline" href="/pages/terms-and-conditions">terms and conditions</a>.
+          </label>
+        </div>
+        {% comment %}<a class="js-view-cart button width-100 font-size-3 padding-5 font-weight-3 margin-bottom-3" href="/cart">View Cart</a>{% endcomment %}
+        <button type="submit" name="checkout" class="js-checkout-button button width-100 font-size-3 padding-5 font-weight-3 relative">
+          Checkout
+          <span class="js-ajax-cart-subtotal absolute right-4">{{ cart.original_total_price | money_without_trailing_zeros }}</span>
+        </button>
+        <div class="input-group margin-top-3">
+          <label for="special-instructions">Special Instructions:</label>
+          <textarea class="js-cart-note" id="special-instructions" name="note">{{ cart.note }}</textarea>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="js-ajax-cart-empty ajax-cart-box padding-vertical-3 padding-horizontal-4 {% if cart.item_count > 0 %}hide{% endif %}">
+    <p class="margin-top-0 margin-bottom-4 font-size-4 large--font-size-5 text-center">
+      Your shopping cart is empty.
+    </p>
+
+    <button class="button-reset button width-100 font-size-2 small--font-size-3 text-center" data-behavior="toggle-cart">Continue Shopping</button>
+  </div>
+
+</div>

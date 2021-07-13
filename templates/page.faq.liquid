@@ -1,0 +1,27 @@
+{% assign current_page = page %}
+{% assign current_page_content = current_page.content %}
+
+{% comment %}
+  The following attribute is necessary if the RTE is being used for the FAQ content
+  If section blocks are being used for the FAQ content, remove it
+{% endcomment %}
+{% include "attribute-rte-faq-content" %}
+
+<div class="padding-vertical-3">
+  <div class="container text-center">
+    <div class="center large--width-80 flex flex-column justify-center items-center">
+      
+      <a onclick="GorgiasChat.open();" class="large--order-2 border inline-block border-width-1 padding-horizontal-4 padding-vertical-2 text-uppercase link letter-spacing-1 margin-top-6 large--margin-top-0 background-secondary-hover large--margin-bottom-12 font-size-2 font-family-heading border-secondary-hover transition-all width-100 large--width-auto">Contact Customer Support</a>   
+
+      {% include 'section-heading', title: current_page.title, description: false, tag: 'h1', class: 'large--order-1' %}
+
+      <div class="clearfix"></div>   
+
+      <div class="text-left order-3 rte">
+        {% include "shortcodes" with current_page_content %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% section "faq-content" %}

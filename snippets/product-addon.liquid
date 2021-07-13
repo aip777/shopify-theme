@@ -1,0 +1,12 @@
+<!-- snippet: product-addon.liquid -->
+
+<div class="padding-horizontal-1 small--padding-horizontal-3 medium--padding-0 text-center">
+
+  <h3 class="font-size-3 center border-bottom text-uppercase font-family-heading letter-spacing-1 text-center padding-bottom-2 margin-bottom-10 inline-block padding-horizontal-3 border-grey">Recommended add-ons</h3>
+
+  <div class="text-left items-{{ product_addon_handles.size }} flex flex-column items-center justify-center">
+    {% for handle in product_addon_handles %}
+      {% include 'product-addon-thumbnail', product: all_products[handle] %}
+    {% endfor %}
+  </div>
+</div>

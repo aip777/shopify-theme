@@ -1,0 +1,147 @@
+{% assign rich_content    = section.settings %}
+{% assign title           = rich_content.title %}
+{% assign body            = rich_content.body | default: false %}
+{% assign image           = rich_content.image | default: false %}
+{% assign button_url      = rich_content.url | default: false %}
+{% assign button_text     = rich_content.button_text | default: false %}
+{% assign layout          = rich_content.layout %}
+{% assign overlay_color   = rich_content.overlay_color %}
+{% assign overlay_opacity = rich_content.overlay_opacity %}
+{% assign text_color      = rich_content.text_color %}
+
+<section class="margin-vertical-9 large--padding-top-3 large--padding-bottom-3 relative {% if layout == 'full-text-center' %} background-cover background-position-center {% endif %}" {% if layout == 'full-text-center' and image %} data-src="{{ image | img_url: '800x' }}" {% endif %}>
+
+  {% comment %} Overlay (if not wanted, user can set to opacity 0) {% endcomment %}
+  {% if layout == 'full-text-center' %}
+    <div class="absolute absolute-fill z-index-1" style="background-color: {{ overlay_color }}; opacity: {{ overlay_opacity | divided_by: 100.00 }}"></div>
+  {% endif %}
+
+  <div class="container flex small--flex-wrap items-center justify-center relative z-index-2 {% if layout == 'full-text-center' %} padding-vertical-15 {% endif %}">
+
+    {% if image and layout != 'full-text-center' %}
+      <img class="width-100 large--width-40 margin-horizontal-0 margin-vertical-5 large--margin-7 {% if layout == 'col-text-left' %} order-2 {% endif %}" data-src="{{ image | img_url: '800x' }}" />
+    {% endif %}
+
+    <div class="
+      {% if layout == 'full-text-center' %} text-center {% endif %}
+      {% if image and layout != 'full-text-center' %}
+        width-100 margin-horizontal-0 margin-vertical-5 large--margin-7 large--width-40
+      {% else %}
+        width-90 max-width-8 text-center margin-left-auto margin-right-auto
+      {% endif %}">
+      <h3 class="font-size-6 margin-top-0 margin-bottom-4 text-{{ text_color }}">{{ title }}</h3>
+      {% if body %}
+        <p class="margin-bottom-4 text-{{ text_color }}">{{ body }}</p>
+      {% endif %}
+
+      {% if button_url and button_text %}
+        <a class="button" href="{{ button_url }}">{{ button_text }}</a>
+      {% endif %}
+    </div>
+
+  </div>
+
+</section>
+
+{% schema %}
+  {
+    "name": "Rich Content",
+    "settings": [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Rich Content Title"
+      },
+      {
+        "id": "body",
+        "type": "richtext",
+        "label": "Text"
+      },
+      {
+        "id": "url",
+        "type": "url",
+        "label": "Button Url"
+      },
+      {
+        "id": "button_text",
+        "type": "text",
+        "label": "Button Text"
+      },
+      {
+        "id": "image",
+        "type": "image_picker",
+        "label": "Image"
+      },
+      {
+        "id": "layout",
+        "type": "select",
+        "label": "Layout",
+        "default": "col-text-right",
+        "options": [
+          {
+            "label": "Column: Text Right",
+            "value": "col-text-right"
+          },
+          {
+            "label": "Column: Text Left",
+            "value": "col-text-left"
+          },
+          {
+            "label": "Full: Text Center",
+            "value": "full-text-center"
+          }
+        ]
+      },
+      {
+        "id": "text_color",
+        "type": "select",
+        "label": "Text Color",
+        "default": "black",
+        "options": [
+          {
+            "label": "Black",
+            "value": "black"
+          },
+          {
+            "label": "White",
+            "value": "white"
+          },
+          {
+            "label": "Primary Color",
+            "value": "primary"
+          },
+          {
+            "label": "Secondary Color",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Optional Image Overlay"
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "label": "Background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "label": "Opacity",
+        "default": 0,
+        "max": 100,
+        "min": 0,
+        "unit": "%"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Rich Content",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

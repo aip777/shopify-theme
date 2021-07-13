@@ -1,0 +1,76 @@
+{% assign press_section = section.settings %}
+{% assign title = press_section.title %}
+{% assign description = press_section.description | default: false %}
+
+<section class="margin-vertical-9 large--padding-top-3 large--padding-bottom-3">
+  <div class="text-center padding-top-3 large--padding-top-3 padding-bottom-5">
+    <div class="max-width-8 center">
+    
+      {% comment %} Common section heading {% endcomment %}
+      {% include 'section-heading', title: title, description: description %}
+
+      <div class="flex flex-wrap flex-row justify-center items-center">
+      {% for block in section.blocks %}
+        {% assign url = block.settings.logo_url | default: false %}
+        {% assign image = block.settings.logo_image %}
+
+        <div class="large--flex-item-1 width-30 large--width-auto margin-bottom-4 large--margin-bottom-0">
+          {% if url %}<a class="block" href="{{ url }}" target="_blank">{% endif %}
+          <div class="max-width-4 text-center center padding-horizontal-6 large--padding-horizontal-2">
+            <img style="max-height: 72px; max-width: 100%" class="inline-block" src="{{ image | img_url: 'large' }}" alt="Peepers press mentions" />
+          </div>
+          {% if url %}</a>{% endif %}
+        </div>
+      {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "Press logos",
+    "settings": [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Featured in"
+      },
+      {
+        "id": "description",
+        "type": "textarea",
+        "label": "Description"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "press_item",
+        "name": "Logo",
+        "limit": 5,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "logo_image",
+            "label": "Image",
+            "info": "Recommended size: 133 x 72px. Image should contain white space around logo"
+          },
+          {
+            "type": "url",
+            "id": "logo_url",
+            "label": "Link",
+            "info": "Note: optional."
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Press logos",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

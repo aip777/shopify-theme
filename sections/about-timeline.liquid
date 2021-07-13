@@ -1,0 +1,476 @@
+{% include 'object-param-load', section_name: "homepage-timeline" %}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="overflow-hidden">
+    <div class="timeline-container background-no-repeat">
+      <div class="center">
+        <div class="js-about-slides"
+          data-slides-to-show="3"
+          data-slides-to-show-desktop-small="3"
+          data-slides-to-show-tablet="2"
+          data-slides-to-show-mobile="1"
+          data-mobile-first="false"
+          data-center-mode="false"
+          data-initial-slide="0">
+          <div class="text-center padding-top-12 large--padding-vertical-16 height-100 flex flex-column justify-start">
+            <div class="padding-horizontal-10 large--padding-horizontal-16">
+                <div class="max-width-400 center">
+                    <div class="top-wrap">
+                    {%- if section.settings.label != blank -%}
+                        <span class="block font-family-heading padding-bottom-6 large--padding-bottom-0 line-height-copy font-size-5 large--font-size-8 font-weight-6 letter-spacing-2 margin-bottom-0 text-uppercase margin-left-auto margin-right-auto text-center large--text-left">{{ section.settings.label }}</span>
+                    {%- endif -%}
+                    </div>
+
+                    <div class="relative">
+                        <div class="cursor-pointer"
+                            data-behavior="js-next-slide">
+                            <div class="font-size-1 medium--font-size-2 large--font-size-4 text-center line-height-double large--line-height-copy large--text-left margin-bottom-2 letter-spacing-2 large--margin-bottom-6">
+                            {{ section.settings.description | replace: '<p', '<span' | replace: '/p>', '/span>' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          {%- for block in section.blocks -%}
+            {% if block.type == 'timeline' %}
+            {%- assign label = block.settings.label -%}
+            {%- assign description = block.settings.description -%}
+
+            <div class="hide text-center padding-vertical-6 background-secondary text-white large--padding-vertical-16 height-100 large--flex flex-column justify-start">
+                <div class="padding-horizontal-10 large--padding-horizontal-16 large--padding-vertical-8">
+                <div class="max-width-400 center">
+                    <div class="top-wrap">
+                        {%- if label != blank -%}
+                        <span class="block font-family-heading line-height-copy font-size-5 large--font-size-11 font-weight-6 letter-spacing-2 margin-bottom-0 text-uppercase margin-left-auto margin-right-auto text-left">{{ label }}</span>
+                        {%- endif -%}
+                    </div>
+
+                    <div class="relative text-left">
+                        <div class="cursor-pointer"
+                        data-behavior="js-next-slide">
+                        <div class="font-size-1 large--font-size-4 font-family-heading margin-bottom-2 letter-spacing-2 large--margin-bottom-6">
+                            {{ description | replace: '<p', '<span' | replace: '/p>', '/span>' }}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            {% endif %}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative large--padding-bottom-8">
+    <div class="relative z-index-2">
+        <div class="grid grid-gap-4 large--grid-gap-6 columns-3 large--columns-5 padding-6 margin-vertical-12 max-width-8 center">
+          {%- assign x = 0 -%}
+          {%- for block in section.blocks -%}
+            {% if block.type == 'team' %}
+                {%- assign x = x | plus: 1 -%}
+                {%- assign about       = block.settings -%}
+                {%- assign name        = about.name -%}
+                {%- assign job         = about.job -%}
+                {%- assign image       = about.image -%}
+                {%- assign image_url = image | img_url: "400x" -%}
+                {%- assign member_url = about.member_url -%}
+                
+                <a href="{{ member_url }}" class="text-center link">
+                    {%- if image != blank -%}
+                      <img class="block width-100" 
+                        {% if x <= 10 %}
+                          loading="eager"
+                          src="{{ image_url }}" 
+                        {% else %}
+                          data-src="{{ image_url }}" 
+                        {% endif %}
+                        alt="{{ title }}" />
+                    {%- endif -%}
+                    <div class="font-size-1 large--font-size-2 text-uppercase letter-spacing-1 margin-top-4 font-family-heading">{{ name }}</div>
+                    <span class="font-size-1 large--font-size-2 letter-spacing-1 text-uppercase">{{ job }}</span>
+                </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+    </div>
+  </div>
+
+  {%- for block in section.blocks -%}
+  {% if block.type == 'Hero' %}
+    {% include 'about-hero' %}
+  {% endif %}
+  {%- endfor -%}
+
+  <!-- Mobile Timeline -->
+  <div class="overflow-hidden block large--hide">
+    <div class="timeline-container background-no-repeat">
+      <div class="center">
+        <div class="about-mobile grid columns-2">
+          {%- for block in section.blocks -%}
+            {% if block.type == 'timeline' %}
+            {%- assign label = block.settings.label -%}
+            {%- assign description = block.settings.description -%}
+            <div class="text-center column-span-1 width-100 padding-vertical-6 background-secondary text-white large--padding-vertical-16 height-100 flex flex-column justify-start">
+                <div class="padding-horizontal-5">
+                  <div class="max-width-400 center">
+                      <div class="top-wrap">
+                          {%- if label != blank -%}
+                          <span class="block font-family-heading line-height-copy font-size-8 font-weight-6 letter-spacing-2 margin-bottom-0 text-uppercase margin-left-auto margin-right-auto text-left">{{ label }}</span>
+                          {%- endif -%}
+                      </div>
+
+                      <div class="relative text-left">
+                          <div class="cursor-pointer"
+                          data-behavior="js-next-slide">
+                          <div class="font-size-1 large--font-size-4 font-family-heading margin-bottom-2 letter-spacing-2 large--margin-bottom-6">
+                              {{ description | replace: '<p', '<span' | replace: '/p>', '/span>' }}
+                          </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+            {% endif %}
+          {%- endfor -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "About Us",
+    "settings": [
+      { 
+        "type": "text", 
+        "id": "label", 
+        "label": "Label", 
+        "default": "Section title"
+      },
+      {
+        "type": "richtext",
+        "id": "description",
+        "label": "Description"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "timeline",
+        "name": "Timeline",
+        "settings": [
+          { 
+            "type": "text", 
+            "id": "label", 
+            "label": "Label", 
+            "default": "Timeline title"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description"
+          }
+        ]
+      },
+      {
+        "type": "team",
+        "name": "Team member",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Employee Image"
+          },
+          { 
+            "type": "text", 
+            "id": "name", 
+            "label": "Employee Name", 
+            "default": "Employee Name"
+          },
+          { 
+            "type": "text", 
+            "id": "job", 
+            "label": "Job Title", 
+            "default": "Job Title"
+          },
+          { 
+              "type": "url", 
+              "id": "member_url", 
+              "label": "Team member page"
+          }
+        ]
+      },
+      {
+        "type": "Hero",
+        "name": "Hero",
+        "settings": [
+          {
+              "type": "header",
+              "content": "Images"
+          },
+          {
+              "type": "image_picker",
+              "id": "image_desktop",
+              "label": "Desktop"
+          },
+          { 
+              "type": "text", 
+              "id": "image_desktop_alt_text", 
+              "label": "Desktop image alt text", 
+              "info": "If blank, will default to shop name"
+          }, 
+          { 
+              "type": "text", 
+              "id": "desktop_min_height", 
+              "label": "Desktop minimum height (in px)", 
+              "default": "600"
+          }, 
+          {
+              "type": "image_picker",
+              "id": "image_mobile",
+              "label": "Mobile"
+          },
+          { 
+              "type": "text", 
+              "id": "image_mobile_alt_text", 
+              "label": "Mobile image alt text", 
+              "info": "If blank, will default to shop name"
+          }, 
+          { 
+              "type": "text", 
+              "id": "mobile_min_height", 
+              "label": "Mobile minimum height (in px)", 
+              "default": "600"
+          }, 
+          { 
+              "type": "header", 
+              "content": "Videos"
+          }, 
+          { 
+              "type": "paragraph", 
+              "content": "Optional. Images should still be added as a video fallback"
+          }, 
+          { 
+              "type": "url", 
+              "id": "video_desktop", 
+              "label": "Desktop video URL"
+          }, 
+          { 
+              "type": "url", 
+              "id": "video_mobile", 
+              "label": "Mobile video URL"
+          }, 
+          {
+              "type": "header",
+              "content": "Desktop block settings"
+          },
+          {
+              "type": "select",
+              "id": "block_alignment_x",
+              "label": "Horizontal block alignment",
+              "options": [
+              {
+                  "value": "start",
+                  "label": "Left"
+              },
+              {
+                  "value": "center",
+                  "label": "Center"
+              },
+              {
+                  "value": "end",
+                  "label": "Right"
+              }
+              ],
+              "default": "center"
+          },
+          {
+              "type": "select",
+              "id": "block_alignment_y",
+              "label": "Vertical block alignment",
+              "options": [
+              {
+                  "value": "start",
+                  "label": "Top"
+              },
+              {
+                  "value": "center",
+                  "label": "Center"
+              },
+              {
+                  "value": "end",
+                  "label": "Bottom"
+              }
+              ],
+              "default": "center"
+          },
+          {
+              "type": "select",
+              "id": "block_text_alignment",
+              "label": "Text alignment",
+              "options": [
+              {
+                  "value": "left",
+                  "label": "Left"
+              },
+              {
+                  "value": "center",
+                  "label": "Center"
+              },
+              {
+                  "value": "right",
+                  "label": "Right"
+              }
+              ],
+              "default": "center"
+          }, 
+          {
+              "type": "text",
+              "id": "block_max_width", 
+              "label": "Max width (in pixels)", 
+              "info": "If blank, max width will be 100%"
+          },
+          {
+              "type": "header",
+              "content": "Mobile block settings"
+          },
+          {
+              "type": "select",
+              "id": "mobile_block_alignment_x",
+              "label": "Horizontal block alignment",
+              "options": [
+              {
+                  "value": "start",
+                  "label": "Left"
+              },
+              {
+                  "value": "center",
+                  "label": "Center"
+              },
+              {
+                  "value": "end",
+                  "label": "Right"
+              }
+              ],
+              "default": "center"
+          },
+          {
+              "type": "select",
+              "id": "mobile_block_alignment_y",
+              "label": "Vertical block alignment",
+              "options": [
+              {
+                  "value": "start",
+                  "label": "Top"
+              },
+              {
+                  "value": "center",
+                  "label": "Center"
+              },
+              {
+                  "value": "end",
+                  "label": "Bottom"
+              }
+              ],
+              "default": "center"
+          },
+          {
+              "type": "select",
+              "id": "mobile_block_text_alignment",
+              "label": "Text alignment",
+              "options": [
+              {
+                  "value": "left",
+                  "label": "Left"
+              },
+              {
+                  "value": "center",
+                  "label": "Center"
+              },
+              {
+                  "value": "right",
+                  "label": "Right"
+              }
+              ],
+              "default": "center"
+          }, 
+          {
+              "type": "text",
+              "id": "mobile_block_max_width", 
+              "label": "Max width (in pixels)", 
+              "info": "If blank, max width will be 100%"
+          },
+          { 
+              "type": "header", 
+              "content": "Text color"
+          }, 
+          {
+              "type": "select",
+              "id": "text_color",
+              "label": "Color",
+              "options": [
+              {
+                  "value": "default",
+                  "label": "Black"
+              },
+              {
+                  "value": "white",
+                  "label": "White"
+              }
+              ],
+              "default": "white"
+          }, 
+          {
+              "type": "header",
+              "content": "Overlay"
+          },
+          {
+              "type": "checkbox",
+              "id": "overlay_activate",
+              "label": "Enable?"
+          },
+          {
+              "type": "color",
+              "id": "overlay_color",
+              "label": "Background color",
+              "default": "#ffffff"
+          },
+          {
+              "type": "range",
+              "id": "overlay_opacity",
+              "label": "Opacity",
+              "default": 0,
+              "max": 100,
+              "min": 0,
+              "unit": "%"
+          },
+          {
+              "label": "Title",
+              "id": "title",
+              "type": "textarea"
+          },
+          {
+              "label": "Description",
+              "id": "description",
+              "type": "richtext"
+          },
+          {
+              "label": "Button",
+              "id": "button_text",
+              "type": "text"
+          },
+          {
+              "label": "Link",
+              "id": "link",
+              "type": "url"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

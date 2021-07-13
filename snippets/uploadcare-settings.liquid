@@ -1,0 +1,55 @@
+{% comment %} <script charset="utf-8" src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script> {% endcomment %}
+<script type="text/javascript">
+    //  Uploadcare 
+    UPLOADCARE_PUBLIC_KEY = '6cca4986e4544dae71f4';
+    __engine_other['uploadcare'] = function() {
+        loadjs('{{'uploadcare.min.js' | asset_url}}', function(){
+            console.log('uploadcareInit');
+            uploadcareInit();
+        });
+    }
+    uploadcareInit = function() {
+        var widget = uploadcare.Widget('[role=uploadcare-uploader]');
+
+        function setImage(e) {
+            document.getElementById("js-product-image").src = e;
+        }
+
+        function showFileConfirmation(e) {
+            document.getElementById("js-file-upload-confirmation").classList.remove("hide");
+            document.getElementById("js-file-upload-confirmation").classList.add("flex");
+            document.getElementById("js-file-name").innerHTML = e;
+        }
+
+        function setFullSizeProp(e) {
+            document.getElementById("uploadcare-uploader").value = e;
+        }
+
+        function setTypeProp(e) {
+            document.getElementById("uploadcare-type").value = e;
+        }
+
+        var uploadedImage = null;
+        var fullSizeImage = null;
+
+        // The client needs cropping info, so we have to edit the URL this way instead of just using fileInfo.originalUrl
+        widget.onUploadComplete(function (fileInfo) {
+            previewUrl = fileInfo.cdnUrl;
+            fullUrl = previewUrl.replace('-/preview/', '');
+            console.log(fileInfo)
+
+            if (fileInfo.isImage) {
+                setImage(previewUrl)
+                setTypeProp('image')
+            } else {
+                showFileConfirmation(fileInfo.name)
+                setTypeProp('file')
+            }
+
+            setFullSizeProp(fullUrl);
+
+        });
+        
+        document.querySelector('.uploadcare--widget__button.uploadcare--widget__button_type_open').innerText = "Upload Image"
+    }
+</script>

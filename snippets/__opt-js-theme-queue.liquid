@@ -1,0 +1,48 @@
+{% comment %} 
+How to add installed app in admin panel to the queue:
+
+1. Find url of this app inside page source
+2. Get uniq string inside this url: 
+
+example url: "https:\/\/js.klevu.com\/klevu-js-v1\/js\/klevuScript.js", 
+then uniq string could be: klevuScript.js
+
+3. Add prefix "__app_" to uniq string
+4. Attach this "__app_klevuScript.js" string to the one of arrays
+
+if need to add function for special page:
+
+{%- if template.name == 'collection' -%}
+if(window.isMobile())
+{
+	__engine_objects_queue['event'].push('function_name');
+}
+else 
+{
+	__engine_objects_queue['scriptsloading'].push('function_name');
+}
+__engine_objects_queue['scriptsloaded'].push('function_name');
+{%- endif -%}
+
+{% endcomment %}
+
+<script>
+__engine_objects_queue['loaded'] = ['loaded'];
+__engine_objects_queue['scriptsloading'] = ['scriptsloading'];
+__engine_objects_queue['scriptsloaded'] = ['scriptsloaded'];
+__engine_objects_queue['other'] = ['other'];
+__engine_objects_queue['event'] = ['event', 'video', 'footer'];
+
+if(shogun_page)
+{
+	__engine_objects_queue['scriptsloaded'].push('shogun');
+}
+
+if(template_name == 'index')
+{
+	__engine_objects_queue['scriptsloading'].push('index-slider');
+}
+
+</script>
+
+

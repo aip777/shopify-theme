@@ -1,0 +1,9 @@
+<div class="js-main-menu-single-image background-light-grey relative height-100 overflow-visible">
+  <div class="absolute absolute-fill">
+    <img class="block object-fit-cover object-position-center loaded lazyload"
+      {% comment %} src="{{ dropdown_single_image | img_url: '50x' }}" {% endcomment %}
+      data-manual-load="true"
+      data-src="{{ dropdown_single_image | img_url: '640x' }}"
+      alt="{{ link.title }}" />
+  </div>
+</div>

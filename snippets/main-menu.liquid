@@ -1,0 +1,29 @@
+{% include "attribute-shop-main-menu" %}
+
+<nav role="navigation">
+  <ul class="list-inline--0 padding-0 hide medium--flex justify-between max-width-6 large--padding-right-14">
+    {% for link in shop_main_menu.links %}
+      {%- assign link_handle = link.title | handle -%}
+
+      {%- assign has_second_level_links = false -%}
+
+      {% comment %} new nested navigation, do use {% endcomment %}
+      {%- if link.links.size > 0 -%}
+        {%- assign has_second_level_links = true -%}
+        {%- assign second_level_links = link.links -%}
+      {%- endif -%}
+
+      <li class="main-menu-item">
+        <a
+          class="{% if has_second_level_links %}has-children{% endif %} transition-all text-white text-no-decoration js-main-menu-link text-secondary-hover text-uppercase"
+          href="{{ link.url }}">
+          {{ link.title }}
+        </a>
+        {%- if has_second_level_links -%}
+          {% include "attribute-main-menu-dropdown-content" with { link_title: link.title } %}
+          {% include "main-menu-dropdown" %}
+        {%- endif -%}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

@@ -1,0 +1,131 @@
+{% comment %} Assign section liquid vars {% endcomment %}
+{% assign page_list = section.settings %} 
+{% assign pages_to_show = section.blocks %}
+{% assign title = page_list.title | default: false %}
+{% assign description = page_list.description | default: false %}
+{% assign page_image_style = page_list.image_style %}
+{% assign page_aspect_ratio = page_list.aspect_ratio %}
+
+<div class="margin-vertical-8">
+  <div class="container">
+
+    {% comment %} Common section heading {% endcomment %}
+    {% include 'section-heading', title: title, description: description %}
+
+    {% assign column_count_desktop = page_list.column_limit_desktop %}
+    {% assign column_count_mobile = page_list.column_limit_mobile %}
+
+    <div class="grid grid-gap-4 columns-{{ column_count_mobile }} large--columns-{{ column_count_desktop }}">
+
+      {% for page_item in pages_to_show %}
+        
+        {% assign page = pages[page_item.settings.page] %}
+        {% assign page_image = page_item.settings.background_image %}
+
+        {% include 'page-thumbnail' %}
+
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Featured Landing Pages",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title", 
+        "info": "Optional Title",
+        "default": "Featured Landing Pages"
+      },
+      { 
+        "type": "richtext", 
+        "id": "description", 
+        "label": "Description"
+      },
+      { 
+        "type": "select", 
+        "id": "image_style", 
+        "label": "Image Style",
+        "info": "Render the image as either a background image or an image tag",
+        "default": "tag",
+        "options": [
+          {
+            "value": "tag",
+            "label": "Image Tag"
+          },
+          {
+            "value": "background",
+            "label": "Background Image"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "aspect_ratio",
+        "label": "Select the aspect ratio to show the images as",
+        "default": "1x1",
+        "options": [
+          {
+            "value": "1x1",
+            "label": "1x1 (square)"
+          },
+          {
+            "value": "3x2",
+            "label": "3x2"
+          },
+          {
+            "value": "16x9",
+            "label": "16x9"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "column_limit_mobile",
+        "label": "Collections per row (mobile)",
+        "default": 1
+      },
+      {
+        "type": "number",
+        "id": "column_limit_desktop",
+        "label": "Collections per row (desktop)",
+        "default": 3
+      }
+    ],
+    "blocks": [
+      {
+        "type": "page",
+        "name": "Page",
+        "limit": 6,
+        "settings": [
+          {
+            "type": "page",
+            "id": "page",
+            "label": "Page"
+          },
+          {
+            "type": "header",
+            "content": "Optional Overrides"
+          },
+          {
+            "type": "image_picker",
+            "id": "background_image",
+            "label": "Image",
+            "info": "Required if you want an image to show up, as pages don't have featured images."
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured landing pages",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,38 @@
+{% paginate article.comments by 50 %}
+  <div id="comments" class="padding-vertical-16 margin-top-8 large--margin-top-16 background-light-grey padding-horizontal-4">
+    <div class="max-width-6 center">
+      <p class="border-bottom padding-bottom-3 border-medium-gray text-uppercase letter-spacing-1 font-family-heading">{{ article.comments.size }} Comment{%if article.comments.size == 0 or  article.comments.size > 1 %}s{% endif %}</p>
+
+      <div class="border padding-4 background-light-grey-hover transition-all cursor-pointer background-white font-family-heading text-uppercase letter-spacing-1 font-size-1 margin-top-8"  onclick="showCommentForm()">
+        Add a comment
+      </div>
+
+      {% section "article-comment-form" %}
+
+      {% if comment.status == "unapproved" %}
+        {% include "article-comment" %}
+      {% endif %}
+
+      {% for comment in article.comments %}
+        {% include "article-comment" %}
+      {% endfor %}
+
+      {% if paginate.pages > 1 %}
+        <div class="text-center">
+          {% include "pagination-custom" %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endpaginate %}
+
+<script>
+  function showCommentForm() {
+  var x = document.getElementById("comment-form");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>

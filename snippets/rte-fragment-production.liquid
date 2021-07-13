@@ -1,0 +1,59 @@
+{% assign get_fragment_title = rte-fragment %}
+
+{% if set_rte_fragment_content %}
+  {% assign rte_content = set_rte_fragment_content %}
+{% elsif template contains "collection" %}
+  {% assign rte_content = collection.description %}
+{% elsif template contains "product" %}
+  {% assign rte_content = product.description %}
+{% elsif template contains "page" %}
+  {% assign rte_content = page.content %}
+{% elsif template contains "article" %}
+  {% assign rte_content = article.content %}
+{% endif %}
+
+{% assign each_line = rte_content | newline_to_br | split: "<br />" %}
+
+{% assign new_rte_content = "" %}
+
+{% for html in each_line %}
+  {% assign new_html = html | replace: "<h5></h5>","" | replace: "<h5> </h5>","" | strip %}
+  {% if html contains '"></h5>' or html contains "> </h5>" %}
+    {% assign new_html = new_html | replace: "h5","h6" | strip %}
+  {% endif %}
+  {% unless new_html == blank %}
+    {% capture new_html_with_clean_line_break %}{{ new_html }}
+{% endcapture %}
+    {% assign new_rte_content = new_rte_content | append: new_html_with_clean_line_break %}
+  {% endunless %}
+{% endfor %}
+
+{% assign each_fragment = new_rte_content | split: "<h5" %}
+
+{% assign rte_body = false %}
+{% assign rte_fragment_title = false %}
+{% assign rte_fragment_body = false %}
+
+{% for html in each_fragment %}
+  {% if forloop.first %}
+    {% assign rte_body = html | replace: "<p> </p>","" %}
+  {% else %}
+    {% assign title = html | split: "</h5>" | first | prepend: "<span " | strip_html | replace: "<span ", "" %}
+    {% assign body = html | split: "</h5>" | last | replace: "<p> </p>","" | replace: 'style="line-height: 1.4;"','' %}
+
+    {% assign title_handle = title | handle %}
+    {% assign get_fragment_title_handle = get_fragment_title | handle %}
+
+    {% if title_handle == get_fragment_title_handle %}
+      {% assign rte_fragment_title = title %}
+      {% assign rte_fragment_body = body %}
+      {% break %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% if rte_fragment_body == blank %}
+  {% assign rte_fragment_body = false %}
+{% endif %}
+
+{% assign set_rte_fragment_content = false %}

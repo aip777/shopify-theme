@@ -1,0 +1,10 @@
+<style>.lazyload{opacity:0}.lazyloading{opacity:1;transition:opacity .3s;.lazyloaded{opacity:1;transition:opacity 9ms}</style>
+
+{% include 'css-liquid-vars' %}
+
+{{ 'theme.min.css' | asset_url | stylesheet_tag }}
+
+{% comment %} 
+<link rel="preload" href="{{ '' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ '' | asset_url }}"></noscript>  
+{% endcomment %}

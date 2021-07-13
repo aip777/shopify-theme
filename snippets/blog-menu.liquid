@@ -1,0 +1,33 @@
+{% if blog_category_links %}
+<div class="text-center margin-vertical-12">
+  <div class="select-filter relative width-auto border border-width-1 padding-vertical-2 padding-left-1 inline-flex items-center justify-center border-radius-pill">
+    {% for link in blog_category_links %}
+    <div class="{% if forloop.first or forloop.index == 2 %}hide large--flex{% else %}flex{% endif %} select-styled top-0 left-0 right-0 items-center justify-center font-weight-bold text-uppercase letter-spacing-1 hover-parent {% if link.title == 'Sort By' %}sort-by{% elsif link.title == 'Game' %}game{% endif %}">
+      <span class="padding-horizontal-6 relative flex items-center justify-center">
+        {{ link.title }}
+
+        {% if link.links != blank %}
+          <svg width="12" height="21" viewBox="0 0 12 21" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 7px;margin-left: 6px;">
+          <path d="M11 8H1.66667H1L6 1L11 8Z" fill="black"/>
+          <path d="M1.66667 8H11M11 8L6 1L1 8H11Z" stroke="black"/>
+          <path d="M1 13H10.3333H11L6 20L1 13Z" fill="black"/>
+          <path d="M10.3333 13H1M1 13L6 20L11 13H1Z" stroke="black"/>
+          </svg>
+        {% endif %}
+      </span>
+
+      {% if link.links != blank %}
+        <ul class="select-options text-right font-size-1 hover-child absolute top-10 left-0 background-white margin-0 padding-horizontal-4 padding-vertical-6 list-style-none width-auto z-index-2 {% unless link.title == 'Game' %}wide{% endunless %} text-primary">
+        {% for child_link in link.links %}
+          <li class="margin-bottom-1">
+            <a class="link hover-secondary" href="{{ child_link.url }}">{{ child_link.title }}</a>
+          </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+

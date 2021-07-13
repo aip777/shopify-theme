@@ -1,0 +1,69 @@
+{% include 'object-param-load', section_name: "header-top-bar" %}
+
+{% if param_load and param_load != "false" %}
+
+  {% if section.blocks.size > 0 %}
+
+    {% assign css_class_justify = "justify-between" %}
+    {% if section.blocks.size == 1 %}
+      {% assign css_class_justify = "justify-center" %}
+    {% endif %}
+
+    <header class="background-secondary text-white padding-vertical-2 text-primary text-uppercase relative">
+      <div class="container">
+        <div class="flex items-center relative {{ css_class_justify }}">
+
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when "message" %}
+                {% include 'header-top-bar-message', message: block.settings %}
+              {% when "menu" %}
+                {% include 'header-top-bar-menu', menu: block.settings %}
+            {% endcase %}
+          {% endfor %}
+
+        </div>
+      </div>
+
+      <span class="absolute right-5 top-2 cursor-pointer" data-close>{% include 'svg-close' %}</span>
+    </header>
+
+  {% endif %}
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "Header top bar",
+  "class": "z-index-9 section-header-top-bar relative js-sticky-bar xlarge--sticky top-0",
+  "settings": [
+
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "copy",
+          "label": "Copy",
+          "default": "<p>FREE SHIPPING on all orders over $XX</p>"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "handle",
+          "label": "Menu",
+          "info": "In top header bar"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

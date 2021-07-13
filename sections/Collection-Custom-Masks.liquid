@@ -1,0 +1,831 @@
+{% include "collection-hero-all-cstm" with cta_button: true, cta_text: section.settings.cta_text, cta_url: section.settings.cta_url %}
+
+<style>.findify-component-spinner,.findify-component-spinner:after{border-radius:50%;width:60px;height:60px}.findify-component-spinner{margin:60px auto 0!important;position:relative;-webkit-transform:translateZ(0);-ms-transform:translateZ(0);transform:translateZ(0);-webkit-animation:findify-component-spinner-animation .7s infinite cubic-bezier(.67,.35,.7,.8);animation:findify-component-spinner-animation .7s infinite cubic-bezier(.67,.35,.7,.8);-ms-transform-origin:50% 50%;-webkit-transform-origin:50% 50%;transform-origin:50% 50%;border-top:3px solid #eaeaea;border-right:3px solid #eaeaea;border-bottom:3px solid #eaeaea;border-left:3px solid #c6c6c6}@-webkit-keyframes findify-component-spinner-animation{0%{-webkit-transform:rotate(90deg);transform:rotate(90deg)}100%{-webkit-transform:rotate(450deg);transform:rotate(450deg)}}@keyframes findify-component-spinner-animation{0%{-webkit-transform:rotate(90deg);transform:rotate(90deg)}100%{-webkit-transform:rotate(450deg);transform:rotate(450deg)}}</style>
+<div data-findify="search" style="min-height: 400px;">
+  <div class="findify-component-spinner"></div>
+  <div class="findify-fallback" style="display:none;">
+
+
+    {% for block in section.blocks %}
+      {% case block.type %}
+      {% when "image_grid" %}
+        {% include 'collection-image-grid' %} 
+        {% when "cta_bar" %}
+          {% include 'collection-landing-cta-bar' %}
+        {% when "testimonial" %}
+          {% include 'collection-testimonials' %}
+        {% when "full_width" %}
+          {% include 'collection-full-width' %}
+        {% when "featured_product" %}
+          {% include 'collection-featured-product' %}
+        {% when "slideshow" %}
+          {% include 'slideshow' %}
+      {% endcase %}
+    {% endfor %}
+    
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Custom Mask",
+  "settings": [
+        {
+            "type": "text",
+            "id": "cta_text",
+            "label": "CTA text",
+            "default" : "Browse all"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA Url"
+        }
+    ],
+    "blocks": [
+      {
+        "type": "image_grid",
+        "name": "Image Grid",
+        "settings": [
+          {
+            "id": "image_1",
+            "type": "image_picker",
+            "label": "Collection Image"
+          },
+          { 
+            "type": "text", 
+            "id": "title_1", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg_1", 
+            "label": "Icon SVG"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "description_1", 
+            "label": "Description"
+          },
+          { 
+            "type": "url", 
+            "id": "url_1", 
+            "label": "Link"
+          },
+          {
+            "id": "image_2",
+            "type": "image_picker",
+            "label": "Collection Image"
+          },
+          { 
+            "type": "text", 
+            "id": "title_2", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg_2", 
+            "label": "Icon SVG"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "description_2", 
+            "label": "Description"
+          },
+          { 
+            "type": "url", 
+            "id": "url_2", 
+            "label": "Link"
+          },
+          {
+            "id": "image_3",
+            "type": "image_picker",
+            "label": "Collection Image"
+          },
+          { 
+            "type": "text", 
+            "id": "title_3", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg_3", 
+            "label": "Icon SVG"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "description_3", 
+            "label": "Description"
+          },
+          { 
+            "type": "url", 
+            "id": "url_3", 
+            "label": "Link"
+          },
+          {
+            "id": "image_4",
+            "type": "image_picker",
+            "label": "Collection Image"
+          },
+          { 
+            "type": "text", 
+            "id": "title_4", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg_4", 
+            "label": "Icon SVG"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "description_4", 
+            "label": "Description"
+          },
+          { 
+            "type": "url", 
+            "id": "url_4", 
+            "label": "Link"
+          },
+          {
+            "id": "image_5",
+            "type": "image_picker",
+            "label": "Collection Image"
+          },
+          { 
+            "type": "text", 
+            "id": "title_5", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg_5", 
+            "label": "Icon SVG"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "description_5", 
+            "label": "Description"
+          },
+          { 
+            "type": "url", 
+            "id": "url_5", 
+            "label": "Link"
+          },
+          {
+            "id": "image_6",
+            "type": "image_picker",
+            "label": "Collection Image"
+          },
+          { 
+            "type": "text", 
+            "id": "title_6", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg_6", 
+            "label": "Icon SVG"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "description_6", 
+            "label": "Description"
+          },
+          { 
+            "type": "url", 
+            "id": "url_6", 
+            "label": "Link"
+          },
+          {
+            "id": "image_7",
+            "type": "image_picker",
+            "label": "Collection Image"
+          },
+          { 
+            "type": "text", 
+            "id": "title_7", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg_7", 
+            "label": "Icon SVG"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "description_7", 
+            "label": "Description"
+          },
+          { 
+            "type": "url", 
+            "id": "url_7", 
+            "label": "Link"
+          },
+          {
+            "id": "image_8",
+            "type": "image_picker",
+            "label": "Collection Image"
+          },
+          { 
+            "type": "text", 
+            "id": "title_8", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg_8", 
+            "label": "Icon SVG"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "description_8", 
+            "label": "Description"
+          },
+          { 
+            "type": "url", 
+            "id": "url_8", 
+            "label": "Link"
+          }
+        ]
+      },
+      {
+        "type": "featured_product",
+        "name": "Featured Product",
+        "settings": [
+          {
+            "type": "product",
+            "id": "featured_product",
+            "label": "Product"
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background color",
+            "default": "#ffffff"
+          },
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Product image override",
+            "info": "This will override the default product image"
+          }
+        ]
+      },
+      {
+        "type": "full_width",
+        "name": "Full Width",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Images"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_desktop",
+            "label": "Desktop"
+          },
+          { 
+            "type": "text", 
+            "id": "image_desktop_alt_text", 
+            "label": "Desktop image alt text", 
+            "info": "If blank, will default to shop name"
+          }, 
+          { 
+            "type": "text", 
+            "id": "desktop_min_height", 
+            "label": "Desktop minimum height (in px)", 
+            "default": "600"
+          }, 
+          {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Mobile"
+          },
+          { 
+            "type": "text", 
+            "id": "image_mobile_alt_text", 
+            "label": "Mobile image alt text", 
+            "info": "If blank, will default to shop name"
+          }, 
+          { 
+            "type": "text", 
+            "id": "mobile_min_height", 
+            "label": "Mobile minimum height (in px)", 
+            "default": "600"
+          }, 
+          { 
+            "type": "header", 
+            "content": "Videos"
+          }, 
+          { 
+            "type": "paragraph", 
+            "content": "Optional. Images should still be added as a video fallback"
+          }, 
+          { 
+            "type": "url", 
+            "id": "video_desktop", 
+            "label": "Desktop video URL"
+          }, 
+          { 
+            "type": "url", 
+            "id": "video_mobile", 
+            "label": "Mobile video URL"
+          }, 
+          {
+            "type": "header",
+            "content": "Desktop block settings"
+          },
+          {
+            "type": "select",
+            "id": "block_alignment_x",
+            "label": "Horizontal block alignment",
+            "options": [
+              {
+                "value": "start",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "end",
+                "label": "Right"
+              }
+            ],
+            "default": "center"
+          },
+          {
+            "type": "select",
+            "id": "block_alignment_y",
+            "label": "Vertical block alignment",
+            "options": [
+              {
+                "value": "start",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "end",
+                "label": "Bottom"
+              }
+            ],
+            "default": "center"
+          },
+          {
+            "type": "select",
+            "id": "block_text_alignment",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+            "default": "center"
+          }, 
+          {
+            "type": "text",
+            "id": "block_max_width", 
+            "label": "Max width (in pixels)", 
+            "info": "If blank, max width will be 100%"
+          },
+          {
+            "type": "header",
+            "content": "Mobile block settings"
+          },
+          {
+            "type": "select",
+            "id": "mobile_block_alignment_x",
+            "label": "Horizontal block alignment",
+            "options": [
+              {
+                "value": "start",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "end",
+                "label": "Right"
+              }
+            ],
+            "default": "center"
+          },
+          {
+            "type": "select",
+            "id": "mobile_block_alignment_y",
+            "label": "Vertical block alignment",
+            "options": [
+              {
+                "value": "start",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "end",
+                "label": "Bottom"
+              }
+            ],
+            "default": "center"
+          },
+          {
+            "type": "select",
+            "id": "mobile_block_text_alignment",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+            "default": "center"
+          }, 
+          {
+            "type": "text",
+            "id": "mobile_block_max_width", 
+            "label": "Max width (in pixels)", 
+            "info": "If blank, max width will be 100%"
+          },
+          { 
+            "type": "header", 
+            "content": "Text color"
+          }, 
+          {
+            "type": "select",
+            "id": "text_color",
+            "label": "Color",
+            "options": [
+              {
+                "value": "default",
+                "label": "Black"
+              },
+              {
+                "value": "white",
+                "label": "White"
+              }
+            ],
+            "default": "white"
+          }, 
+          {
+            "type": "header",
+            "content": "Overlay"
+          },
+          {
+            "type": "checkbox",
+            "id": "overlay_activate",
+            "label": "Enable?"
+          },
+          {
+            "type": "color",
+            "id": "overlay_color",
+            "label": "Background color",
+            "default": "#ffffff"
+          },
+          {
+            "type": "range",
+            "id": "overlay_opacity",
+            "label": "Opacity",
+            "default": 0,
+            "max": 100,
+            "min": 0,
+            "unit": "%"
+          }
+        ]
+      },
+      { 
+        "type": "slideshow", 
+        "name": "Slideshow", 
+        "settings": [ 
+          {
+            "type": "header",
+            "content": "Slide 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_desktop1",
+            "label": "Desktop"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile1",
+            "label": "Mobile"
+          },
+          {
+            "type": "header",
+            "content": "Slide 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_desktop2",
+            "label": "Desktop"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile2",
+            "label": "Mobile"
+          },
+          {
+            "type": "header",
+            "content": "Slide 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_desktop3",
+            "label": "Desktop"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile3",
+            "label": "Mobile"
+          }
+        ]
+      },
+      { 
+        "type": "cta_bar", 
+        "name": "CTA Bar", 
+        "settings": [ 
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "text_color",
+            "type": "select",
+            "label": "Text Color",
+            "default": "black",
+            "options": [
+              {
+                "label": "Black",
+                "value": "black"
+              },
+              {
+                "label": "White",
+                "value": "white"
+              },
+              {
+                "label": "Primary Color",
+                "value": "primary"
+              },
+              {
+                "label": "Secondary Color",
+                "value": "secondary"
+              }
+            ]
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background color",
+            "default": "#cdde00"
+          },
+          {
+            "id": "url",
+            "type": "url",
+            "label": "Button Url"
+          },
+          {
+            "id": "button_text",
+            "type": "text",
+            "label": "Button Text"
+          },
+          {
+            "type": "select",
+            "id": "button_order",
+            "label": "Button Order",
+            "options": [
+              {
+                "value": "order-1",
+                "label": "Left"
+              },
+              {
+                "value": "order-2",
+                "label": "Right"
+              }
+            ],
+            "default": "order-1"
+          }
+        ]
+      },
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Testimonial 1"
+          },
+          { 
+            "type": "text", 
+            "id": "label1", 
+            "label": "Label", 
+            "default": "Testimonial title"
+          },
+          {
+            "type": "range",
+            "id": "star1",
+            "label": "Star rating",
+            "default": 5,
+            "max": 5,
+            "min": 1,
+            "step": 1
+          },
+          {
+            "type": "richtext",
+            "id": "description1",
+            "label": "Description",
+            "default": "<p>Customer service was top notch, print quality and overall product quality was superb. Highly recommend.</p>"
+          },
+          {
+            "type": "text",
+            "id": "testimonial_name1",
+            "label": "Name",
+            "default": "Lorem Ipsum"
+          },
+          {
+            "type": "header",
+            "content": "Testimonial 2"
+          },
+          { 
+            "type": "text", 
+            "id": "label2", 
+            "label": "Label", 
+            "default": "Testimonial title"
+          },
+          {
+            "type": "range",
+            "id": "star2",
+            "label": "Star rating",
+            "default": 5,
+            "max": 5,
+            "min": 1,
+            "step": 1
+          },
+          {
+            "type": "richtext",
+            "id": "description2",
+            "label": "Description",
+            "default": "<p>Customer service was top notch, print quality and overall product quality was superb. Highly recommend.</p>"
+          },
+          {
+            "type": "text",
+            "id": "testimonial_name2",
+            "label": "Name",
+            "default": "Lorem Ipsum"
+          },
+          {
+            "type": "header",
+            "content": "Testimonial 3"
+          },
+          { 
+            "type": "text", 
+            "id": "label3", 
+            "label": "Label", 
+            "default": "Testimonial title"
+          },
+          {
+            "type": "range",
+            "id": "star3",
+            "label": "Star rating",
+            "default": 5,
+            "max": 5,
+            "min": 1,
+            "step": 1
+          },
+          {
+            "type": "richtext",
+            "id": "description3",
+            "label": "Description",
+            "default": "<p>Customer service was top notch, print quality and overall product quality was superb. Highly recommend.</p>"
+          },
+          {
+            "type": "text",
+            "id": "testimonial_name3",
+            "label": "Name",
+            "default": "Lorem Ipsum"
+          },
+          {
+            "type": "header",
+            "content": "Testimonial 4"
+          },
+          { 
+            "type": "text", 
+            "id": "label4", 
+            "label": "Label", 
+            "default": "Testimonial title"
+          },
+          {
+            "type": "range",
+            "id": "star4",
+            "label": "Star rating",
+            "default": 5,
+            "max": 5,
+            "min": 1,
+            "step": 1
+          },
+          {
+            "type": "richtext",
+            "id": "description4",
+            "label": "Description",
+            "default": "<p>Customer service was top notch, print quality and overall product quality was superb. Highly recommend.</p>"
+          },
+          {
+            "type": "text",
+            "id": "testimonial_name4",
+            "label": "Name",
+            "default": "Lorem Ipsum"
+          },
+          {
+            "type": "header",
+            "content": "Testimonial 5"
+          },
+          { 
+            "type": "text", 
+            "id": "label5", 
+            "label": "Label", 
+            "default": "Testimonial title"
+          },
+          {
+            "type": "range",
+            "id": "star5",
+            "label": "Star rating",
+            "default": 5,
+            "max": 5,
+            "min": 1,
+            "step": 1
+          },
+          {
+            "type": "richtext",
+            "id": "description5",
+            "label": "Description",
+            "default": "<p>Customer service was top notch, print quality and overall product quality was superb. Highly recommend.</p>"
+          },
+          {
+            "type": "header",
+            "content": "Testimonial 6"
+          },
+          {
+            "type": "text",
+            "id": "testimonial_name5",
+            "label": "Name",
+            "default": "Lorem Ipsum"
+          },
+          { 
+            "type": "text", 
+            "id": "label6", 
+            "label": "Label", 
+            "default": "Testimonial title"
+          },
+          {
+            "type": "range",
+            "id": "star6",
+            "label": "Star rating",
+            "default": 5,
+            "max": 5,
+            "min": 1,
+            "step": 1
+          },
+          {
+            "type": "richtext",
+            "id": "description6",
+            "label": "Description",
+            "default": "<p>Customer service was top notch, print quality and overall product quality was superb. Highly recommend.</p>"
+          },
+          {
+            "type": "text",
+            "id": "testimonial_name6",
+            "label": "Name",
+            "default": "Lorem Ipsum"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+  

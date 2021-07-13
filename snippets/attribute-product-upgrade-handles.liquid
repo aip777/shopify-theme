@@ -1,0 +1,15 @@
+{% if product.metafields.custom_fields["product_upgrade_handles"] != blank %}
+    {% assign product_upgrade_handles = product.metafields.custom_fields["product_upgrade_handles"] | split: '|' | trim %}
+
+    {% for handle in product_upgrade_handles %}
+    	{% if handle == 'none' %}
+    		{% assign product_upgrade_handles = '' %}
+    	{% endif %}
+    {% endfor %}
+{% elsif product.type == 'Playmat' or product.type contains 'Custom' and settings.upgrade_collection %}
+    {%- assign collection = collections[settings.upgrade_collection] -%}
+    {%- for product in collection.products limit: 4 -%}
+        {% assign product_upgrade_handles = product_upgrade_handles | append: product.handle | append: ',' %}
+    {%- endfor -%}
+    {% assign product_upgrade_handles = product_upgrade_handles | replace: ' ', '' | split: ',' %}
+{% endif %}  

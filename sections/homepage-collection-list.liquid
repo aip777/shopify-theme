@@ -1,0 +1,124 @@
+{% include 'object-param-load', section_name: "homepage-collection-list" %}
+
+{%- assign collection_list = section.settings -%}
+{%- assign view_all_thumbnail_label = collection_list.view_all_thumbnail_label -%}
+{%- assign view_all_thumbnail_url = collection_list.view_all_thumbnail_url -%}
+
+{%- assign collection_blocks = section.blocks -%}
+
+{%- if collection_blocks.size > 0 -%}
+  <div class="width-100 max-width-8 center large--padding-vertical-1">
+    <div class="homepage-collection-list width-100 padding-top-10 padding-bottom-16 padding-horizontal-0 overflow-auto">
+      {% comment %} aaaaqqqq777 {% endcomment %}
+			<div class="flex flex-row justify-center js-slick-slides-index width-100" 
+      data-slides-to-show="5"
+      data-slides-to-show-mobile="1"
+      data-slides-to-show-tablet="1"
+      data-center-mode="true"
+      data-initial-slide="0"
+      data-mobile-first="true">
+
+        {%- for block in collection_blocks -%}
+          {%- assign cta = block.settings -%}
+          {%- assign cta_title = cta.title -%}
+          {%- assign cta_image = cta.image -%}
+          {%- assign cta_image_hover = cta.image_hover -%}
+          {%- assign cta_url = cta.url -%}
+          {%- assign svg_fill_class = cta.svg_fill | prepend: '-' | prepend: block.id | prepend: 'block-' -%}
+          {%- assign svg = cta.svg -%}
+
+          {%- if cta_title != blank and svg != blank or cta_image != blank -%}
+            <div class="homepage-collection-list-thumbnail-wrap width-1 large--width-auto large--max-width-auto block-{{ block.id }}" style="min-width:192px;">
+              <a href="{{ cta_url }}"
+                class="homepage-collection-list-thumbnail block text-no-decoration text-center width-100 medium--width-auto margin-left-auto margin-right-auto">
+                <div class="center">
+                    {% if svg != blank %}
+                        <div class="zoom-on-hover">
+                          {% assign new_class = block.id | prepend: 'block-' | append: '-cls-' %}
+                          {{ svg | replace: 'cls-', new_class }}
+                          {% style %}
+                              .block-{{ block.id }} a:hover .{{ svg_fill_class }} {
+                              fill: {{ settings.color_secondary }};
+                              }
+                          {% endstyle %}
+                        </div>
+                      {% else %}
+                        <div class="aspect-ratio-1x1 relative margin-bottom-0">
+                          <div class="absolute top-2 left-2 right-2 bottom-2 zoom-on-hover">
+                              <img class="block object-fit-cover object-position-center zoom-target"
+                                  data-src="{{ cta_image | img_url: '200x200', crop: 'center' }}" data-hover="{{ cta_image_hover | img_url: '200x200', crop: 'center' }}"
+                                  alt="{{ cta_title }}" />
+                          </div>
+                        </div>
+                    {% endif %}
+                
+                    <span class="block font-family-heading font-weight-6 font-size-2 medium--font-size-4 text-uppercase letter-spacing-3 text-primary text-uppercase">
+                      {{ cta_title }}
+                    </span>
+                  </div>
+              </a>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Collection mini-CTAs",
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "limit": 5, 
+        "settings": [
+          { 
+            "type": "text", 
+            "id": "title", 
+            "label": "Title"
+          }, 
+          { 
+            "type": "textarea", 
+            "id": "svg", 
+            "label": "SVG code"
+          },
+          { 
+            "type": "text", 
+            "id": "svg_fill", 
+            "label": "SVG fill class",
+            "info": "This class is for the filled gray area - this allows us to seamlessly highlight any given area by class name."
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "URL"
+          },
+          {
+            "type": "header",
+            "content": "Fallback for images with no SVG's"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image", 
+            "info": "Recommended size: 200 x 200px"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_hover",
+            "label": "Image - Hover"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection mini-CTAs",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

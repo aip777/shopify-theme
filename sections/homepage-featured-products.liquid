@@ -1,0 +1,93 @@
+{% assign product_content     = section.settings %}
+{% assign background_color    = product_content.background_color %}
+{% assign featured_product    = product_content.featured_product %}
+{% assign product             = all_products[featured_product] %}
+{% assign image               = product_content.image %}
+{% assign button_text         = product_content.button_text %}
+
+<section class="collection-in-detail" style="background-color: {{ background_color }};">
+    <div class="clearfix" itemtype="http://schema.org/ItemList">
+
+      <div itemprop="itemListElement" itemscope itemtype="http://schema.org/Product"
+            class="product-{{ product.id }} section clearfix product_section padding-vertical-16 flex flex-column large--flex-row items-center justify-center" {{ block.shopify_attributes }}>
+
+        <div class="product-images width-auto padding-bottom-6 large--padding-bottom-0 large--padding-right-6">
+          {% if image %}
+            <img class="block width-5"
+              data-src="{{ image | img_url: 'large' }}"
+              alt="{{ product.title }}" />
+          {% else %}
+            {% include 'product-thumbnail' %}
+          {% endif %}
+        </div>
+
+        <div class="product-details width-auto flex justify-center flex-column large--padding-left-6 text-center large--text-left">
+          {% include 'product-reviews-stars' %}
+          
+          <a class="text-primary text-uppercase letter-spacing-1 font-family-heading text-no-decoration font-size-2 small--font-size-4 large--font-size-6" href="{{ product.url }}">{{ product.title | remove: ' - Inked Gaming Logo'  }}</a>
+
+          <span class="text-uppercase letter-spacing-1 font-size-2 small--font-size-4 large--font-size-5">{{ product.vendor }}</span>
+
+          <div class="js-product_section product_section">
+
+            <p class="margin-vertical-1">
+              <span class="js-price price font-size-2 small--font-size-4 large--font-size-6 font-weight-6">
+                {{ product.first_available_variant.price | money }}
+              </span>
+
+              <s class="js-compare-price {% unless variant_on_sale %}hide{% endunless %}">
+                {{ product.first_available_variant.compare_at_price | money }}
+              </s>
+            </p>
+
+            <button type="button" data-behavior="ajax-cart-button" data-variant-id="{{ product.first_available_variant.id }}" class="js-add-to-cart font-weight-bold margin-top-1 background-primary background-secondary-hover cursor-pointer transition-all text-white text-uppercase border-none padding-vertical-1 medium--padding-vertical-2 padding-horizontal-4 medium--padding-horizontal-9 letter-spacing-1 medium--letter-spacing-2 font-size-2 medium--font-size-4"
+              {% unless product.first_available_variant.available or product.first_available_variant.inventory_policy != 'continue' %}disabled{% endunless %}>
+              {% if product.first_available_variant.available or product.first_available_variant.inventory_policy != 'continue' %}
+                {{ button_text | default: 'Add' }}
+              {% else %}
+                Out of stock
+              {% endif %}
+            </button>
+
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured product",
+  "class": "featured-products-section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Product"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "id": "image",
+      "type": "image_picker",
+      "label": "Product image override",
+      "info": "This will override the default product image"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Add",
+      "info": "Default is \"Add\""
+    }
+  ],
+  "presets": [{
+    "name": "Featured product",
+    "category": "Rosewood"
+  }]
+}
+{% endschema %}

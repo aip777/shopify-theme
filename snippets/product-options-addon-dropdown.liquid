@@ -1,0 +1,15 @@
+<div class="input-group margin-bottom-1">
+  <div class="input-select background-white">
+    <select name="{{ product.title | handleize }}" class="js-product-addon-option">
+      {% for option in product.variants %}
+        <option {% if option.available %}{% if forloop.first %}selected{% endif %}{% else %}disabled{% endif %} value="{{ option.id }}">
+          {{ option.title }}{% unless option.available %} - Out of stock{% endunless %}
+        </option> 
+      {% endfor %}
+    </select>
+
+    <div class="input-select-icon">
+      {% include "svg-angle-down" %}
+    </div>
+  </div>
+</div>

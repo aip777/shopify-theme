@@ -1,0 +1,133 @@
+{%- assign shogun_page = false -%}
+{%- assign shogun_url = 'https://cdn.getshogun.com/' -%}
+
+{%- if content_for_layout contains 'data-shogun-variant-id' -%}
+		{%- assign shogun_page = true -%}
+{%- endif -%}
+
+
+{%- if shogun_page -%}
+
+	{%- capture __content_for_layout -%}
+		{{ content_for_layout }}
+	{%- endcapture -%}
+
+	{%- assign words = __content_for_layout | split: '" data-region="' -%}
+	{%- assign temp  = __content_for_layout -%}
+	{%- assign js_content_for_shogun_defer = '' -%}
+
+	{%- capture _ids -%}{% for word in words %}{% if word contains 'data-shogun-variant-id="' %}{{ word | slice: -24, 25 | strip_newlines | lstrip }},{% endif %}{% endfor %}{%- endcapture -%}
+	
+	{%- assign ids = _ids | split: ',' -%}
+	{%- assign ids = ids | uniq | join: ", " -%}
+
+		{% for id in ids %}
+			{%- if id != '' -%}
+
+				{%- capture replace_js_from -%}<script type="text/javascript" src="{{ shogun_url }}{{ id }}.js" async></script>{%- endcapture -%}
+				{%- capture replace_js_to -%}{%- endcapture -%}	
+
+				{%- assign temp = temp | replace: replace_js_from, replace_js_to  -%}
+
+			{%- endif -%}
+		{% endfor %}	
+
+	{%- capture shogun_js -%}
+	<script>
+	var shogun_urls = [];
+	{% for id in ids %}
+		{%- if id != '' -%}
+			{%- capture __url -%}{{ shogun_url }}{{ id }}.js{%- endcapture -%}
+			{%- if content_for_layout contains __url -%}
+			shogun_urls[{{ forloop.index0 }}] = '{{__url}}';
+			{%- endif -%}
+		{%- endif -%}
+	{% endfor %}
+	var shogun_page = true;
+	__engine_scripts_queue['shogun_urls'] = function()
+	{
+		$(".shogun-lazyload").addClass('lazyload');
+		var loaded = false;
+		if (shogun_urls.length) {
+			console.log(shogun_urls[0]);
+			loadJS(shogun_urls[0], function()
+			{
+				window.addEventListener("scroll", function() {
+					if(loaded) return false;
+					window.__shogunBoxesOnLoad();
+					loaded = true;
+				});	
+			});
+		}
+	}
+	</script>	
+	{%- endcapture -%}
+
+	{%- capture preload_shogun_css -%}
+	{% for id in ids %}
+		{%- if id != '' -%}
+			{%- capture __url -%}{{ shogun_url }}{{ id }}.css{%- endcapture -%}
+			{%- if content_for_layout contains __url -%}
+				<link rel="preload" href="{{__url}}" as="style">
+			{%- endif -%}
+		{%- endif -%}
+	{% endfor %}
+	{%- endcapture -%}
+
+	{%- assign content_for_layout = 
+		temp 
+		| replace: '<iframe class="shogun-video-embed " src="', '<iframe class="shogun-video-embed lazyload-event" data-src="'
+		| replace: '<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:600%7CMontserrat:400%7CMontserrat:">', ''
+		| replace: '<script type="text/javascript" src="https://lib.getshogun.com/lazysizes/2.0.0/shogun-lazysizes.js" async></script>',''
+		| replace: 'jQuery(document).ready(function() {','(function() {'
+		| replace: 'jQuery(function() {','(function() {'
+		| replace: "var images = jQuery('.shg-sld-item img');",'var images = [];'
+		| replace: 'href="https://fonts.googleapis.com/', 'data-href="https://fonts.googleapis.com/'
+		| prepend: shogun_js
+	-%}
+
+	{% assign chanks = content_for_layout | split: '<img' %}
+
+	{% for ch in chanks %}
+		{%- unless forloop.first -%}
+			{% assign __chanks = ch | split: '>' %}
+
+			{% if __chanks[0].size > 0 %}
+				{%- assign source = __chanks[0] -%}
+				{%- assign destination = '' -%}
+
+				{%- if source contains ' src=' -%}
+					{%- if source contains 'YOUR_LCP_FILENAME' -%}
+						{%- assign destination = source 
+						| replace: '3000x3000', '800x800'
+						| replace: 'shogun-image ', 'lcp shogun-image '
+						-%}
+						{%- assign content_for_layout = content_for_layout | replace: source, destination -%}
+						{%- capture lcp -%}
+							{% assign __chanks_lcp_start = destination | split: 'src="' %}
+							{%- if __chanks_lcp_start[1] -%}
+								{% assign __chanks_lcp_end = __chanks_lcp_start[1] | split: '"' %}
+								{%- if __chanks_lcp_end[0] -%}
+									<!-- {{ template.name }}_image_lcp [{{ __chanks_lcp_end[0] }}] -->
+								{%- endif -%}
+							{%- endif -%}
+						{%- endcapture -%}
+						{%- assign content_for_layout = content_for_layout | append: lcp -%}
+					{%- else -%}
+						{%- if source contains 'shogun-image' -%}
+							{%- assign destination = source 
+							| replace: ' src=', ' src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src='
+							| replace: '3000x3000', '800x800'
+							| replace: 'shogun-image ', 'lazyload shogun-image '
+							-%}
+							{%- assign content_for_layout = content_for_layout | replace: source, destination -%}
+						{%- endif -%}
+					{%- endif -%}
+				{%- endif -%}
+
+			{% endif %}
+			
+		{%- endunless -%}
+	{% endfor %}	
+
+{%- endif -%}

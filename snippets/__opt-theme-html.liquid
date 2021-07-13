@@ -1,0 +1,25 @@
+{%- capture __html -%}
+	{{ html }}
+{%- endcapture -%}
+
+{% comment %} Finding LCP for pages {% endcomment %}
+{%- assign image_lcp = '' -%}
+{%- capture find -%}{{ template.name }}_image_lcp [{%- endcapture -%}
+{%- assign chanks = __html | split: find -%}
+
+{%- capture image_lcp -%}
+{% for ch in chanks %}
+{%- unless forloop.first -%}
+	{%- assign __ch = ch | split: ']' -%}
+	<link rel="preload" as="image" href="{{ __ch[0] }}">
+{%- endunless -%}
+{% endfor %}
+{%- endcapture -%}
+
+{%- assign html = __html
+	| replace: '<!-- preload_image_lcp -->', image_lcp
+	| replace: '<!-- preload_shogun_css -->', preload_shogun_css
+	| replace: '__from__', '__to__'
+-%}
+
+{{ html }}

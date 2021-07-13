@@ -1,0 +1,6 @@
+{%- if speedupkernel -%}
+	{%- unless is_admin_interface -%}
+		{% include '__opt-system-shogun' %}
+		{% include '__opt-theme-layout' %}
+	{%- endunless -%}
+{%- endif -%}

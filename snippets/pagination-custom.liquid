@@ -1,0 +1,58 @@
+{% comment %}
+
+  This snippet renders a custom widget based on the current 'paginate' context,
+  defined in { % paginate XXXX by 5 % } tags wrapping the content.
+  The example below breaks the pagination down so you can setup your own styles and behavior if you wish.
+
+  Basic Pagination Usage:
+    <div class="pagination">
+      {{ paginate | default_pagination }}
+    </div>
+
+  Replace Text:
+    <div class="pagination">
+      {{ paginate | default_pagination | replace: 'Previous', 'Newer articles' | replace: 'Next', 'Older articles' }}
+    </div>
+
+  More information:
+   - index#pagination
+   - http://docs.shopify.com/themes/liquid-variables/paginate
+
+{% endcomment %}
+
+<div class="flex flex-row center width-100 large--width-auto text-center items-center justify-center border border-primary padding-vertical-1 padding-horizontal-4 margin-bottom-8">
+  {% if paginate.previous %}
+    <a class="text-no-decoration text-default text-secondary-hover" href="{{ paginate.previous.url }}" title="{{ paginate.previous.title }}">
+      <svg class="svg-angle-left" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" style="margin-left: 5px;width: 8px;">
+        <title>
+          angle left
+        </title>
+        <path d="M25.1 247.5l117.8-116c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L64.7 256l102.2 100.4c4.7 4.7 4.7 12.3 0 17l-7.1 7.1c-4.7 4.7-12.3 4.7-17 0L25 264.5c-4.6-4.7-4.6-12.3.1-17z"></path>
+      </svg>
+    </a>
+  {% endif %}
+
+  {% for part in paginate.parts %}
+    {% include "attribute-part-active" %}
+    {% if part.is_link %}
+      <a class="text-no-decoration text-default text-secondary-hover padding-horizontal-2" href="{{ part.url }}" title="">{{ part.title }}</a>
+    {% else %}
+      {% if part_active %}
+        <span class="active"><span class="font-bold font-family-heading">{{ part.title }}</span></span>
+      {% else %}
+        <span>{{ part.title }}</span>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% if paginate.next %}
+    <a class="text-no-decoration text-default text-secondary-hover" href="{{ paginate.next.url }}" title="{{ paginate.next.title }}">
+      <svg class="svg-angle-right" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" style="margin-left: 5px;width: 8px;">
+        <title>
+          angle right
+        </title>
+        <path d="M166.9 264.5l-117.8 116c-4.7 4.7-12.3 4.7-17 0l-7.1-7.1c-4.7-4.7-4.7-12.3 0-17L127.3 256 25.1 155.6c-4.7-4.7-4.7-12.3 0-17l7.1-7.1c4.7-4.7 12.3-4.7 17 0l117.8 116c4.6 4.7 4.6 12.3-.1 17z"></path>
+      </svg>
+    </a>
+  {% endif %}
+</div>

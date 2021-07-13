@@ -1,0 +1,41 @@
+{% include "attribute-blog-category-links" %}
+{% include "template-blog-popular" %}
+
+{% schema %}
+{
+  "name": "Content",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Thumbnails"
+    },
+    {
+      "type": "text",
+      "id": "article_thumbnail_call_to_action",
+      "label": "Call to action",
+      "default": "Read more"
+    },
+    {
+      "type": "article",
+      "id": "attribute_blog_featured_article",
+      "label": "Featured article"
+    },
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "article",
+      "id": "blog_hero_article",
+      "label": "Article",
+      "info": "Select \"None\" to show first article."
+    },
+    {
+      "type": "text",
+      "id": "blog_hero_call_to_action",
+      "label": "Call to action",
+      "default": "Read more"
+    }
+  ]
+}
+{% endschema %}

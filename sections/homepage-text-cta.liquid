@@ -1,0 +1,131 @@
+{% assign text_content    = section.settings %}
+{% assign title           = text_content.title %}
+{% assign body            = text_content.body | default: false %}
+{% assign button_url      = text_content.url | default: false %}
+{% assign button_text     = text_content.button_text | default: false %}
+{% assign layout          = text_content.layout %}
+{% assign overlay_color   = text_content.overlay_color %}
+{% assign text_color      = text_content.text_color %}
+{% assign button_style    = text_content.button_style %}
+
+<section class="padding-vertical-4 large--padding-vertical-5 relative" {% if overlay_color %}style="background-color: {{ overlay_color }};"{% endif %}>
+  <div class="flex items-center justify-center relative z-index-2 max-width-7 margin-left-auto margin-right-auto padding-horizontal-1 medium--padding-horizontal-3">
+
+    {% if button_url and button_text %}
+    <div class="height-2 order-2 width-auto {% if layout == 'col-text-right' %} large--order-2 margin-left-2 medium--margin-left-4 large--margin-left-6 {% else %} margin-right-3 large--margin-right-6{% endif %} flex items-center justify-center">
+      <a class="transition-all font-size-1 large--font-size-2 font-family-heading padding-horizontal-3 small--padding-horizontal-8 large--padding-horizontal-10 padding-vertical-1 small--padding-vertical-2 border border-width-1 font-weight-7 border-primary text-primary background-transparent text-uppercase letter-spacing-2 text-no-decoration background-primary-hover text-white-hover" href="{{ button_url }}">{{ button_text }}</a>
+    </div>
+    {% endif %}
+
+    <div class="margin-horizontal-0 large--padding-horizontal-6 width-auto">
+      <h3 class="font-size-3 small--font-size-4 large--font-size-7 margin-top-0 text-uppercase font-weight-7 letter-spacing-1 font-family-heading {% if body %}margin-bottom-4{% else %}margin-bottom-0{% endif %} text-{{ text_color }}">{{ title }}</h3>
+      
+      {% if body %}
+        <div class="margin-bottom-4 letter-spacing-1 line-height-double max-width-6 text-{{ text_color }}">{{ body }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+  {
+    "name": "Text Content",
+    "settings": [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Rich Content Title"
+      },
+      {
+        "id": "body",
+        "type": "richtext",
+        "label": "Text"
+      },
+      {
+        "id": "text_align",
+        "type": "select",
+        "label": "Text align",
+        "default": "text-center",
+        "options": [
+          {
+            "label": "Text right",
+            "value": "text-right"
+          },
+          {
+            "label": "Text left",
+            "value": "text-left"
+          },
+          {
+            "label": "Text center",
+            "value": "text-center"
+          }
+        ]
+      },
+      {
+        "id": "url",
+        "type": "url",
+        "label": "Button Url"
+      },
+      {
+        "id": "button_text",
+        "type": "text",
+        "label": "Button Text"
+      },
+      {
+        "id": "layout",
+        "type": "select",
+        "label": "Layout",
+        "default": "col-text-right",
+        "options": [
+          {
+            "label": "Column: Button Right",
+            "value": "col-text-right"
+          },
+          {
+            "label": "Column: Button Left",
+            "value": "col-text-left"
+          }
+        ]
+      },
+      {
+        "id": "text_color",
+        "type": "select",
+        "label": "Text Color",
+        "default": "black",
+        "options": [
+          {
+            "label": "Black",
+            "value": "black"
+          },
+          {
+            "label": "White",
+            "value": "white"
+          },
+          {
+            "label": "Primary Color",
+            "value": "primary"
+          },
+          {
+            "label": "Secondary Color",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "label": "Background color",
+        "default": "#cdde00"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Text + CTA",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}
+

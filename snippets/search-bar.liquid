@@ -1,0 +1,12 @@
+{%- assign class = class | default: false -%}
+
+<span class="js-mobile-search-trigger large--hide">{% include "svg-search" with fill: 'white', class: 'width-2 padding-1' %}</span>
+
+<form class="search-bar hide large--block absolute large--relative width-100 large--width-auto z-index-1 margin-top-16 large--margin-top-0 background-accent large--background-primary padding-5 large--padding-0 {% if class %}{{ class }}{% endif %}" method="get" action="/search">
+  <input type="hidden" name="type" value="product" />
+  <label for="search-input" class="invisible">Search</label>
+  <input type="search" id="search-input" name="q" class="height-auto large--height-2 js-mobile-search border-black" />
+  <button type="submit">{% include "svg-search" %}</button>
+
+  <span class="js-mobile-search-trigger padding-left-4 large--hide flex items-center">{% include "svg-close"%}</span>
+</form>

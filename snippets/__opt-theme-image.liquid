@@ -1,0 +1,52 @@
+{% comment %} 
+
+{%- assign img_md = load_img | img_url: '720x' -%}
+{%- assign img_md = load_img | img_url: '900x' -%}
+{%- assign img_lg = load_img | img_url: 'master' -%}
+
+{% include '__opt-theme-image',
+	img_class: "",
+	lazyNeed : false
+%}
+
+{% endcomment %}
+
+
+{%- unless img_lg -%}
+	{% assign img_lg = image | img_url: '1440x600' %}
+{%- endunless -%}
+
+{%- unless img_md -%}
+	{% assign img_md = image | img_url: '960x400' %}
+{%- endunless -%}
+
+{%- unless img_sm -%}
+	{% assign img_sm = image | img_url: '1440x600' %}
+{%- endunless -%}
+
+{%- unless img_title -%}
+	{% assign img_title = image.alt | escape %}
+{%- endunless -%}
+
+
+{% if lazyload %}
+<picture class="{{ image_class }}">
+  <source media="(min-width: 1120px)" data-srcset="{{ img_lg }}">
+  <source media="(min-width: 900px)" data-srcset="{{ img_md }}">
+  <img 
+	class="{{ img_class }} lazyload"
+	src="{{ img_sm }}"
+	srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" 
+	data-srcset="{{ img_sm }}" 
+	alt="{{ img_title }}">
+</picture>
+{% else %}
+<picture class="{{ image_class }}">
+  <source media="(min-width: 1120px)" srcset="{{ img_lg }}">
+  <source media="(min-width: 900px)" srcset="{{ img_md }}">
+  <img 
+	class="{{ img_class }}" 
+	src="{{ img_sm }}" 
+	alt="{{ img_title }}">
+</picture>
+{% endif %}

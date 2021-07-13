@@ -1,0 +1,84 @@
+{% assign product_content     = block.settings %}
+{% assign background_color    = product_content.background_color %}
+{% assign featured_product    = product_content.featured_product %}
+{% assign product             = all_products[featured_product] %}
+{% assign image               = product_content.image %}
+{%- capture product_json -%}{% include "product-json" %}{%- endcapture -%}
+
+<section class="collection-in-detail"  style="background-color: {{ background_color }};">
+    <div class="clearfix" itemtype="http://schema.org/ItemList">
+
+      <div itemprop="itemListElement" itemscope itemtype="http://schema.org/Product"
+            class="product-{{ product.id }} section clearfix product_section padding-vertical-16 flex items-center justify-center flex-column large--flex-row" {{ block.shopify_attributes }}>
+
+        <div class="product-images width-auto large--padding-right-6">
+          {% if image %}
+            <img class="block width-100 large--width-6 padding-10 large--padding-0" style="max-width: 380px;"
+              data-src="{{ image | img_url: 'large' }}"
+              alt="{{ product.title }}" />
+          {% endif %}
+        </div>
+
+        <div class="product-details width-auto flex items-center large--items-start text-center large--text-left justify-center flex-column large--padding-left-6">
+          {% include 'product-reviews-stars' %}
+          
+          <a class="text-primary text-uppercase letter-spacing-1 font-family-heading text-no-decoration font-size-2 small--font-size-4 large--font-size-6" href="{{ product.url }}">{{ product.title | remove: ' - Inked Gaming Logo' }}</a>
+
+          <span class="text-uppercase letter-spacing-1 font-size-2 small--font-size-4 large--font-size-5">{{ product.vendor }}</span>
+
+          <span class="text-uppercase font-family-heading letter-spacing-2 margin-top-2 font-size-2">{{ product.type }}</span>
+
+          <div class="js-product_section product_section">
+            {%- include "attribute-cart-ajax-enabled" -%}
+
+            <form action="/cart/add" method="post" 
+              enctype="multipart/form-data" 
+              class="js-product-form product-form" 
+              {% if cart_ajax_enabled %}data-behavior="ajax-cart-form"{% endif %} 
+              data-product-json='{{ product_json }}'>
+              <input type="hidden" name="id" value="{{ current_variant.id }}" />
+
+              <p class="margin-vertical-1">
+                <span class="js-price price font-size-2 small--font-size-4 large--font-size-6 font-weight-6">
+                  {{ product.price | money }}
+                </span>
+
+                <s class="js-compare-price {% unless variant_on_sale %}hide{% endunless %}">
+                  {{ product.compare_at_price | money }}
+                </s>
+              </p>
+
+              {% if product_options %}
+                {% include "product-options" %}
+              {% endif %}
+
+              <button type="submit" class="js-add-to-cart font-weight-bold margin-top-1 {% unless current_variant.available or variant.inventory_policy != 'continue' %}backround-primary{% endunless %} background-secondary background-primary-hover cursor-pointer transition-all text-white text-uppercase border-none padding-vertical-1 medium--padding-vertical-2 padding-horizontal-4 medium--padding-horizontal-9 letter-spacing-1 medium--letter-spacing-2 font-size-2 medium--font-size-4"
+                {% unless current_variant.available or variant.inventory_policy != 'continue' %}disabled{% endunless %}>
+                {% if current_variant.available or variant.inventory_policy != 'continue' %}
+                  Add to cart
+                {% else %}
+                  Out of stock
+                {% endif %}
+              </button>
+
+              <div class="max-width-5 large-max-width-auto center large--margin-horizontal-0 flex items-center large--items-start justify-center large--justify-start">
+                <div class="js-number-input quantity-wrapper flex itesm-center justify-center text-center border margin-top-6 font-size-2 medium--margin-right-2 large--margin-right-4
+                {% unless current_variant.available %} hide{% endunless %}"
+                  style="min-width: 75px;">
+                  <button type="button" data-behavior="decrement"
+                    class="button-reset font-size-6 block"
+                    style="width: 36px;" >-</button>
+                  <input type="number" id="quantity" name="quantity" value="1" min="1"
+                    class="flex-item center border-none appearance-none text-center hide-spinner button-reset width-2 margin-0 padding-0" />
+                  <button type="button" data-behavior="increment"
+                    class="button-reset font-size-3 block"
+                    style="width: 36px;" >+</button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+  </div>
+</section>

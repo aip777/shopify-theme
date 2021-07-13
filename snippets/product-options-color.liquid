@@ -1,0 +1,48 @@
+{%- for num in (1..product.options.size) -%}
+  {%- assign option_title = product.options[forloop.index0] | default: false -%}
+  {%- assign option_handle = option_title | handle -%}
+  {%- assign option_number = "option" | append: num -%}
+  {%- assign options = product.variants | map: option_number | uniq -%}
+  {%- assign swatch_prefix = "" -%}
+
+  {%- if option_title contains 'Color' -%}
+    {%- assign swatch_prefix = "color-" -%}
+  {%- endif -%}
+
+  {% assign color_only = false %}
+
+  {% if color_only == true %}
+    {% if option_handle != 'style' %}
+      {% continue %}
+    {% endif %}
+  {% endif %}
+  
+  <fieldset class="block product-option-row padding-0 border-none margin-0" data-option-name="{{ option_handle }}">
+    <legend class="text-uppercase margin-bottom-2 font-family-heading letter-spacing-1 font-size-2">{{ option_title }}</legend>
+    {%- for option in options -%}
+      {%- assign option_handle = option | handle -%}
+      {%- assign selected = false -%}
+      {%- if option == current_variant[option_number] -%}
+        {%- assign selected = true -%}
+      {%- endif -%}
+
+      <input type="radio"
+        name="{{ option_number }}"
+        value="{{ option }}"
+        class="invisible js-product-option-swatch"
+        aria-label="{{ option }}"
+        id="{% if template == "list-collections" %}{{ collection.handle }}-{% endif %}{{ option_handle }}-{{ product.id }}"
+      />
+
+      <label for="{% if template == "list-collections" %}{{ collection.handle }}-{% endif %}{{ option_handle }}-{{ product.id }}"
+        data-option="{{ option }}"
+        class="inline-block width-100 line-height-0 margin-bottom-3 link cursor-pointer border">
+        <span class="{{ swatch_prefix }}swatch {{ swatch_prefix }}swatch-{{ option | handle }} 
+          block line-height-solid letter-spacing-1 text-left text-black text-uppercase padding-2">
+          <span>{{ option }}</span>
+        </span>
+      </label>
+      
+    {%- endfor -%}
+  </fieldset>
+{%- endfor -%}

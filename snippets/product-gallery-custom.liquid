@@ -1,0 +1,37 @@
+<div class="js-product-variant-gallery product-variant-gallery width-100 active"
+    data-variant-id="{{ current_variant.id }}">
+
+  <div class="js-product-carousel product-carousel">
+    {%- for image in product.images -%}
+    <div>
+      <div class="relative aspect-ratio-4x3">
+        <div class="absolute absolute-fill">
+          {% comment %} <img {% if forloop.first %}id="js-product-image"{% endif %} class="object-fit-contain object-position-center product-featured-img"
+            {% if variant_image_count == 0 %}src{% else %}data-src{% endif %}="{{ image | img_url: '1024x' }}"
+            alt="{{ image.alt | escape }}" /> {% endcomment %}
+          {% if forloop.first %}
+          <img id="js-product-image" class="object-fit-contain object-position-center product-featured-img loaded"
+            loading="eager"
+            src="{{ image | img_url: '720x' }}"
+            alt="{{ image.alt | escape }}" />
+            <!-- {{ template.name }}_image_lcp [{{ image | img_url: '720x' }}] -->
+          {% else %}
+          <img class="object-fit-contain object-position-center product-featured-img"
+            {% if variant_image_count == 0 %}src{% else %}data-src{% endif %}="{{ image | img_url: '720x' }}"
+            alt="{{ image.alt | escape }}" />
+          {% endif %}
+
+          {% comment %}
+            'hide' class is removed and 'flex' is added when non-image file is uploaded
+          {% endcomment %}
+          <div id="js-file-upload-confirmation" class="hide absolute absolute-fill z-index-2 background-light-grey flex-column justify-center padding-6">
+            <div class="margin-bottom-3">{% include 'svg-fancy-check' %}</div>
+            <p class="font-size-4 font-weight-bold text-center margin-vertical-0" id="js-confirmation-text">Your file has been uploaded!</p>
+            <p class="font-size-4 text-center margin-vertical-0" id="js-file-name"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%- endfor -%}
+  </div>
+</div>

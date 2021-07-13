@@ -1,0 +1,88 @@
+{%- if product.description != blank or settings.shipping_details != blank -%}
+    <div class="product-details rte font-size-4 margin-bottom-6 background-light-grey padding-10 large--padding-14 text-left flex flex-wrap">
+        <div class="large--padding-6">
+            <span class="text-uppercase font-family-heading letter-spacing-2 font-size-3 large--font-size-4">Description</span>
+            <div class="font-size-2 large--font-size-3">
+                {{ product.description | replace: ' ', ' ' }}
+            </div>
+        </div>
+
+        {%- if settings.shipping_details != blank -%}
+            <div class="large--padding-horizontal-6 font-size-2 large--font-size-3 width-100">
+            <span class="text-uppercase font-family-heading letter-spacing-2 font-size-3 margin-top-10 large--margin-top-0 large--font-size-4 block">Shipping Details</span>
+            {{ settings.shipping_details }}
+            </div>
+        {%- endif -%}
+        
+
+        {% assign measurement_title = '<span class="block text-uppercase font-family-heading letter-spacing-2 margin-bottom-4 margin-top-10 font-size-3 large--font-size-4">Measurements</span>' %}
+        
+        {%- if product.metafields.custom_fields["measurements"] != blank and product.variants.size == 1 -%}
+            <div class="large--padding-horizontal-6 font-size-2 large--font-size-3 width-100">
+            {{ measurement_title }}
+            {{ product.metafields.custom_fields["measurements"] }}
+            </div>
+        {%- elsif product.variants.size > 1 and product.options contains 'Size' and product.type != 'Gift Bundle' -%}
+
+            {% capture option_title %}Size{% endcapture %}
+            {% assign option_title = option_title | split:',' %}
+            {% for option in product.options %}
+                {% if option_title contains option %}
+                    {% capture option_index %}option{{ forloop.index }}{% endcapture %}
+                    {% assign option_values = product.variants | map: option_index | uniq %}
+                    {% assign option_variant = product.variants | uniq %}
+                {% endif %}
+            {% endfor %}
+
+            {% capture option_data %}
+                {% assign data_available = false %}
+                {% for option in option_values %}
+                    {% assign option_title = option | strip %}
+                    <div class="width-50 large--width-33 {% unless forloop.last %}padding-right-4{% endunless%} margin-bottom-6">
+                    <div class="font-family-heading text-uppercase letter-spacing-1 font-size-2">{{ option_title | remove: 'Playmat' }}</div>
+                        {% for i in (1..29) %}
+                            {% assign size = 'size' | append: i %}
+                            {% assign size_details = 'size_details' | append: i %}
+                            {% assign option_check = product.type | append: '-' | append: option_title %}
+                            {% if settings[size] == option_check %}
+                                {{ settings[size_details] | replace: "<p>", "<p class='margin-vertical-1'>" }}
+                                {% if settings[size_details] != blank %}
+                                    {% assign data_available = true %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endcapture %}
+
+            {% if data_available == true %}
+                <div class="large--padding-horizontal-6 font-size-2 large--font-size-3 width-100">
+                    {{ measurement_title }}
+                    <div class="flex flex-wrap font-size-2 large--font-size-3 width-100">
+                        {{ option_data }}
+                    </div>
+                </div>
+            {% endif %}
+        {%- endif -%}
+
+        {%- if product.metafields.custom_fields['great_for_playing'] != blank -%}
+            <div class="large--padding-horizontal-6 font-size-2 large--font-size-3 {%- if product.type == 'Playmat' and option_values != blank %} width-100 small--width-50 large--width-60{% else %}width-100{% endif %}">
+            <span class="block text-uppercase font-family-heading letter-spacing-2 margin-bottom-4 margin-top-10 large--margin-top-14 font-size-3 large--font-size-4">Great for Playing</span>
+            {{ product.metafields.custom_fields['great_for_playing'] | newline_to_br }}
+            </div>
+        {%- endif -%}
+
+        {% comment %}
+        {%- if product.type == 'Playmat' and option_values != blank %}
+            <div class="large--padding-horizontal-6 font-size-2 small--text-center large--font-size-3 width-100 small--width-50 large--width-40 margin-bottom-4 margin-top-6">
+                <div class="block aspect-ratio-21x9 large--aspect-ratio-3x2 relative max-width-4 large--max-width-none">
+                    <div class="absolute absolute-fill">
+                        {% include 'svg-size-chart' %}
+                    </div>
+                </div>
+                <a href="/pages/playmat-and-mousepad-sizing-chart" class="border background-transparent padding-horizontal-6 medium--padding-horizontal-8 padding-vertical-3 medium--padding-vertical-4 text-uppercase font-family-heading letter-spacing-1 link font-size-2 text-no-decoration background-primary-hover text-white-hover">Size Chart</a>
+            </div>
+        {%- endif -%}
+        {% endcomment %}
+    </div>
+{%- endif -%}

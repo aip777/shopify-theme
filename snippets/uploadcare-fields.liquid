@@ -1,0 +1,43 @@
+<p class="cart-attribute__field uploader-debut cart-attribute__field uploader-debut margin-top-6 margin-bottom-12">
+    {% if product.metafields.custom_fields.aspect_ratio != blank %}
+        {% assign aspect_ratio = product.metafields.custom_fields.aspect_ratio %}
+    {% else %}
+        {% assign aspect_ratio = '1:1' %}
+    {% endif %}
+    <input id="uploadcare-uploader" class="js-custom-image-input" type="hidden" data-images-only='false' data-crop="{{ aspect_ratio }}" role="uploadcare-uploader" name="properties[Uploadcare Full Size URL]" value="{{ properties['Uploadcare Full Size URL'] }}">
+    <input id="uploadcare-type" type="hidden" name="properties[_uploadcare_type]" value="{{ properties['_uploadcare_type'] }}">
+
+    <span class="padding-top-4 block letter-spacing-1 font-size-1 font-family-heading flex items-center justify-center large--justify-start"
+    data-behavior="launch-modal"
+    data-modal-id="ModalFile">
+        <span class="margin-right-2 width-1 height-1 inline-block background-primary text-white flex items-center justify-center text-center font-size-1 border-radius-4 text-uppercase">?</span>
+        How do I prepare my file?
+    </span> 
+</p>
+
+
+<div id="ModalFile" class="modal is-closed" data-modal>
+  <div class="modal-backdrop video-backdrop" data-behavior="close-modal"></div>
+
+  <div class="modal-container">
+    <div class="modal-content background-white">
+        <div class="flex flex-column large--flex-row padding-12">
+            <div class="width-100 large--width-50 large--padding-right-6">
+                {% comment %} This is unique to each product {% endcomment %}
+                {% if product.metafields.custom_fields["preparation_instructions"] != blank %}
+                    {{ product.metafields.custom_fields["preparation_instructions"] | replace: '<p>  </p>','' | replace: "<a","<a class='link border-bottom border-primary'" }}
+                {% endif %}
+            </div>
+    
+            <div class="width-100 large--width-50">
+                <h4><strong>HOW-TO VIDEO</strong></h4>
+                <iframe width="560" height="315" data-video="{{ settings.custom_help_page_video }}" frameborder="0" allowfullscreen="" style="max-width: 100%"></iframe>
+            </div>
+        </div>
+
+        <button type="button" class="modal-close" data-behavior="close-modal">
+        {% include "svg-close" %}
+        </button>
+    </div>
+  </div>
+</div>

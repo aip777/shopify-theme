@@ -1,0 +1,73 @@
+{% assign newsletter_form = section.settings %}
+
+{% assign title = newsletter_form.title %}
+{% assign copy = newsletter_form.copy | newline_to_br %}
+{% assign placeholder = customer.email | default: newsletter_form.placeholder %}
+{% assign button_label = newsletter_form.button_label %}
+{% assign form_action = newsletter_form.form_action %}
+
+<div class="background-primary">
+  <div class="max-width-7 padding-vertical-3 center padding-horizontal-2">
+    <div class="flex flex-column items-center padding-vertical-5 medium--padding-vertical-12">
+      <div class="title text-white text-uppercase font-size-5 font-weight-bold letter-spacing-2">{{ title }}</div>
+
+      <div class="flex-item-1 text-white font-size-1 letter-spacing-2 line-height-copy text-left text-center large--text-left padding-bottom-2 large--padding-bottom-0 padding-horizontal-4 margin-bottom-2 text-uppercase">
+        {{ copy | replace: '<br','<br class="large--hide"' }}
+      </div>
+      <div class="flex-item-1 width-100 max-width-6 large--padding-horizontal-10">
+        <form action="{{ form_action }}" method="post" target="_blank">
+          <div class="flex items-center padding-horizontal-4 large--padding-horizontal-0">
+              <input class="inline-block-middle width-100 padding-2 italic font-size-2 border-secondary border-width-1 background-transparent height-2" type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ placeholder }}" name="EMAIL" id="mail" aria-label="Email Address" autocorrect="off" autocapitalize="off" />
+              <button class="inline-block text-primary text-white-hover cursor-pointer transition-all font-weight-bold text-uppercase padding-horizontal-1 background-secondary font-size-1 width-4 border-none height-2 margin-left-2" type="submit" value="{{ button_label }}" name="subscribe" id="subscribe">{{ button_label }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter form",
+  "settings": [
+    {
+      "id": "title",
+      "label": "Title",
+      "type": "text",
+      "default": "Spice up your inbox"
+    },
+    {
+      "id": "copy",
+      "label": "Copy",
+      "type": "textarea",
+      "default": "Sign up  to receive discounts, featured products and more!"
+    },
+    {
+      "id": "placeholder",
+      "label": "Input placeholder",
+      "info": "Note: will default to customer's email address if logged in",
+      "type": "text",
+      "default": "Email"
+    },
+    {
+      "id": "button_label",
+      "label": "Button label",
+      "type": "text",
+      "default": "Sign Up"
+    },
+    {
+      "id": "form_action",
+      "label": "Form action",
+      "type": "text",
+      "info": "Note: you can get this from your email marketing service."
+    }
+  ],
+  "presets": [
+      {
+        "name": "Newsletter form",
+        "category": "Rosewood"
+      }
+    ]
+}
+{% endschema %}
+

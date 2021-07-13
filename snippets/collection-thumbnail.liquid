@@ -1,0 +1,29 @@
+{%- assign current_collection = collection -%}
+
+{% include "attribute-collection-image" %}
+{% include "attribute-collection-products-count" %}
+
+{%- assign size = '450x' -%}
+{%- assign ratio = 'aspect-ratio-3x2' -%}
+{%- assign show_count = true -%}
+{%- assign float_title = false -%}
+
+<div class="collection-thumbnail relative large--padding-horizontal-4 large--padding-bottom-3">
+  <div class="{{ ratio }} text-center aspect-ratio-1x1 relative">
+    <a href="{{ current_collection.url }}" class="absolute absolute-fill">
+      <img class="object-fit-contain object-position-center" data-collection-thumbnail-featured-image data-src="{{ collection_image | img_url: size }}" />
+    </a>
+  </div>
+
+  <div class="margin-top-2 padding-horizontal-3 text-center {% if float_title == true %}absolute bottom-12 large--bottom-14 left-6 large--left-10{% endif %}">
+    <a
+      href="{{ current_collection.url }}"
+      class="font-weight-6 large--line-height-double text-no-decoration text-uppercase letter-spacing-1 padding-vertical-1 padding-horizontal-1 large--padding-horizontal-6 border border-white background-white large--background-primary-hover {% if float_title == true %}font-size-1 letter-spacing-2 text-default large--text-white-hover{% else %}text-default font-size-3{% endif %}">
+      {{ current_collection.title }} <span class="padding-left-1"> </span> 
+
+      {% if show_count == true %}
+      <span class="text-primary padding-left-1">({{ collection_products_count }})</span>
+      {% endif %}
+    </a>
+  </div>
+</div>

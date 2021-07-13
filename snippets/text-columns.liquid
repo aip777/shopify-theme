@@ -1,0 +1,42 @@
+<section class="margin-vertical-9 large--padding-top-3 large--padding-bottom-16 relative text-center background-light-grey">
+  <div class="text-center large--margin-bottom-8 margin-top-8 large--margin-top-16 border-bottom inline-block padding-horizontal-4 border-grey">
+    <h1 class="font-size-3 margin-top-0 margin-bottom-3 text-uppercase letter-spacing-1">
+      {{ block.settings.section_title }}
+    </h1>
+  </div>
+
+  <div class="max-width-8 center flex items-center flex-column large--flex-row justify-center relative z-index-2 padding-horizontal-12 padding-top-10 padding-bottom-10 large--padding-bottom-16">
+    
+    {% for i in (1..3) %}
+      {% assign text_content    = block.settings %}
+      {% assign title           = 'title' | append: i %}
+      {% assign title           = text_content[title] %}
+      {% assign image           = 'image' | append: i %}
+      {% assign image           = text_content[image] | default: false %}
+      {% assign body            = 'body' | append: i %}
+      {% assign body            = text_content[body] | default: false %}
+      {% assign button_url      = 'url' | append: i %}
+      {% assign button_url      = text_content[button_url] | default: false %}
+      {% assign text_color      = 'text_color' | append: i %}
+      {% assign text_color      = text_content[text_color] %}
+
+      <div class="width-auto margin-horizontal-5 large--margin-horizontal-8 text-center js-hover-text background-white padding-horizontal-6 large--padding-horizontal-12 padding-vertical-12 margin-bottom-8 large--margin-bottom-0">
+
+        {% if image %}
+          <img class="transition-all width-100 large--width-auto height-2 large--height-4 large--padding-vertical-4 large--padding-horizontal-7 margin-bottom-4" data-src="{{ image | img_url: '100x' }}" />
+        {% endif %}
+        
+        <a class="link" href="{{ button_url }}">
+          <h3 class="font-size-1 letter-spacing-1 background-primary text-white padding-horizontal-3 padding-vertical-3 large--font-size-2 margin-top-0 font-family-heading large--margin-bottom-4 text-uppercase text-{{ text_color }} background-secondary-hover transition-all">{{ title }}</h3>
+        </a>
+        
+        {% if body %}
+          <div class="transition-all letter-spacing-1 line-height-double font-weight-light width-100 font-size-1 large--font-size-2 margin-top-3 large--margin-top-6 text-{{ text_color }} js-text">{{ body | strip_html }}</div>
+        {% endif %}
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+</section>

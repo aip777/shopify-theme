@@ -1,0 +1,40 @@
+<div class="width-100 max-width-9 center grid grid-gap-4 large--grid-gap-12 columns-2 padding-bottom-4 padding-vertical-6 large--padding-vertical-12 padding-horizontal-4 large--padding-horizontal-16">
+    {% for i in (1..8) %}
+    {% capture index_cycle %}{% cycle 'odd', 'even' %}{% endcapture %}
+    {% assign collUrl = 'url_' | append: i %}
+    {% assign collImage = 'image_' | append: i %}
+    {% assign title = 'title_' | append: i %}
+    {% assign description = 'description_' | append: i %}
+    {% assign svg = 'svg_' | append: i %}
+
+    {% if block.settings[collImage] != blank %}
+        <div class="collection-list-icon-wrap width-100 block-{{ section.id }}">
+            <a href="{{ block.settings[collUrl] }}"
+            class="collection-list-icon link block text-center width-100 flex height-100">
+            <div class="width-100 medium--width-40 xlarge--width-30 text-center background-accent padding-vertical-8 padding-horizontal-6 flex items-center flex-column justify-center">
+                <div class="max-width-4 padding-horizontal-5 large--padding-horizontal-7 padding-vertical-3 center">
+                  <div class="relative">
+                    <span class="flex items-center justify-center text-black">
+                        {{ block.settings[svg] }}
+                    </span>
+                  </div>
+                </div>
+                <span class="block font-family-heading font-weight-6 font-size-4 text-uppercase letter-spacing-2 text-primary text-uppercase padding-top-2 padding-bottom-3">
+                    {{ block.settings[title] }}
+                </span>
+                {% assign collection_title = block.settings.title | handle %}
+                <div class="font-size-1 margin-0">
+                    {{ block.settings[description] }}
+                </div>
+            </div>
+            {% assign collection_image = block.settings[collImage] | img_url: '720x' %}
+            <div class="hide medium--width-60 xlarge--width-70 relative hover-parent medium--flex items-center justify-center blur-on-hover zoom-on-hover">
+              <div class="absolute absolute-fill z-index-1 background-cover background-no-repeat background-center blur-target background-grey zoom-target"
+                {% unless collection_image contains 'no-image' %}data-src="{{ collection_image }}"{% endunless %}></div>
+                <div class="padding-horizontal-4 padding-vertical-2 font-family-heading font-size-2 letter-spacing-2 text-uppercase background-white text-primary absolute z-index-2 hover-child transition-all">View</div>
+            </div>
+            </a>
+        </div>
+    {% endif %}
+  {% endfor %}
+</div>

@@ -1,0 +1,35 @@
+{%- for num in (1..product.options.size) -%}
+  {%- assign option_title = product.options[forloop.index0] | default: false -%}
+  {%- assign option_title_handle = option_title | handle -%}
+  {%- assign option_number = "option" | append: num -%}
+  {%- assign options = product.variants | map: option_number | uniq -%}
+  {%- assign swatch_prefix = "" -%}
+
+  {% comment %}
+    If a product has an "Edge: Stitched or Plain" variant option, we show it in 'Upgrades' instead of product options.
+  {% endcomment %}
+
+  {%- if option_title == 'Edge' -%}
+    {% assign display_class = 'hide' %}
+  {%- endif -%}
+
+  {%- if option_title contains 'Color' -%}
+    {%- assign swatch_prefix = "color-" -%}
+  {%- endif -%}
+
+  {% assign color_only = false %}
+
+  {% if color_only == true %}
+    {% if option_title_handle != 'style' %}
+      {% continue %}
+    {% endif %}
+  {% endif %}
+  
+  <div class="{{ display_class }}">
+    {%- if options.size > 2 -%}
+      {%- include 'product-options-dropdown' -%}
+    {%- else -%}
+      {%- include 'product-options-radios' -%}
+    {%- endif -%}
+  </div>
+{%- endfor -%}

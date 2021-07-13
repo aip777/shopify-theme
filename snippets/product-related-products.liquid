@@ -1,0 +1,21 @@
+
+{% assign related = product.metafields.custom_fields['related_products'] %}
+
+{% if related != blank %}
+    {% assign related_products = related | split: "," %}
+    {% if related_products.size > 0 %}
+    <div class="related-products text-center large--margin-top-16 margin-bottom-16 block">
+        <div class="text-uppercase letter-spacing-1 text-center border-bottom border-grey padding-bottom-2 margin-bottom-6 large--margin-bottom-12 inline-block padding-horizontal-8 large--margin-top-16">You may also like</div>
+        <div class="flex items-center justify-center center max-width-8 large--padding-bottom-16 items-start">
+            {% for related_handle in related_products %}
+                {% assign related_product = all_products[related_handle] %}
+                {% if related_product.available == true %}
+                    <div class="width-50 large--width-33 {% if forloop.last %}hide large--block{% endif %}">
+                        {% include 'product-thumbnail' with product: related_product %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,160 @@
+{%- include "attribute-cart-ajax-enabled" -%}
+{%- capture product_json -%}{% include "product-json" %}{%- endcapture -%}
+
+<form action="/cart/add"
+  method="post"
+  enctype="multipart/form-data"
+  class="js-product-form js-product-form--custom product-form"
+  {% if cart_ajax_enabled %}data-behavior="ajax-cart-form"{% endif %}
+  data-product-json='{{ product_json }}'>
+  <input type="hidden" name="id" value="{{ current_variant.id }}" />
+  <input class="js-group-id" type="hidden" name="properties[_group_id]" value="" />
+
+  <div class="flex flex-row items-center justify-center large--justify-between margin-bottom-7">
+    <p class="line-height-solid margin-0 font-family-heading font-weight-6 font-size-7 letter-spacing-0 text-uppercase">
+      {% comment %} Recharge needs a price class here so it can update the price when you select the subscription options {% endcomment %}
+      <span class="js-price price">
+        {{ product.price | money }}
+      </span>
+
+      <s class="js-compare-price {% unless variant_on_sale %}hide{% endunless %}">
+        {{ product.compare_at_price | money }}
+      </s>
+
+      {%- comment -%}
+      Add subtotal as necessary here if you want to see price * quantity:
+      <span class="js-product-subtotal" data-product-quantity="1" data-product-price="{{ current_variant.price }}">{{ current_variant.price | money_without_trailing_zeros }}</span>
+      {%- endcomment -%}
+    </p>
+  </div>
+
+  {% comment %} <script src="https://widget.sezzle.com/v1/javascript/price-widget?uuid=256309ee-dbf1-4484-ba69-5c4378437b46"></script> {% endcomment %}
+  <script>
+  __engine_other['sezzle-price-widget'] = function(){
+    console.log('sezzle-price-widget');
+    loadjs('https://widget.sezzle.com/v1/javascript/price-widget?uuid=256309ee-dbf1-4484-ba69-5c4378437b46');
+  }
+  </script>
+  {% assign page_handle = product.type | handleize | append: '-size-guide' %}
+  {% if pages[page_handle].content != blank %}
+    <div data-behavior="launch-modal" data-modal-id="Size" class="flex justify-center large--justify-start padding-bottom-4 top--1">
+      <div class="block height-1 width-2 relative">
+        <div class="absolute absolute-fill">
+            {% include 'svg-size-chart' %}
+          </div>
+      </div>
+      <span class="margin-left-3 margin-top-1 text-uppercase font-weight-6 font-family-heading letter-spacing-1 font-size-2">Size Chart</span>
+    </div>
+  {% endif %}
+
+  {% include 'uploadcare-fields' %}
+
+  {%- if product_options and product.variants.size > 1 -%}
+    <div class="center large--margin-left--1 margin-bottom-6 max-width-5">
+      {% include "product-options" with product_page_form: true %}
+    </div>
+  {%- endif -%}
+
+  {% if option_edge or product_upgrade_handles != blank %}
+
+    {% if current_variant.title contains 'Stitched' %}
+      {% assign stitched_selected = true %}
+    {% else %}
+      {% assign stitched_selected = false %}
+    {% endif %}
+
+    <div class="width-100">
+      <h3 class="text-uppercase margin-bottom-2 font-family-heading letter-spacing-1 font-size-3">Upgrades</h3>
+      {% if option_edge %}
+
+        <button type="button" class="js-toggle-stitching inline-block width-100 max-width-5 margin-bottom-3 button-reset {% if stitched_selected %}is-active{% endif %}">
+          <span class="inline-flex width-100 line-height-solid text-uppercase padding-2 letter-spacing-1 cursor-pointer border justify-between flex-wrap">
+              Stitched Edging
+              <div class="price">+ {{ settings.stitched_edging_price }}</div>
+          </span>
+        </button>
+
+      {% endif %}
+
+      {% if product_upgrade_handles != blank %}
+        {% include 'product-upgrades' %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <button type="submit" id="AddToCart" class="js-add-to-cart margin-top-8 js-save-snapshot button width-100 max-width-5 font-family-heading background-black"
+    {% unless current_variant.available %}disabled{% endunless %}
+    {% unless settings.custom_atc_color == 'rgba(0,0,0,0)' %}
+      style="background-color: {{ settings.custom_atc_color }}"
+    {% endunless %}>
+    {% if current_variant.available %}
+      Add to cart
+    {% else %}
+      Out of stock
+    {% endif %}
+  </button>
+
+  <div class="margin-vertical-3">
+    {% unless current_variant.available %}
+    <a
+    class="js-bis-trigger klaviyo-bis-trigger color-primary font-weight-bold link border-bottom border-secondary border-width-1"
+    href="#">Notify me if more are restocked!</a>
+    {% endunless %}
+  </div>
+
+  <div class="js-image-error hide">
+    <p class="font-weight-bold">
+      Please upload an image before adding to cart.
+    </p>
+  </div>
+
+  <div class="max-width-5 large-max-width-auto center large--margin-horizontal-0 flex">
+    <div class="js-number-input quantity-wrapper flex items-center justify-center text-center border margin-top-3 font-size-2 medium--margin-right-2 large--margin-right-4
+    {% unless current_variant.available %} hide{% endunless %}"
+      style="min-width: 75px;">
+      <button type="button" data-behavior="decrement"
+        class="button-reset font-size-6 block"
+        style="width: 36px;" >-</button>
+      <input class="js-quantity text-center border-none" type="number" id="quantity" name="quantity" value="1" min="1"
+        class="flex-item center border-none appearance-none text-center hide-spinner button-reset width-2 margin-0 padding-0" />
+      <button type="button" data-behavior="increment"
+        class="button-reset font-size-3 block"
+        style="width: 36px;" >+</button>
+    </div>
+  </div>
+</form>
+
+{% if product_addon_handles != blank  %}
+  <div class="block large--max-width-5 margin-top-16">
+    {% include 'product-addon' %}
+  </div>
+{% endif %}
+
+{% if pages[page_handle].content != blank %}
+  <div id="Size" class="modal is-closed" data-modal>
+    <div class="modal-backdrop video-backdrop" data-behavior="close-modal"></div>
+
+    <div class="modal-container">
+      <div class="modal-content background-white">
+          <div class="flex flex-column large--flex-row padding-12">
+            {{ pages[page_handle].content | replace: '<img','<img class="width-100"' }}
+          </div>
+
+          <button type="button" class="modal-close" data-behavior="close-modal">
+          {% include "svg-close" %}
+          </button>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% comment %} Uploadcare custom button color {% endcomment %}
+{% unless settings.custom_upload_color == 'rgba(0,0,0,0)' %}
+  <style>
+  button.uploadcare--widget__button.uploadcare--widget__button_type_open,
+  button.uploadcare--widget__button.uploadcare--widget__button_type_open:focus,
+  button.uploadcare--widget__button.uploadcare--widget__button_type_open:hover {
+    background-color: {{ settings.custom_upload_color }};
+  }
+  </style>
+{% endunless %}

@@ -1,0 +1,29 @@
+{% comment %} This is an example "How to load googlefonts in the preload mode" {% endcomment %}
+{% comment %} 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" media="print" onload="this.onload=null;this.removeAttribute('media');">
+{% endcomment %}
+<style>
+@font-face{
+    font-family:TitilliumWeb-Bold;
+    src:url('{{ 'TitilliumWeb-Bold.otf' | asset_url }}') format("opentype");
+    src:url('{{ 'TitilliumWeb-Bold.woff2' | asset_url }}') format("woff2"),url('{{ 'TitilliumWeb-Bold.woff' | asset_url }}') format("woff"),url('{{ 'TitilliumWeb-Bold.ttf' | asset_url }}') format("truetype");
+    font-weight:400;
+    font-style:normal;
+    font-display:swap;
+}
+@font-face{
+    font-family:TitilliumWeb-Light;
+    src:url('{{ 'TitilliumWeb-Light.otf' | asset_url }}') format("opentype");
+    src:url('{{ 'TitilliumWeb-Light.woff2' | asset_url }}') format("woff2"),url('{{ 'TitilliumWeb-Light.woff' | asset_url }}') format("woff"),url('{{ 'TitilliumWeb-Light.ttf' | asset_url }}') format("truetype");
+    font-weight:400;
+    font-style:normal;
+    font-display:swap;
+}
+@font-face{
+    font-family:TitilliumWeb-Regular;
+    src:url('{{ 'TitilliumWeb-Regular.otf' | asset_url }}') format("opentype");src:url('{{ 'TitilliumWeb-Regular.woff2' | asset_url }}') format("woff2"),url('{{ 'TitilliumWeb-Regular.woff' | asset_url }}') format("woff"),url('{{ 'TitilliumWeb-Regular.ttf' | asset_url }}') format("truetype");
+    font-weight:400;
+    font-style:normal;
+    font-display:swap;
+}
+</style>

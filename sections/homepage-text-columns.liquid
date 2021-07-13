@@ -1,0 +1,104 @@
+<section class="margin-top-6 margin-bottom-6 relative">
+
+  <div class="max-width-7 center flex large--grid columns-3 items-start justify-center relative z-index-2 padding-bottom-12 large--padding-bottom-0 padding-horizontal-12 large--padding-top-10">
+    
+    {% for block in section.blocks %}
+      {% assign text_content    = block.settings %}
+      {% assign title           = text_content.title %}
+      {% assign image           = text_content.image | default: false %}
+      {% assign body            = text_content.body | default: false %}
+      {% assign button_url      = text_content.url | default: false %}
+      {% assign button_text     = text_content.button_text | default: false %}
+      {% assign text_color      = text_content.text_color %}
+
+      <div class="hover-parent width-auto margin-horizontal-2 text-center js-hover-text">
+
+        {% if image %}
+          <img class="transition-all width-auto height-2 small--height-3 large--height-4 large--padding-vertical-4 large--padding-horizontal-7 margin-bottom-4" data-src="{{ image | img_url: '100x' }}" />
+        {% endif %}
+        
+        <h3 class="font-size-1 letter-spacing-2 large--font-size-4 margin-top-0 font-family-heading large--margin-bottom-4 text-uppercase large--letter-spacing-3 text-{{ text_color }}">{{ title }}</h3>
+
+        {% if body %}
+          <div class="transition-all hover-child opacity-only hide small--block letter-spacing-1 font-weight-light width-100 font-size-1 padding-horizontal-3 text-{{ text_color }} js-text">{{ body | strip_html }}</div>
+        {% endif %}
+
+        {% if button_url and button_text %}
+          <a class="button" href="{{ button_url }}">{{ button_text }}</a>
+        {% endif %}
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+</section>
+
+{% schema %}
+  {
+    "name": "Text Columns",
+    "blocks": [{
+      "type": "text_item",
+      "name": "Text column",
+      "limit": 3,
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Rich Content Title"
+        },
+        {
+          "id": "body",
+          "type": "richtext",
+          "label": "Text"
+        },
+        {
+          "id": "image",
+          "type": "image_picker",
+          "label": "Image"
+        },
+        {
+          "id": "url",
+          "type": "url",
+          "label": "Button Url"
+        },
+        {
+          "id": "button_text",
+          "type": "text",
+          "label": "Button Text"
+        },
+        {
+          "id": "text_color",
+          "type": "select",
+          "label": "Text Color",
+          "default": "black",
+          "options": [
+            {
+              "label": "Black",
+              "value": "black"
+            },
+            {
+              "label": "White",
+              "value": "white"
+            },
+            {
+              "label": "Primary Color",
+              "value": "primary"
+            },
+            {
+              "label": "Secondary Color",
+              "value": "secondary"
+            }
+          ]
+        }
+      ]}
+    ],
+    "presets": [
+      {
+        "name": "Text Columns",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

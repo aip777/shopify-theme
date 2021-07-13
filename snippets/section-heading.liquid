@@ -1,0 +1,23 @@
+{% assign heading_tag = tag | default: 'h2' %}
+{% assign class = "" %}
+
+{% if title != blank or tags != blank  or description != blank  %}
+<div class="text-center margin-bottom-8 margin-top-8 large--margin-top-16 border-bottom inline-block padding-horizontal-4 border-grey {{ class }}">
+
+  {% if title != blank %}
+    <{{ heading_tag }} class="font-size-3 margin-top-0 margin-bottom-3 text-uppercase letter-spacing-1">
+      {% include "unwidow" with title %}
+    </{{ heading_tag }}>
+  {% endif %}
+
+  {% if tags %}
+    <div>{{ tags }}</div>
+  {% endif %}
+
+  {% if description %}
+    <div class="line-height-3 center width-70">
+      {% include "unwidow" with description %}
+    </div>
+  {% endif %}
+</div>
+{% endif %}

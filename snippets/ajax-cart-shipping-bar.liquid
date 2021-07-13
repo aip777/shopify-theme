@@ -1,0 +1,19 @@
+{%- assign free_shipping_threshold = settings.cart_free_shipping_threshold | plus: 0 | times: 100 -%}
+{%- assign amount_to_free_shipping = free_shipping_threshold | minus: cart.items_subtotal_price -%}
+{%- assign free_shipping_width_percentage = 100 -%}
+<span class="invisible shipping-message-text">{{ settings.shipping_message }}</span>
+<span class="invisible shipping-message-text-success">{{ settings.shipping_message_success }}</span>
+
+<div class="ajax-cart-shipping-bar relative text-center"
+  data-free-shipping-threshold="{{ free_shipping_threshold }}">
+  <div class="ajax-cart-shipping-bar-message relative z-index-2 padding-bottom-7 font-size-1 letter-spacing-1 font-italic text-uppercase font-weight-5">
+    {%- if amount_to_free_shipping > 0 -%}
+      {%- assign free_shipping_width_percentage = amount_to_free_shipping | times: 100 | divided_by: free_shipping_threshold -%}
+      {% assign shipping_message = 'cart.general.shipping_message' | t %}
+      {{ shipping_message | replace: 'xx', amount_to_free_shipping | money_without_trailing_zeros }}
+      {% comment %}| divided_by: 100 | ceil | times: 100{% endcomment %}
+    {%- else -%}
+      <i class="far fa-check"></i> {{ 'cart.general.shipping_message_success' | t }}
+    {%- endif -%}
+  </div>
+</div>

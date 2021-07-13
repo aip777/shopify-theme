@@ -1,0 +1,13 @@
+{% comment %} <style>.shg-product{display:block !important;}</style> {% endcomment %}
+{% comment %}
+/* https://web.dev/content-visibility/ */
+div[id^="shopify-section-1"]:nth-child(n+3) {
+	content-visibility: auto
+}
+<link rel="preload" href="{{ '' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+{% endcomment %}
+<style>
+ header {
+	 background-image:url('{{ 'grain@3x.png' | asset_url }}');
+ }
+</style>

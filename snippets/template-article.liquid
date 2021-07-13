@@ -1,0 +1,96 @@
+{% assign current_article = article %}
+{% assign current_comment = comment %}
+
+{% comment %}Capture featured posts first so we can conditionally size main container{% endcomment %}
+{% assign current_article = article.title %}
+{% assign related_posts = "" %}
+{% assign i = 0 %}
+{% for article in blog.articles %}
+  {% if article.title != current_article %}
+    {% assign i = i | plus: 1 %}
+    {% if article.image %}
+      {% assign image_url = article | img_url: "800x800", crop: "center" %}
+    {% else %}
+      {% assign image_url = false %}
+    {% endif %}
+
+    {% capture related_post %}
+      <div class="width-100 large--width-33 text-center padding-6" data-comment-count="{{ article.comments_count }}">
+        <a href="{{ article.url }}" class="block aspect-ratio-1x1 relative hover-parent">
+          <div class="absolute absolute-fill">
+            <img class="object-fit-cover object-fit-center" data-src="{{ image_url }}" data-no-resize />
+          </div>
+
+          <span class="letter-spacing-1 font-family-heading text-uppercase hover-child absolute position-center background-white text-primary padding-horizontal-4 padding-vertical-2">View</span>
+        </a>
+
+        <div class="border border-width-1">
+          <h2 class="font-bold font-size-3 text-uppercase letter-spacing-1 padding-horizontal-3 margin-bottom-2 margin-top-4 font-family-heading height-2">
+            <a href="{{ article.url }}" class="link">
+              {{ article.title | strip_html | truncatewords: 8 }}
+            </a>
+          </h2>
+
+          <p class="font-size-1 font-family-heading letter-spacing-1 text-uppercase margin-top-2 margin-bottom-4">{{ article.published_at | date: "%b %d, %Y" }}</p>
+        </div>
+      </div>
+    {% endcapture %}
+
+    {% assign related_posts = related_posts | append: related_post %}
+    {% if i == 3 %}
+      {% break %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+<div class=""><img class="width-100" src="{{ article.image.src | img_url: 'master' }}"></div>
+
+<div class="padding-vertical-4 template-article container center">
+  <article class="large--width-60 center">
+    <header class="margin-bottom-8 margin-top-6 padding-horizontal-4 large--padding-horizontal-8 large--margin-vertical-16 text-center">
+      <p class="font-size-3 large--font-size-6">
+        <time pubdate datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+          {{ article.published_at | date: '%b %d, %Y' }} | 
+        </time>
+
+        {% assign author = article.author %}
+
+        {% for tag in article.tags %}
+          {% if tag contains 'Author:' %}
+            {% assign author = tag | remove: 'Author:' | trim %}
+          {% endif %}
+        {% endfor %}
+
+        {{ author }}
+      </p>
+
+      <h1 class="font-size-6 large--font-size-9 text-uppercase letter-spacing-1 font-family-heading">
+        {{ article.title }}
+      </h1>
+    </header>
+
+    <div class="content padding-horizontal-4 margin-bottom-12 inline-block width-100">
+      {{ article.content }}
+    </div>
+
+    {% for tag in article.tags %}
+        <a href="/blogs/fuel-made/tagged/{{ tag | handleize }}">{{ tag }}</a>
+    {% endfor %}
+  </article>
+
+  {% if blog.comments_enabled? %}
+    {% include "article-comments" %}
+  {% endif %}
+
+  {% if related_posts %}
+    <div class="inline-block width-100 padding-vertical-12 margin-vertical-6 text-center">
+      <span class="inline-block letter-spacing-1 text-uppercase border-bottom border-grey padding-horizontal-10 padding-bottom-3 margin-bottom-8">
+        Related Blogs
+      </span>
+
+      <div class="flex items-center justify-center flex-column large--flex-row max-width-8 center">
+        {{ related_posts }}
+      </div>
+    </div>
+  {% endif %}
+</div>

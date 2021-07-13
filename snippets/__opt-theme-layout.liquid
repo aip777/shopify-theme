@@ -1,0 +1,7 @@
+{%- capture __content_for_layout -%}
+	{{ content_for_layout }}
+{%- endcapture -%}
+
+{%- assign content_for_layout = __content_for_layout
+	| replace: '__from__', '__to__'
+-%}

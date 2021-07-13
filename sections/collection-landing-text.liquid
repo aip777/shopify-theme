@@ -1,0 +1,93 @@
+{% assign text_content      = section.settings %}
+{% assign title             = text_content.title %}
+{% assign background_color  = text_content.background_color %}
+{% assign text_color        = text_content.text_color %}
+{% assign button_url        = text_content.url | default: false %}
+{% assign button_text       = text_content.button_text | default: false %}
+{% assign button_order      = text_content.button_order | default: false %}
+
+{% if title != blank %}
+<section class="padding-vertical-4 large--padding-vertical-5 relative" {% if background_color %}style="background-color: {{ background_color }};"{% endif %}>
+  <div class="flex items-center justify-center relative z-index-2 max-width-7 margin-left-auto margin-right-auto padding-horizontal-3">
+    {% if button_url and button_text %}
+      <div class="height-2 {{ button_order }} width-auto margin-right-3 flex items-center justify-center">
+        <a class="transition-all font-size-1 large--font-size-2 font-family-heading padding-horizontal-3 small--padding-horizontal-8 large--padding-horizontal-10 padding-vertical-1 small--padding-vertical-2 border border-width-1 font-weight-7 border-primary text-primary background-transparent text-uppercase letter-spacing-2 text-no-decoration background-primary-hover text-white-hover" href="{{ button_url }}">{{ button_text }}</a>
+      </div>
+    {% endif %}
+
+    <div class="margin-horizontal-0 large--padding-horizontal-6 width-auto {% if button_order == 'order-1' %}order-2{% else %}order-1{% endif %}">
+      <h3 class="font-size-2 small--font-size-4 large--font-size-6 margin-top-0 text-uppercase font-weight-7 letter-spacing-1 font-family-heading margin-bottom-0 text-{{ text_color }}">{{ title }}</h3>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection CTA Bar",
+  "settings": [
+    {
+        "id": "title",
+        "type": "text",
+        "label": "Title"
+    },
+    {
+        "id": "text_color",
+        "type": "select",
+        "label": "Text Color",
+        "default": "black",
+        "options": [
+            {
+            "label": "Black",
+            "value": "black"
+            },
+            {
+            "label": "White",
+            "value": "white"
+            },
+            {
+            "label": "Primary Color",
+            "value": "primary"
+            },
+            {
+            "label": "Secondary Color",
+            "value": "secondary"
+            }
+        ]
+    },
+    {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "#cdde00"
+    },
+    {
+        "id": "url",
+        "type": "url",
+        "label": "Button Url"
+    },
+    {
+        "id": "button_text",
+        "type": "text",
+        "label": "Button Text"
+    },
+    {
+        "type": "select",
+        "id": "button_order",
+        "label": "Button Order",
+        "options": [
+            {
+            "value": "order-1",
+            "label": "Left"
+            },
+            {
+            "value": "order-2",
+            "label": "Right"
+            }
+        ],
+        "default": "order-1"
+    }
+    ]
+  }
+  {% endschema %}
+  

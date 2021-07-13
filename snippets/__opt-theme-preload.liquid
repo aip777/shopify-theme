@@ -1,0 +1,22 @@
+<link rel="preconnect" href="https://fonts.shopifycdn.com/" />
+<link rel="preconnect" href="https://cdn.shopify.com/" />
+
+{% comment %} <link rel="preload" href="{{ '__opt-obus.js' | asset_url }}" as="script"> {% endcomment %}
+{% comment %} <link rel="preload" href="{{ '__opt-jquery.js' | asset_url }}" as="script"> {% endcomment %}
+
+{% comment %} <link rel="preload" href="{{ 'theme.min.js' | asset_url }}" as="script"> {% endcomment %}
+
+{% comment %} <link rel="preload" as="image" href="{{ 'grain@3x.png' | asset_url }}"> {% endcomment %}
+<link rel="preload" href="{{ 'theme.min.css' | asset_url }}" as="style">
+
+<!-- preload_image_lcp -->
+<!-- preload_shogun_css -->
+
+{% comment %} This is examples "How to load various objects in the preload mode" {% endcomment %}
+{% comment %}
+<link rel="preload" as="image" href="hero-image.jpg">
+<link rel="preload" href="{{ '' | asset_url }}" as="style">
+<link rel="preload" href="{{ '' | asset_url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ '' | asset_url }}" as="script">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" as="style">
+{% endcomment %}

@@ -1,0 +1,44 @@
+
+
+{%- for num in (1..product.options.size) -%}
+{%- assign option_title = product.options[forloop.index0] | default: false -%}
+{%- assign option_handle = option_title | handle -%}
+{%- assign option_number = "option" | append: num -%}
+{%- assign options = product.variants | map: option_number | uniq -%}
+
+  {% if option_handle == 'style' %}
+
+  {%- for option in options -%}
+    {%- assign option_handle = option | handle -%}
+
+    {% include 'attribute-variant-swatch', color: option_handle %}
+    
+    {% assign background_style_properties = false %}
+    {%- capture background_style_properties -%}
+    {% if variant_swatch_image %}
+        background-image: url('{{ variant_swatch_image | img_url: '24x' }}'); background-repeat: no-repeat; background-position: center center
+    {% elsif variant_swatch_color %}
+        background-color: {{ variant_swatch_color }}
+    {% endif %}
+    {%- endcapture -%}
+
+    {% assign background_style_properties = background_style_properties | strip | strip_newlines | default: false %}
+    
+    {% if background_style_properties %}
+    <div
+        tabindex="0" 
+        role="button" 
+        title="{{ option }}"
+        class="swatch {% if variant_swatch_image %} image {% else %} color {% endif %} inline-block cursor-pointer margin-horizontal-3 large--margin-horizontal-0 border margin-bottom-2"
+        style="width: 10px; height: 10px; border-radius: 10px; {{ background_style_properties }};"></div>
+    {% else %}
+    <div
+        tabindex="0" 
+        role="button" 
+        title="{{ option }}"
+        class="swatch {% if variant_swatch_image %} image {% else %} color {% endif %} inline-block cursor-pointer margin-horizontal-3 large--margin-horizontal-0 margin-bottom-2"
+        style="width: 10px; height: 10px;"></div>
+    {% endif %}
+  {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}

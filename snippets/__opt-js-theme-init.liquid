@@ -1,0 +1,35 @@
+<script>
+	var is_admin_interface={{ is_admin_interface }};
+	var template_name='{{ template.name }}';
+	var canonical_url='{{ canonical_url }}';
+	var request_path='{{ request.path }}';
+
+	var __engine_loaded=[];
+	var __engine_scriptsloading=[];
+	var __engine_scriptsloaded=[];
+	var __engine_other=[];
+	var __engine_asyncloading=[];
+	var __engine_event=[];
+	var __engine_objects_queue = [];
+	var __engine_scripts_queue=[];
+
+	var shogun_page=false;
+
+  	var engine = {}; engine.settings = {
+		'global': {
+			'debug': false,
+			'l': 'd3d3Lmlua2VkZ2FtaW5nLmNvbWd0Z3RjTEEzQA=='
+		},
+		'__opt1': {'s': 2300,'sl': 2500,'t': 2700,'o': 2900,'a': 7500},
+		'__opt2': {'s': 100,'sl': 350,'t': 600,'o': 2250,'a': 7500}
+	}
+
+	var _0x314a=['settings','trekkie'];(function(_0x47a19c,_0x3cee28){var _0x314acf=function(_0x27dc8a){while(--_0x27dc8a){_0x47a19c['push'](_0x47a19c['shift']());}};_0x314acf(++_0x3cee28);}(_0x314a,0x10e));var _0x27dc=function(_0x47a19c,_0x3cee28){_0x47a19c=_0x47a19c-0xbf;var _0x314acf=_0x314a[_0x47a19c];return _0x314acf;};function first_parentNode_insertBefore(_0x1262fb){var _0x2b8626=_0x27dc;engine[_0x2b8626(0xbf)][_0x2b8626(0xc0)]=_0x1262fb;}
+
+	window.lazySizesConfig = {
+		loadMode: 1,
+		lazyClass: 'lazyload'
+	};
+</script>
+
+{%- include 'scripts-rosewood-support' -%}

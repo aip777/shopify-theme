@@ -1,0 +1,12 @@
+{% assign product_options = false %}
+{% assign option_edge = false %}
+
+{% unless product.variants.size == 1 and product.options[0] == "Title" %}
+  {% assign product_options = true %}
+{% endunless %}
+
+{% for product_option in product.options_with_values %}
+	{% if product_option.name == 'Edge' %}
+		{% assign option_edge = true %}
+	{% endif %}
+{% endfor %}

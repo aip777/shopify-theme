@@ -1,0 +1,114 @@
+{% include 'object-param-load', section_name: "testimonials" %}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="background-white padding-vertical-10 overflow-hidden">
+    <div class="testimonials-container background-no-repeat">
+
+      <div class="center">
+        <div class="js-slick-slides padding-8 medium--padding-12"
+          data-slides-to-show="4"
+          data-slides-to-show-desktop-small="3"
+          data-slides-to-show-tablet="2"
+          data-slides-to-show-mobile="1"
+          data-mobile-first="false"
+          data-center-mode="false"
+          data-initial-slide="1">
+          {%- for block in section.blocks -%}
+            {%- assign label = block.settings.label -%}
+            {%- assign description = block.settings.description -%}
+            {%- assign name = block.settings.testimonial_name -%}
+            {%- assign star = block.settings.star -%}
+            {%- assign empty_star = 5 -%}
+
+            <div class="text-center border border-width-2 border-color-primary padding-vertical-6 large--padding-vertical-8 height-100 flex flex-column justify-around">
+              {% comment %}
+                Mobile - quotation marks for styling
+              {% endcomment %}
+
+              <div class="top-wrap">
+                {%- if label != blank -%}
+                  <span class="block font-family-heading line-height-copy font-size-2 large--font-size-4 font-weight-6 letter-spacing-2 margin-bottom-4 text-uppercase padding-horizontal-8 max-width-5 margin-left-auto margin-right-auto">{{ label }}</span>
+                {%- endif -%}
+
+                <div class="testimonial-star-rating margin-bottom-4">
+                  {% for i in (1..star) %}
+                    {% include 'svg-star' with class: 'fill' %}
+                  {% endfor %}
+
+                  {%- assign empty_star = empty_star | minus: star -%}
+
+                  {% if empty_star > 0 %}
+                  {% for i in (1..empty_star) %}
+                    {% include 'svg-star' with class: 'empty' %}
+                  {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="relative padding-horizontal-10 large--padding-horizontal-12">
+                <div class="cursor-pointer"
+                  data-behavior="js-next-slide">
+                  <div class="font-size-1 large--font-size-2 margin-bottom-2 large--margin-bottom-6 font-weight-light">
+                    {{ description | replace: '<p', '<span' | replace: '/p>', '/span>' }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="testimonial-author">
+                <span class="inline-block text-primary letter-spacing-2 font-size-2 font-family-heading text-uppercase">
+                  - {{ name }}
+                </span>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Testimonials",
+    "blocks": [
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          { 
+            "type": "text", 
+            "id": "label", 
+            "label": "Label", 
+            "default": "Testimonial title"
+          },
+          {
+            "type": "range",
+            "id": "star",
+            "label": "Star rating",
+            "default": 5,
+            "max": 5,
+            "min": 1,
+            "step": 1
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "testimonial_name",
+            "label": "Name"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

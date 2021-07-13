@@ -1,0 +1,65 @@
+{% assign product = item.product %}
+{% assign current_variant = item.variant %}
+
+<div class="cart-item margin-bottom-3 border-bottom border-grey padding-bottom-3 
+  {% if item.properties['_role'] == 'child' %}hide{% else %}flex{% endif %}"
+  {% if item.properties['_group_id'] %}data-group-id="{{ item.properties['_group_id'] }}"{% endif %}
+  data-cart-line="{{ forloop.index }}"
+  data-cart-line-key="{{ item.key }}">
+  <a class="cart-item-image block width-100 flex-item-2 large--flex-item-1">
+    <div class="aspect-ratio-3x2 relative {% if item.image == blank %}background-grey{% endif %}">
+      <div class="absolute absolute-fill">
+        {% if item.properties['Uploadcare Full Size URL'] != blank and item.properties['_uploadcare_type'] == 'image' %}
+          <img data-src="{{ item.properties['Uploadcare Full Size URL'] | append: '-/resize/492x/' }}" class="aspect-ratio-fill object-fit-contain" />
+        {% else %}
+          <img data-src="{{ item | img_url: '492x' }}" class="aspect-ratio-fill object-fit-contain" />
+        {% endif %} 
+      </div>
+    </div>
+  </a>
+ 
+  <div class="flex-item-3 flex flex-column margin-left-6">
+    <div class="flex margin-bottom-3">
+      <div class="flex-item-1">
+        <a href="{{ item.variant.url }}" class="block padding-right-4 font-weight-5 line-height-title text-inherit text-no-decoration">
+          {{ product.title }}
+        </a>
+
+        {%- unless item.variant.title contains 'Default' -%}
+          <small class="margin-top-0 margin-bottom-1 font-size-1 text-grey">
+            {{ item.variant.title }}
+          </small>
+        {%- endunless -%}
+
+        <p class="font-size-1 margin-top-1 margin-bottom-3 font-weight-5">
+          {{ item.variant.price | money }}
+        </p>
+
+        {%- for upgrade_item in cart.items -%}
+          {%- if upgrade_item.properties['_role'] == 'child' 
+            and upgrade_item.properties['_group_id'] == item.properties['_group_id'] -%}
+            <p class="margin-top-0 margin-bottom-1 font-size-1 font-weight-bold">
+              {{ upgrade_item.title }} + {{ upgrade_item.price | money }}
+            </p>
+          {%- endif -%}
+        {%- endfor -%}
+
+      </div>
+
+      <div>
+        <button type="button" class="button-reset" class="font-size-1 text-inherit button-reset"
+        data-behavior="remove-line">
+          {% include "svg-close" %}
+        </button>
+      </div>
+    </div>
+
+    <div class="flex items-center margin-top-auto">
+      <div class="js-number-input number-input">
+        <button type="button" data-behavior="decrement">{% include 'svg-minus' %}</button>
+        <input type="number" id="cart_quantity_{{ forloop.index }}" name="cart_quantity_{{ forloop.index }}" value="{{ item.quantity }}" min="1" max="999" data-behavior="update-line" />
+        <button type="button" data-behavior="increment">{% include 'svg-plus' %}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<!-- snippet: product-addon-thumbnail -->
+{% include "attribute-product-on-sale" %}
+{% include "attribute-product-price" %}
+{% include "attribute-product-compare-at-price" %}
+{% include "attribute-product-featured-image" %}
+{% include "attribute-product-subtitle" %}
+{%- capture product_json -%}{% include "product-json" %}{%- endcapture -%}
+
+{% assign href = product.url | within: collection %}
+
+{% assign image_alt = product_featured_image.alt | escape %}
+
+{%- assign aspect_ratio = aspect_ratio | default: '1x1' -%}
+
+<div class="product-thumbnail flex width-100 padding-horizontal-16 large--padding-horizontal-0 {% unless forloop.first %}margin-top-6 large--margin-top-12{% endunless %}{% if class_name != blank %}{{ class_name }}{% endif %}">
+
+  <div class="flex-item-1">
+    <div class="relative aspect-ratio-1x1">
+      <a class="absolute absolute-fill" href="{{ href }}">
+        <img src="{{ product.selected_or_first_available_variant.image | img_url: '180x' }}" class="object-fit-contain object-position-center" data-src="{{ product.selected_or_first_available_variant.image | img_url: '380x' }}" alt="{{ image_alt }}" />
+      </a>
+    </div>
+  </div>
+
+  <div class="details flex-item-1 padding-left-3">
+    <a href="{{ href }}" class="link margin-top-0 margin-bottom-2 text-uppercase font-size-3 letter-spacing-2 text-black font-family-heading font-weight-5">
+        {{ product.type }}
+    </a>
+
+    <span class="block text-uppercase letter-spacing-1 font-size-1 large--font-size-2">{{ product.vendor }}</span>
+
+    <span class="font-size-2 large--font-size-5 font-family-heading margin-bottom-2 letter-spacing-1 block">{{ product.price | money_without_trailing_zeros }}</span>
+
+
+    <form action="/cart/add" 
+      method="post" 
+      
+      enctype="multipart/form-data" 
+      class="js-product-form product-form addon-form" 
+      data-product-json='{{ product_json }}'
+      {% if cart_ajax_enabled %}data-behavior="ajax-cart-form"{% endif %}>
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" />
+      <input type="hidden" name="quantity" value="1" />
+
+      <button type="submit" class="js-add-to-cart button large--width-100 max-width-5 font-size-1">
+        {% unless product.available %}
+          Out of Stock
+        {% else %}
+          Add <span class="hide large--inline-block">to Cart</span>
+        {% endunless %}
+      </button>
+    </form>
+  </div>
+</div>
+
+
+

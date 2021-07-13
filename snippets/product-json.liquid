@@ -1,0 +1,21 @@
+{ "id": {{ product.id | escape }}, 
+"title": "{{ product.title | replace: '"', '' | escape }}", 
+"handle": "{{ product.handle | escape }}", 
+"available": {{ product.available | escape }}, 
+"tags": "{% for tag in product.tags %}{{ tag | escape }}{% unless forloop.last %}, {% endunless %}{% endfor %}", 
+{% if product.variants.size > 0 %} 
+    "variants": [ 
+        {% for variant in product.variants %} 
+            { "id": {{ variant.id | escape }}, 
+            "title": "{{ variant.title | replace: '"', '' | escape }}", 
+            "available": {{ variant.available | escape }}, 
+            "price": {{ variant.price | escape }}, 
+            "inventory_quantity": {{ variant.inventory_quantity | escape }}, 
+            "inventory_management": "{{ variant.inventory_management | escape }}", 
+            "option1": "{{ variant.option1 | replace: '"', '' | escape }}", 
+            "option2": "{{ variant.option2 | replace: '"', '' | escape }}", 
+            "option3": "{{ variant.option3 | replace: '"', '' | escape }}" }{% unless forloop.last %},{% endunless %}
+        {% endfor %} 
+    ] 
+{% endif %} 
+}

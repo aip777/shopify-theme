@@ -1,0 +1,99 @@
+{% include "collection-hero" with cta_button: true, cta_text: section.settings.cta_text, cta_url: section.settings.cta_url %}
+
+{% assign collection = section.settings %}
+{% assign collection_menu = collection.collection_menu | default: false %}
+
+{% if collection_menu %}
+<div class="width-100 max-width-7 center flex flex-wrap items-center justify-between medium--justify-center padding-bottom-4 large--padding-vertical-12 margin-bottom-6 large--margin-bottom-16 padding-horizontal-4">
+  {% for link in linklists[collection_menu].links %}
+    <div class="collection-list-icon-wrap width-50 large--width-25 block-{{ block.id }}">
+        <a href="{{ link.url }}"
+        class="collection-list-icon link block text-center width-100 medium--width-auto margin-left-auto margin-right-auto margin-top-4 large--margin-top-8">
+          <div class="center">
+
+            {%- for block in section.blocks -%}
+              {%- if block.settings.title == link.title -%}
+                {% assign link_handle = link.title | handleize %}
+                {% assign svg = block.settings.svg %}
+                {% assign svg_fill_class = block.settings.svg_fill | prepend: '-' | prepend: block.id | prepend: 'block-' %}
+
+                <div class="zoom-on-hover zoom-on-hover padding-horizontal-4 large--padding-horizontal-10">
+                  {% comment %}
+                    If block.settings.svg_fill is blank and we attempt to replace it, we'll break the SVG.
+                  {% endcomment %}
+                  {%- if block.settings.svg_fill != blank -%}
+                    {{ svg | replace: block.settings.svg_fill, svg_fill_class }}
+                  {%- else -%}
+                    {{ svg }}
+                  {%- endif -%}
+                  {% style %}
+                      .collection-list-icon:hover .{{ svg_fill_class }} {
+                      fill: {{ settings.color_secondary }};
+                      }
+                  {% endstyle %}
+                </div>
+
+              {%- endif -%}
+            {%- endfor -%}
+
+            <span class="block font-family-heading font-weight-6 font-size-1 small-font-size-2 medium--font-size-4 text-uppercase letter-spacing-3 text-primary text-uppercase">
+              {{ link.title }}
+            </span>
+          </div>
+        </a>
+    </div>
+  {% endfor %}
+
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection - Sale",
+  "settings": [
+        {
+            "type": "text",
+            "id": "cta_text",
+            "label": "CTA text",
+            "default" : "Browse all"
+        },
+        { 
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA Url"
+        },
+        {
+            "type": "link_list",
+            "id": "collection_menu",
+            "label": "Collecton Menu"
+        }
+    ],
+  "blocks": [
+      {
+        "type": "collection_icon",
+        "name": "Collection Icon",
+        "settings": [
+          {
+              "label": "Title",
+              "id": "title",
+              "type": "text",
+              "info": "Must match link title."
+          },
+          {
+              "label": "SVG",
+              "id": "svg",
+              "type": "textarea",
+              "info": "SVG code."
+          },
+          { 
+            "type": "text", 
+            "id": "svg_fill", 
+            "label": "SVG fill class",
+            "info": "This class is for the filled gray area - this allows us to seamlessly highlight any given area by class name."
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+  

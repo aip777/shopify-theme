@@ -1,0 +1,129 @@
+{% assign footer = section.settings %}
+{% assign blocks = section.blocks %}
+{% assign show_logo = footer.show_logo %}
+{% assign footer_menu = footer.footer_menu | default: false %}
+{% assign footer_message = footer.footer_message | replace: "[current_year]", current_year | default: false %}
+
+<footer class="background-primary">
+
+  <div class="container padding-horizontal-2 large--padding-horizontal-8 padding-vertical-8 large--padding-vertical-16 flex relative">
+  
+    {% if show_logo %}
+      <div class="width-40 large--width-20 flex items-center absolute large--relative top-0 bottom-0 right-0 justify-center order-2 large--order-1 padding-2">{% assign shop_logo = 'inked_logo.svg' | asset_url %}
+        <a href="/" class="block font-size--none line-height--none width-100">
+          <img
+            class="width-100 padding-left-0 small--padding-left-0"
+            data-src="{{ shop_logo }}"
+            alt="{{ shop.name }}" />
+        </a>        
+      </div>
+    {% endif %}
+
+    <div class="flex flex-wrap width-80 large--width-60 order-1 large--order-2">
+        <div class="margin-bottom-4 hide large--block width-100 text-center">
+          {% include 'social-links' %}
+        </div>
+          
+        {% if footer_menu %}
+          <div class="width-100 flex flex-column large--flex-row items-start large--items-center justify-between medium--justify-center padding-bottom-3 large--padding-bottom-0 flex-wrap order-2 large--order-1">
+            {% for link in linklists[footer_menu].links %}
+              <a class="inline-block text-secondary text-uppercase text-no-decoration {% unless forloop.last %}padding-bottom-3 large--padding-bottom-0 padding-right-1 small--padding-right-4 large--padding-right-6{% endunless %} font-weight-7 font-size-3 small--font-size-2 large--font-size-4" href="{{ link.url }}">{{ link.title }}</a>
+            {% endfor %}
+          </div>
+      {% endif %}
+    
+      {% assign newsletter_form = section.settings %}
+      {% assign copy = newsletter_form.copy | newline_to_br %}
+      {% assign placeholder = customer.email | default: newsletter_form.placeholder %}
+      {% assign button_label = newsletter_form.button_label %}
+      {% assign form_action = newsletter_form.form_action %}
+
+      <div class="width-100 padding-vertical-1 center padding-horizontal-1 order-1 large--order-2">
+        <div class="flex flex-wrap  margin-bottom-4 large--margin-bottom-0 items-center justify-start large--justify-center large--padding-vertical-5 padding-bottom-0 small--padding-bottom-5">
+          <div class="text-white font-size-3 small--font-size-2 line-height-copy text-left large--padding-right-4 text-left padding-bottom-2 small--padding-bottom-0 text-uppercase medium--width-4 letter-spacing-1 large--width-auto font-weight-6 inline-block">
+            {{ copy }}
+          </div>
+          <div class="large--padding-left-1 inline-block">
+            <form action="{{ form_action }}" method="post" target="_blank">
+              <div class="flex items-center flex-row">
+                <input class="inline-block-middle width-100 border-width-1 border-style-solid font-size-2 text-uppercase text-primary margin-left-1 large--margin-left-0 padding-0 padding-left-2 height-2 border-secondary font-weight-7 text-secondary large--text-black background-transparent" type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ placeholder }}" name="EMAIL" id="mail" aria-label="Email Address" autocorrect="off" autocapitalize="off" style="line-height: 32px;" />
+
+                <button class="inline-block text-primary transition-all font-weight-bold cursor-pointer text-white-hover text-uppercase padding-horizontal-1 background-secondary font-size-1 width-4 border-none height-2 margin-left-1 medium--margin-left-2" type="submit" value="{{ button_label }}" name="subscribe" id="subscribe">{{ button_label }}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hide large--width-20 text-white text-center large--flex items-center justify-center order-3">
+      {% if footer_message %}
+        {% if footer_message %}
+          <p class="font-italic max-width-4 padding-horizontal-1 letter-spacing-2">{{ footer_message }}</p>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  
+  <div class="padding-vertical-2 flex items-center justify-center large--hide width-100 text-center mobile-social background-secondary text-black">
+    {% include 'social-links' with class: 'inline-flex items-center', icon_class: 'fill-primary' %}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Footer Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Show Logo?",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer Menu"
+    },
+    {
+      "type": "textarea",
+      "id": "footer_message",
+      "label": "Footer Message",
+      "default": "Helping you game in style since 2011."
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "id": "copy",
+      "label": "Copy",
+      "type": "textarea",
+      "default": "Want updates?"
+    },
+    {
+      "id": "placeholder",
+      "label": "Input placeholder",
+      "info": "Note: will default to customer's email address if logged in",
+      "type": "text",
+      "default": "Email"
+    },
+    {
+      "id": "button_label",
+      "label": "Button label",
+      "type": "text",
+      "default": "Submit"
+    },
+    {
+      "id": "form_action",
+      "label": "Form action",
+      "type": "text",
+      "info": "Note: you can get this from your email marketing service."
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,62 @@
+{% assign variant_swatch_color = false %}
+{% assign variant_swatch_image = false %}
+
+{% assign raw_color = color | default: false | default: variant.option1 %}
+{% assign finalized_color = false %}
+{% assign original_color = raw_color %}
+{% assign derived_color = false %}
+
+{%- comment -%}
+  Solution to: "The way that we name our frame color is as follows "Frame Front Color, Frame Temple Color". On Wildwood (and a few others), the frame front color is the same for all the color ways.. it is only the temple color that changes. So we have Brown/Green, Brown/Pink etc. The swatch is showing brown for all of these because it is the first color name in the sequence. Is there a way to do some kind of override for ONLY certain frames that have the same color front where the swatch can show the temple color instead?"
+{%- endcomment -%}
+{% if raw_color contains "/" %}
+  {% assign all_product_colors = product.variants | map: "option1" | uniq %}
+  {% assign first_slash_color = raw_color | split: "/" | first %}
+  {% assign all_contain_slash = true %}
+  {% assign all_first_slash_color_same = true %}
+  {% if all_product_colors.size > 1 %}
+    {% for c in all_product_colors %}
+      {% unless c contains "/" %}
+        {% assign all_contain_slash = false %}
+        {% break %}
+      {% endunless %}
+
+      {% assign first_slash_c = c | split: "/" | first %}
+      {% unless first_slash_c == first_slash_color %}
+        {% assign all_first_slash_color_same = false %}
+        {% break %}
+      {% endunless %}
+    {% endfor %}
+  {% endif %}
+  {% if all_product_colors.size > 1 and all_contain_slash and all_first_slash_color_same %}
+    {% assign derived_color = raw_color | split: "/" | last %}
+  {% endif %}
+{% endif %}
+
+{% if derived_color %}
+  {% assign finalized_color = derived_color %}
+{% else %}
+  {% assign finalized_color = original_color %}
+{% endif %}
+
+{% assign variant_swatch_color = false %}
+{% assign variant_swatch_image = false %}
+
+{% for i in (1..75) %}
+  {% assign name_key = "swatch_name_" | append: i | handle %}
+  {% assign names = settings[name_key] %}
+  {% assign names = names | newline_to_br | split: "<br />" %}
+  {% for name in names %}
+    {% assign name_handle = name | handle %}
+    {% assign variant_title_handle = finalized_color | handle %}
+    {% if variant_title_handle == name_handle %}
+      {% assign color_key = "swatch_color_" | append: i | handle %}
+      {% assign variant_swatch_color = settings[color_key] | default: false %}
+      {% assign image_key = "swatch_image_" | append: i | handle %}
+      {% assign variant_swatch_image = settings[image_key] | default: false %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+

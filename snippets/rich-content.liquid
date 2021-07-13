@@ -1,0 +1,45 @@
+{% assign rich_content    = block.settings %}
+{% assign title           = rich_content.title %}
+{% assign body            = rich_content.body | default: false %}
+{% assign image           = rich_content.image | default: false %}
+{% assign button_url      = rich_content.url | default: false %}
+{% assign button_text     = rich_content.button_text | default: false %}
+{% assign layout          = rich_content.layout %}
+{% assign overlay_color   = rich_content.overlay_color %}
+{% assign overlay_opacity = rich_content.overlay_opacity %}
+{% assign text_color      = rich_content.text_color %}
+{% assign background_color= rich_content.background_color %}
+
+<section class="margin-vertical-9 large--padding-top-3 large--padding-bottom-3 relative {% if layout == 'full-text-center' %} background-cover background-position-center {% endif %}" {% if layout == 'full-text-center' and image %} data-src="{{ image | img_url: '800x' }}" {% endif %} {% if background_color %}style="background-color: {{ background_color }}"{% endif %}>
+
+  {% comment %} Overlay (if not wanted, user can set to opacity 0) {% endcomment %}
+  {% if layout == 'full-text-center' %}
+    <div class="absolute absolute-fill z-index-1" style="background-color: {{ overlay_color }}; opacity: {{ overlay_opacity | divided_by: 100.00 }}"></div>
+  {% endif %}
+
+  <div class="flex flex-column max-width-8 center large--flex-row items-center justify-center relative z-index-2 padding-vertical-12 {% if layout == 'full-text-center' %} padding-vertical-15 {% endif %}">
+
+    {% if image and layout != 'full-text-center' %}
+      <img class="width-100 large--width-20 margin-horizontal-0 margin-vertical-5 max-width-3 large--max-width-4 large--margin-7 {% if layout == 'col-text-left' %} order-2 {% endif %}" data-src="{{ image | img_url: '800x' }}" />
+    {% endif %}
+
+    <div class="
+      {% if layout == 'full-text-center' %} text-center {% endif %}
+      {% if image and layout != 'full-text-center' %}
+        width-100 margin-horizontal-0 large--margin-vertical-5 text-center large--text-left large--margin-7 large--width-40
+      {% else %}
+        width-90 max-width-8 text-center margin-left-auto margin-right-auto
+      {% endif %}">
+      <h3 class="font-size-6 margin-top-0 margin-bottom-4 letter-spacing-2 text-{{ text_color }}">{{ title }}</h3>
+      {% if body %}
+        <div class="max-width-6 padding-right font-size-3 large--font-size-4 letter-spacing-2 line-height-copy padding-horizontal-12 large--padding-left-0  large--padding-right-12 text-{{ text_color }}">{{ body }}</div>
+      {% endif %}
+    </div>
+
+    {% if button_url and button_text %}
+      <a class="background-secondary width-100 margin-top-6 large--margin-top-0 large--width-auto text-center text-black padding-horizontal-6 link padding-vertical-4 text-uppercase text-no-decoration letter-spacing-1 font-family-heading" href="{{ button_url }}">{{ button_text }}</a>
+    {% endif %}
+
+  </div>
+
+</section>

@@ -1,0 +1,102 @@
+<header role="banner" class="background-primary padding-vertical-4 xlarge--padding-horizontal-4 relative flex items-center">
+  <div class="container padding-left-0 padding-right-0 small--padding-left-0 small--padding-right-0 medium--padding-left-0 medium--padding-right-0">
+    <div class="flex items-center justify-between">
+      <div class="xlarge--hide padding-left-4 width-33 text-left">
+        <button class="hamburger hamburger--squeeze" type="button">
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
+      </div>
+
+      <span class="font-size-2 font-weight-7 letter-spacing-1 padding-left-4 xlarge--padding-left-0 hide xlarge--block width-40">
+        {% include 'main-menu' with menu_handle: section.settings.menu %}
+      </span>
+
+      {% include 'logo' %}
+
+      <div class="width-33 xlarge--width-40 flex justify-end align-center">
+        {% if section.settings.url != blank %}
+          <a href="{{ section.settings.url }}" class="hide xlarge--block text-inherit padding-right-3 text-uppercase transition-all line-height-double font-size-2 font-weight-7 text-no-decoration letter-spacing-1 text-secondary-hover text-white">{{ section.settings.link_text }}</a>
+        {% endif %}
+
+        {% include 'search-bar' %}
+
+        <a href="/account/login" class="hide xlarge--block text-inherit padding-left-4">{% include 'svg-user' %}</a>
+
+        {%- if template != 'cart' -%}
+          <div data-behavior="toggle-cart" class="padding-left-3 padding-right-6 xlarge--padding-right-0">
+            {% include 'svg-cart' %}
+            <span class="js-ajax-cart-count text-secondary">{{ cart.item.count }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</header>
+
+{% include "mobile-menu" %}
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "z-index-9 relative js-sticky-bar xlarge--sticky xlarge--top-10",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Right Link Text"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Right Link Url"
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "Mobile Menu"
+    }
+  ],
+  "blocks": [ 
+    { 
+      "type": "dropdown_page", 
+      "name": "Dropdown", 
+      "settings": [ 
+        { 
+          "type": "text", 
+          "id": "parent_link", 
+          "label": "Main Navigation link", 
+          "info": "Parent link in main nav - much match text and case exactly"
+        },
+        { 
+          "type": "textarea", 
+          "id": "description_text", 
+          "label": "Description text"
+        },
+        { 
+          "type": "header", 
+          "content": "Dropdown image content"
+        }, 
+        {
+          "type": "image_picker",
+          "id": "single_image",
+          "label": "Image", 
+          "info": "Note: image container dimensions will vary based on dropdown content. Suggested image size: 1024 x 1024px"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

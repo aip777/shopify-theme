@@ -1,0 +1,56 @@
+
+<div class="grid--uniform padding--up-1 margin--up-1" style="min-height: 240px">
+    <div class="grid-item large--one-third small--one-whole medium-down--margin--up-5 js-upload-step">
+      <div class="large--box-scale--up-1--column">
+        <h3 class="text-scale--up-2 text-caps margin--none">
+          Step 1:
+        </h3>
+        <span class="text-scale--up-2 text-caps">{{ settings.custom_products_step_1_title }}</span>
+        <div class="box-scale--up-1--row margin--up-1">
+          <input type="hidden" name="picture" role="uploadcare-uploader" data-tabs="file url gdrive dropbox" data-effects="crop,rotate,grayscale" />
+        </div>
+        <div class="box-scale--0--row js-custom-instructions" data-step="1">
+          {{ settings.custom_products_step_1_question_text }}
+        </div>
+        <div class="triangle-indicator small--hide"></div>
+        <div class="instructions extend-background box-scale--up-1--row large--hide" data-step="1">
+          <div class="grid">
+            <div class="grid-item text-left large--one-half small--one-whole small--margin--up-2">
+              {% include "rte-fragment" with "step1" %}
+              {{ rte_fragment_body }}
+            </div>
+            <div class="grid-item text-center large--one-half small--one-whole small--margin--up-2">
+              <h4><strong>HOW-TO VIDEO</strong></h4>
+              <iframe width="560" height="315" data-video="https://www.youtube.com/embed/K7GsdDareu4" frameborder="0" allowfullscreen style="max-width: 100%"></iframe>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  
+  <div class="rte padding--up-3 margin--up-5 box-scale--0 small--hide medium--hide">
+    <div class="instructions extend-background box-scale--up-1--row" data-step="1">
+      <div class="grid">
+        <div class="grid-item text-left large--one-half small--one-whole small--margin--up-2">
+          {% include "rte-fragment" with "step1" %}
+          {{ rte_fragment_body }}
+        </div>
+        <div class="grid-item text-center large--one-half small--one-whole small--margin--up-2">
+          <h4><strong>HOW-TO VIDEO</strong></h4>
+          <iframe width="560" height="315" data-video="{{ settings.custom_products_how_to_video_url }}" frameborder="0" allowfullscreen style="max-width: 100%"></iframe>
+        </div>
+      </div>
+  
+    </div>
+    <div class="instructions extend-background box-scale--up-1--row" data-step="2">
+      {% include "rte-fragment" with "step2" %}
+      {{ rte_fragment_body }}
+    </div>
+  </div>
+  
+  <input id="uploadcare-url" type="hidden" name="properties[Uploadcare Full Size URL]" value="">
+  <!-- <input id="uploadcare-preview-url" type="hidden" name="properties[Uploadcare Preview URL]" value=""> -->
+  <input id="uploadcare-type" type="hidden" name="properties[Uploadcare Type]" value="">

@@ -1,0 +1,16 @@
+{% assign current_page = page %}
+
+{% include "breadcrumb" %}
+
+<div class="padding-vertical-3">
+  <div class="container">
+    <div class="large--width-60 center">
+
+      {% include 'section-heading', title: current_page.title, description: false, tag: 'h1' %}
+
+      <div class="rte">
+        {% include "shortcodes" with current_page.content %}
+      </div>
+    </div>
+  </div>
+</div>

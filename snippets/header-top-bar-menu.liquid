@@ -1,0 +1,36 @@
+{% assign linklist = linklists[menu.handle] %}
+
+<nav class="text-right">
+  <ul class="inline-flex flex-column medium--flex-row
+    padding-0 margin-0 font-size-1 text-right margin-right--2">
+    {% for link in linklist.links %}
+
+      {%- assign has_second_level_links = false -%}
+      {%- if link.links.size > 0 -%}
+        {%- assign has_second_level_links = true -%}
+        {%- assign second_level_links = link.links -%}
+      {%- endif -%}
+
+      <li class="medium--block">
+        <a
+          class="relative width-100 margin-0
+            font-weight-6 letter-spacing-3 text-uppercase text-no-decoration
+            padding-vertical-5 padding-left-2 margin-left-2 text-white text-right
+            {% if has_children %}has-children{% endif %}"
+          style="font-size: 11px"
+          href="{{ link.url }}">
+          {{ link.title }}
+        </a>
+        {%- if has_second_level_links -%}
+          {%- comment %}
+            Fill in logic for dropdown / similar
+          {% endcomment -%}
+          {% for dropdown_link in second_level_links %}
+
+          {% endfor %}
+        {%- endif -%}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+

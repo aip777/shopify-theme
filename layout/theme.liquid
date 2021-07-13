@@ -1,0 +1,126 @@
+{%- comment %} you can always turn off the speedupkernel{% endcomment -%}
+{%- assign speedupkernel = true -%}
+{%- assign is_admin_interface = true -%}
+{%- if speedupkernel -%}
+	{%- if request.host contains 'myshopify.com' -%}
+		{%- assign is_admin_interface = true -%}
+	{%- else -%}
+		{%- assign is_admin_interface = false -%}
+	{%- endif -%}
+	{%- if request.host contains 'shopifypreview.com' -%}
+		{%- assign is_admin_interface = true -%}
+	{%- endif -%}
+	{%- if request.host contains 'gempages.net' -%}
+		{%- assign is_admin_interface = true -%}
+	{%- endif -%}	
+	{%- if request.path == '/cart' -%}
+		{%- assign is_admin_interface = true -%}
+	{%- endif -%}
+	{%- if request.path == '/checkout' -%}
+		{%- assign is_admin_interface = true -%}
+	{%- endif -%}
+{%- endif -%}{%- capture html -%}<!doctype html>
+{%- include "object-canonical-url" -%}
+{%- include "object-current-tag-handles" -%}
+{%- include "object-current-url" -%}
+{%- include "attribute-shop-social-links" -%}
+{%- include "attribute-template-noindex" -%}
+{%- include "attribute-cart-ajax-enabled" -%}
+<html>
+  <head>
+    {% include '__opt-theme-preload' %}
+    {% include '__opt-js-theme-init' %}
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="theme-color" content="{{ settings.color_primary }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="{{ page_description | escape }}" />
+
+    {% if template_noindex %}
+      <meta name="robots" content="noindex, nofollow" />
+    {% endif %}
+
+    <link rel="canonical" href="{{ canonical_url }}" />
+    <link rel="shortcut icon"  href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+
+    {% include "schema" %}
+    {% include "title" %}
+    {% include "vendor-facebook-og" %}
+    {% include "vendor-twitter-cards" %}
+
+    {% comment %} Sadly cannot find an NPM module for this: {% endcomment %}
+    {%- if template contains "customers" -%}
+      {{ "shopify_common.js"  | shopify_asset_url | script_tag }}
+      {{ "customer_area.js"  | shopify_asset_url | script_tag }}
+    {%- endif -%}
+
+    {% comment %} looks like it is not worked..... {% endcomment %}
+    {% comment %} {% render 'header-scripts.zipifypages', renderctx: 'thm' %} {% endcomment %}
+
+    {% include 'ninjacoderz_rich_snippets' %}
+
+    {% include '__opt-system-header' %}
+    {{ content_for_header }}
+    {% include '__opt-css-theme' %}
+</head>
+<body>
+  {% include 'smile-initializer' %}
+
+  {% include "vendor-google-tag-manager--body" %}
+
+
+  {% include "__opt-gorgias-chat-widget.liquid" %}
+
+  {% section 'header-top-bar' %}
+  {% section "header" %}
+
+  <main role="main">
+    {% include '__opt-system-layout' %}
+    {{content_for_layout}}		
+  </main>
+
+  {% unless template contains 'customer' or template contains 'blog' or template contains 'member' or template contains 'article' or template contains 'supplies' or template contains 'sale' or template contains 'about' %}
+    {% section "testimonials" %}
+  {% endunless %}
+
+  {% unless template contains 'customer' or template contains 'about' or template contains 'member' %}
+    {% include "instagram" %}
+  {% endunless %}
+
+  {% comment %} {% section "footer" %} {% endcomment %}
+
+  {%- if is_admin_interface -%}
+    {% section 'footer' %}
+  {%- else -%}
+    {%- if template.name == 'index' or template.name == 'collection' or template.name == 'product' -%}
+      <div id="__load-section-footer"></div>
+    {%- else -%}
+      {% section 'footer' %}
+    {%- endif -%}
+  {%- endif -%}
+
+  {% if cart_ajax_enabled and template != 'cart' %}
+    {% include "ajax-cart" %}
+  {% endif %}
+
+  {% include 'currency-form' %}
+
+  {% comment %} {% include "vendor-browser-update" %} {% endcomment %}
+
+  {% if template contains "custom" %}
+    {% include 'uploadcare-settings' %}
+  {% endif %}
+
+  
+  {% include 'findify-tagging' %}
+
+  {% comment %} looks like it is not worked..... {% endcomment %}
+  {% comment %} {% render 'page-footer.zipifypages', renderctx: 'thm', ocuapp: ocuapp %} {% endcomment %}
+  
+  {% include '__opt-js-theme-main' %}
+  {% include '__opt-css-theme-fonts' %}
+  {% include '__opt-css-theme-footer' %}
+  </body>
+</html>{%- endcapture -%}
+{%- include '__opt-theme-html' -%}

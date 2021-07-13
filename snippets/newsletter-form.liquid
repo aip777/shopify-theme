@@ -1,0 +1,33 @@
+<form action="{{ settings.newsletter_form_action }}" method="post" target="_blank">
+  <div class="grid">
+    <div class="grid-item large--three-four">
+      <input class="inline-block-middle" type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="your-email@shopify.com" name="EMAIL" id="mail" aria-label="Email Address" autocorrect="off" autocapitalize="off" />
+    </div>
+    <div class="grid-item large--one-four">
+      <input class="inline-block-middle" type="submit" value="Subscribe" name="subscribe" id="subscribe" />
+    </div>
+  </div>
+</form>
+
+
+{% comment %}
+Original Klaviyo Integration
+
+<div data-behavior="newsletter-subscribe" {% if class_name != blank %}class="{{ class_name }}"{% endif %}>
+  <div class="subscribe-error hide margin-top-0 margin-bottom-3">
+    {{ settings.subscribe_error }}
+  </div>
+
+  <form class="newsletter-subscribe margin-vertical-0" data-klaviyo-id="{{ settings.klaviyo_list_id }}">
+    <label for="footer_email">Email Address</label>
+    <input type="email" placeholder="enter your email address" name="newsletter_subscribe_email" />
+    <button type="submit">{% include "svg-angle-right" %}</button>
+  </form>
+
+  <div class="subscribe-success hide margin-vertical-0">
+    {{ settings.subscribe_success }}
+  </div>
+</div>
+{% endcomment %}
+
+

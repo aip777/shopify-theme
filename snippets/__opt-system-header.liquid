@@ -1,0 +1,34 @@
+{%- if speedupkernel -%}
+	{%- unless is_admin_interface -%}
+		
+	{%- capture __content_for_header -%}
+		{{ content_for_header }}
+	{%- endcapture -%}
+
+	{%- assign __content_for_header = __content_for_header
+		| replace: 'x.parentNode.insertBefore(s, x);', 'x_parentNode_insertBefore(s.src)'
+		| replace: 'first.parentNode.insertBefore(script, first);', 'first_parentNode_insertBefore(script.src);'
+		| replace: 'const adminBarInjector', 'return; const adminBarInjector'
+		| replace: 'const previewBarInjector', 'return; const previewBarInjector'
+		| replace: 'defer="defer" src="', 'data-src="'
+		| replace: 'octaneai', '' 
+	-%}
+
+	{%- assign find = '<script integrity="' -%}
+	{%- assign chanks = __content_for_header | split: find -%}
+
+	{%- if chanks[1] -%}
+		{%- assign content_for_header = chanks[0] -%}
+		{% capture content_for_header_footer %}
+			{% for ch in chanks %}
+				{%- unless forloop.first -%}
+					{{ find }}{{ ch }}
+				{%- endunless -%}
+			{% endfor %}
+		{% endcapture %}	
+	{%- else -%}
+		{%- assign content_for_header = __content_for_header -%}
+	{%- endif -%}
+
+	{%- endunless -%}
+{%- endif -%}

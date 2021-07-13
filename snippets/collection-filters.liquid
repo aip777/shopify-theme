@@ -1,0 +1,28 @@
+{% for handle in collection_filters %}
+  {% assign linklist = linklists[handle] %}
+  {% assign linklist_title = linklist.title | split: ": " | last %}
+  
+  <div class="select-filter relative inline-block width-4 padding-vertical-2 padding-horizontal-3">
+    <div class="select-styled absolute top-0 left-0 right-0 flex items-center justify-center font-weight-bold text-uppercase letter-spacing-1 margin-right-4 margin-left-4">{{ linklist_title }}</div>
+
+    <ul class="select-options hide absolute top-10 left-0 background-white margin-0 padding-2 list-style-none width-4 text-left z-index-2">
+      <li><strong>{{ linklist_title }}</strong></li>
+
+      {% for link in linklist.links %}
+        {% unless collection.all_tags contains link.title %}
+          {% continue %}
+        {% endunless %}
+
+        <li>
+          {% if current_tags contains link.title %}
+            <mark>{{ link.title | link_to_remove_tag: link.title }}</mark>
+          {% elsif collection.tags contains link.title %}
+            {{ link.title | link_to_add_tag: link.title }}
+          {% else %}
+            <s>{{ link.title }}</s>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endfor %}

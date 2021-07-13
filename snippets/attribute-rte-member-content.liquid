@@ -1,0 +1,14 @@
+{%- assign current_page_content = current_page.content 
+    | replace: '<img', '</div></div><div class="team-member width-100 flex flex-column large--flex-row"><img class="width-100 large--width-40 height-auto padding-8 large--padding-0"'
+    | replace_first: 'class="border-bottom', 'class="border-top border-bottom'
+    | replace: '<h2', '<div class="flex items-center flex-column justify-center width-100 large--width-60"><h2 class="text-uppercase letter-spacing-1 font-family-heading font-size-6 large--font-size-9 margin-bottom-0"'
+    | replace: '<h3', '<h3 class="text-uppercase letter-spacing-1 font-size-5 large--font-size-8 margin-top-1"'
+    | replace: '<h4', '<h4 class="max-width-6 center font-size-3 large--font-size-4 letter-spacing-2 margin-top-0  padding-bottom-8 large--padding-bottom-0 line-height-double large--line-height-copy"'
+    | replace: '</h4>', '</h4></div></div><div class="flex flex-column large--flex-row items-center justify-center width-100 padding-bottom-6 large--padding-bottom-0">'
+    | remove_first: '</div></div>' 
+    | replace: '<h5', '<div class="width-100 large--width-30 padding-top-3 large--padding-12"><h5 class="text-uppercase letter-spacing-1 font-family-heading font-size-2  large--font-size-4 margin-bottom-0"'
+    | replace: '<p', '<p class="font-size-5 text-uppercase margin-top-2"'
+    | replace: '</p>', '</p></div>'
+    | append: '</div>' 
+    | append: '</div>'
+-%}

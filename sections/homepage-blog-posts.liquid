@@ -1,0 +1,105 @@
+{% comment %} Assign section liquid vars {% endcomment %}
+{% assign blog = blogs[section.settings.blog] | default: false %}
+{% assign posts = blog.articles %}
+{% assign show = section.settings.posts_to_show %}
+
+{% if blog %}
+  <div class="padding-vertical-3">
+    <div class="container">
+
+      {% assign column_count_desktop = section.settings.column_limit_desktop %}
+      {% assign column_count_mobile = section.settings.column_limit_mobile %}
+      <div class="grid grid-gap-4 columns-{{ column_count_mobile }} large--columns-{{ column_count_desktop }}">
+
+        {% for article in posts limit: show %}
+          {% assign background = article.image | img_url: '800x' | default: false %}
+          {% assign title = article.title %}
+          {% assign abstract = article.content | strip_html | truncatewords: 20 | default: false %}
+          {% assign url = article.url %}
+          {% assign button_text = section.settings.read_more_text %}
+
+          <div class="card margin-top-2 padding-horizontal-3 padding-vertical-5 text-center relative background-cover"
+              {% unless background contains "no-image" %} style="background-image: url({{ background }});" {% endunless %}>
+
+            <span class="absolute absolute-fill background-grey opacity-60 z-index-1"></span>
+            <div class="z-index-2 relative">
+
+              <h4 class="font-size-3 text-secondary">{{ title }}</h4>
+              
+              {% if abstract %}
+                <span class="text-secondary">{{ abstract }}</span>
+              {% endif %}
+
+              {% comment %} Assume there will always be a url {% endcomment %}
+              <div class="text-center">
+                <a href="{{ url }}" class="button margin-top-5">{{ button_text }}</a>
+              </div>
+              
+            </div>
+          </div>
+
+        {% endfor %}
+
+      </div>
+
+      {% comment %} Logic to see if there are more posts in the blog {% endcomment %}
+      {% if blog.articles_count > show %}
+        <div class="margin-top-5 text-center">
+          <a href="{{ blog.url }}" class="button">{{ section.settings.all_posts_text }}</a>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+{% endif %}
+
+
+
+{% schema %}
+  {
+    "name": "Blog Posts",
+    "settings": [
+      { 
+        "type": "blog", 
+        "id": "blog", 
+        "label": "Blog"
+      },
+      {
+        "type": "number",
+        "id": "posts_to_show",
+        "label": "Blog Posts to show",
+        "default": 4
+      },
+      {
+        "type": "text",
+        "id": "read_more_text",
+        "label": "Button Text for grid item",
+        "default": "Read More"
+      },
+      {
+        "type": "text",
+        "id": "all_posts_text",
+        "label": "Button Text for More Posts",
+        "default": "All Posts"
+      },
+      {
+        "type": "number",
+        "id": "column_limit_desktop",
+        "label": "Products per row (desktop)",
+        "default": 2
+      },
+      {
+        "type": "number",
+        "id": "column_limit_mobile",
+        "label": "Products per row (mobile)",
+        "default": 1
+      }
+    ],
+    "presets": [
+      {
+        "name": "Blog Posts",
+        "category": "Rosewood"
+      }
+    ]
+  }
+{% endschema %}

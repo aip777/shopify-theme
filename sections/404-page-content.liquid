@@ -1,0 +1,59 @@
+{% assign page_404 = section.settings %}
+{% assign title = page_404.title | default: "404" %}
+{% assign description = page_404.content | default: false %}
+
+
+<div class="container padding-vertical-15 text-center">
+
+  {% comment %} Common section heading {% endcomment %}
+  {% include 'section-heading', title: title, description: description, tag: 'h1' %}
+
+  {%- if page_404.enable_search -%}
+    {% include "search-bar", class: "margin-top-0 max-width-6 center" %}
+  {%- endif -%}
+
+  {%- assign url = page_404.link_url | default: "/" -%}
+  {%- assign text = page_404.link_text | default: "Return to Home Page" -%}
+
+  <a href="{{ url }}" class="inline-block link margin-top-5 font-weight-7 text-dark-grey text-uppercase letter-spacing-2">{{ text }}</a>
+</div>
+
+{% schema %}
+
+  {
+    "name": "Page Content",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Page Title",
+        "info": "Default is \"404\""
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_search",
+        "label": "Show search bar?",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "link_url",
+        "label": "Link URL",
+        "info": "Default is the homepage"
+      },
+      {
+        "type": "text",
+        "id": "link_text",
+        "label": "Link Text",
+        "default": "Return to Home Page",
+        "info": "Default is \"Return to Home Page\""
+      }
+    ]
+  }
+
+{% endschema %}

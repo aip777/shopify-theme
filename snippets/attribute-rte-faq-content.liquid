@@ -1,0 +1,9 @@
+{%- assign current_page_content = current_page.content 
+    | replace: '<h3', '</div></details><details class="accordion" data-behavior="accordion"><summary><h3' 
+    | replace_first: 'class="accordion border-bottom', 'class="accordion border-top border-bottom'
+    | remove_first: '</div></details>' 
+    | replace: '<h3', '<div class="accordion-icon"></div><h4 class="font-family-heading margin-vertical-2 letter-spacing-1 font-size-3"' 
+    | replace: '</h3>', '</h4></summary><div class="accordion-content">' 
+    | replace: '<p', '<p style="max-width: unset;"'
+    | append: '</div></details>' 
+-%}

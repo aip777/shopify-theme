@@ -1,0 +1,13 @@
+
+{% assign settings_prefix = "collection_icon_title_" %}
+{% assign number = false %}
+
+{% for i in (1..15) %}
+  {% assign settings_key = settings_prefix | append: i | handle %}
+  {% assign link_title = settings[settings_key] %}
+  {% assign link_current_title = link.title %}
+  {% if link_title == link_current_title %}
+    {% assign number = i %}
+    {% break %}
+  {% endif %}
+{% endfor %}
