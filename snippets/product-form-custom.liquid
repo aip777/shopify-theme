@@ -28,8 +28,13 @@
     </p>
   </div>
 
-  <script src="https://widget.sezzle.com/v1/javascript/price-widget?uuid=256309ee-dbf1-4484-ba69-5c4378437b46"></script>
-
+  {% comment %} <script src="https://widget.sezzle.com/v1/javascript/price-widget?uuid=256309ee-dbf1-4484-ba69-5c4378437b46"></script> {% endcomment %}
+  <script>
+  __engine_other['sezzle-price-widget'] = function(){
+    console.log('sezzle-price-widget');
+    loadjs('https://widget.sezzle.com/v1/javascript/price-widget?uuid=256309ee-dbf1-4484-ba69-5c4378437b46');
+  }
+  </script>
   {% assign page_handle = product.type | handleize | append: '-size-guide' %}
   {% if pages[page_handle].content != blank %}
     <div data-behavior="launch-modal" data-modal-id="Size" class="flex justify-center large--justify-start padding-bottom-4 top--1">

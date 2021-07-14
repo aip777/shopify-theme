@@ -2,7 +2,7 @@
 {% assign article = articles[article] | default: blog.articles.first %}
 
 {% if article.image %}
-  {% assign image_url = article | img_url: "2048x2048" %}
+  {% assign image_url = article | img_url: "1024x" %}
 {% else %}
   {% assign image_url = false %}
 {% endif %}
@@ -16,13 +16,10 @@
 <div class="collection-hero background-accent relative flex overflow-hidden">
   <div class="relative z-index-2 width-50 medium--width-40 xlarge--width-30 padding-2 medium--padding-vertical-6 large--padding-16 flex flex-column justify-center collection-description padding-right-0">
     <div class="padding-left-4 large--padding-left-16 padding-vertical-4 large--padding-vertical-0">
-
       <p class="letter-spacing-2 xlarge--padding-right-16 font-size-1 large--font-size-3 margin-top-2 margin-bottom-0">{{ date }}</p>
-
       <h1 class="collection-hero-title font-family-heading text-uppercase font-weight-5 margin-0 margin-bottom-2 padding-0 letter-spacing-2 font-size-3 large--font-size-8">
         {{ title }}
       </h1>
-
       {% if call_to_action %}
         <a class="hide large--inline-block background-primary text-no-decoration padding-horizontal-4 padding-vertical-2 text-uppercase letter-spacing-1 font-family-heading  text-white background-secondary-hover transition-all large--padding-horizontal-6" href="{{ href }}">{{ call_to_action }}</a>
       {% endif %}
@@ -32,7 +29,9 @@
   {%- if image_url -%}
   <div class="width-50 medium--width-60 xlarge--width-70 relative">
     <div class="absolute absolute-fill z-index-1 background-cover background-no-repeat background-center hero"
-      data-src="{{ image_url }}"></div>
+      style="background-image:url('{{ image_url}}'); animation:fadeZoom 1.4s forwards;"></div>
+      <!-- {{ template.name }}_image_lcp [{{ image_url }}] -->
+  </div>
   </div>
   {%- endif -%}
 </div>

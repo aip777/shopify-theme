@@ -1,5 +1,4 @@
 {% assign default_canonical_url = canonical_url %}
-
 {% capture canonical_url %}
   {% case template.name %}
     {% when "collection" %}
@@ -16,5 +15,4 @@
       {{ default_canonical_url }}
   {% endcase %}
 {% endcapture %}
-
 {% assign canonical_url = canonical_url | strip %}

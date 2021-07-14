@@ -65,7 +65,16 @@
       {% include "instagram" %}
     {% endunless %}
 
-    {% section "footer" %}
+    {% comment %} {% section "footer" %} {% endcomment %}
+    {%- if is_admin_interface -%}
+      {% section 'footer' %}
+    {%- else -%}
+      {%- if template.name == 'index' or template.name == 'page' or template.name == 'product' -%}
+        <div id="__load-section-footer"></div>
+      {%- else -%}
+        {% section 'footer' %}
+      {%- endif -%}
+    {%- endif -%}
 
     {% if cart_ajax_enabled and template != 'cart' %}
       {% include "ajax-cart" %}

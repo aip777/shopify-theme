@@ -19,30 +19,22 @@
                     </span>
                   </div>
                 </div>
-
                 <span class="block font-family-heading font-weight-6 font-size-4 text-uppercase letter-spacing-2 text-primary text-uppercase padding-top-2 padding-bottom-3">
                     {{ block.settings[title] }}
                 </span>
-
                 {% assign collection_title = block.settings.title | handle %}
-
                 <div class="font-size-1 margin-0">
                     {{ block.settings[description] }}
                 </div>
             </div>
-            
-            {% assign collection_image = block.settings[collImage] | img_url: '2048x' %}
-
+            {% assign collection_image = block.settings[collImage] | img_url: '720x' %}
             <div class="hide medium--width-60 xlarge--width-70 relative hover-parent medium--flex items-center justify-center blur-on-hover zoom-on-hover">
               <div class="absolute absolute-fill z-index-1 background-cover background-no-repeat background-center blur-target background-grey zoom-target"
                 {% unless collection_image contains 'no-image' %}data-src="{{ collection_image }}"{% endunless %}></div>
-
                 <div class="padding-horizontal-4 padding-vertical-2 font-family-heading font-size-2 letter-spacing-2 text-uppercase background-white text-primary absolute z-index-2 hover-child transition-all">View</div>
             </div>
             </a>
         </div>
     {% endif %}
   {% endfor %}
-
- 
 </div>

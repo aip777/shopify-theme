@@ -9,6 +9,7 @@
 
 {% assign image_mobile = hero_settings.image_mobile | default: false | default: hero_settings.image_desktop %}
 {% assign image_desktop = hero_settings.image_desktop %}
+
 {% assign video_url = hero_settings.video_url | default: false %}
 
 {% include 'attribute-image-aspect-ratio-percentage', image: hero_settings.image_desktop %}
@@ -19,20 +20,34 @@
 
 <div class="hero center text-center relative overflow-hidden flex items-center" style="max-height: {{ hero_settings.max_height }};">
 
-  <div class="image-container large--hide box-ratio-inline" style="padding-bottom: {{ image_mobile_ratio_percentage }}%">
-    <img
-      class="hero"
-      data-src="{{ image_mobile | img_url: 'master' }}"
+  <div class="image-container large--block box-ratio-inline" style="padding-bottom: {{ image_desktop_ratio_percentage }}%">
+    {% comment %} <img 
+      class="hero" 
+      loading="eager"
+      src="{{ image_desktop | img_url: 'master' }}" 
+    /> {% endcomment %}
+    <picture class="lcp hero">
+      <source media="(min-width: 800px)" srcset="{{ image_desktop | img_url: 'master' }}">
+      <img class="lcp loaded lazyload" data-src="{{ image_mobile | img_url: '800x' }}" />
+    </picture>
+    <!-- {{ template.name }}_image_lcp [{{ image_mobile | img_url: '800x' }}] -->
+  </div>
+
+  {% comment %} <div class="image-container large--hide box-ratio-inline" style="padding-bottom: {{ image_mobile_ratio_percentage }}%">
+    <img 
+      class="hero" 
+      loading="lazy" 
+      src="{{ image_mobile | img_url: 'master' }}"
     />
   </div>
 
   <div class="image-container hide large--block box-ratio-inline" style="padding-bottom: {{ image_desktop_ratio_percentage }}%">
-    <img
-      class="hero"
-      data-src
-      data-src-large="{{ image_desktop | img_url: 'master' }}"
+    <img 
+      class="hero" 
+      loading="eager" 
+      src="{{ image_desktop | img_url: 'master' }}" 
     />
-  </div>
+  </div> {% endcomment %}
 
   {% comment %} If video URL, then render the video tag {% endcomment %}
   {% if video_url %}

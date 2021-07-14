@@ -9,7 +9,8 @@
 {%- if collection_blocks.size > 0 -%}
   <div class="width-100 max-width-8 center large--padding-vertical-1">
     <div class="homepage-collection-list width-100 padding-top-10 padding-bottom-16 padding-horizontal-0 overflow-auto">
-      <div class="flex flex-row justify-center js-slick-slides width-100" 
+      {% comment %} aaaaqqqq777 {% endcomment %}
+			<div class="flex flex-row justify-center js-slick-slides-index width-100" 
       data-slides-to-show="5"
       data-slides-to-show-mobile="1"
       data-slides-to-show-tablet="1"
@@ -27,7 +28,7 @@
           {%- assign svg = cta.svg -%}
 
           {%- if cta_title != blank and svg != blank or cta_image != blank -%}
-            <div class="homepage-collection-list-thumbnail-wrap width-1 large--width-auto large--max-width-auto block-{{ block.id }}">
+            <div class="homepage-collection-list-thumbnail-wrap width-1 large--width-auto large--max-width-auto block-{{ block.id }}" style="min-width:192px;">
               <a href="{{ cta_url }}"
                 class="homepage-collection-list-thumbnail block text-no-decoration text-center width-100 medium--width-auto margin-left-auto margin-right-auto">
                 <div class="center">

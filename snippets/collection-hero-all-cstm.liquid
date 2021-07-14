@@ -19,7 +19,8 @@
   {%- if collection.image -%}
   <div class="width-100 medium--width-60 xlarge--width-70 relative order-1 large--order-2">
     <div class="medium--absolute medium--absolute-fill z-index-1 background-cover background-no-repeat background-center hero"
-      data-src="{{ collection.image | img_url: '2048x' }}"></div>
+      style="background-image:url('{{ collection.image | img_url: '1024x' }}'); animation:fadeZoom 1.4s forwards;"></div>
+      <!-- {{ template.name }}_image_lcp [{{ collection.image | img_url: '1024x' }}] -->
   </div>
   {%- endif -%}
 </div>
